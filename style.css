@@ -1,0 +1,1422 @@
+/* ================================================================
+   OPERA TAIPEI — STYLESHEET
+   Dark, elegant, gold-accented design.
+   Fonts: Cormorant Garamond (display) + Montserrat (body)
+================================================================ */
+
+
+/* ================================================================
+   DESIGN TOKENS — CSS CUSTOM PROPERTIES
+   All colors and shared values defined in one place for easy
+   theming and consistency across the whole stylesheet.
+================================================================ */
+:root {
+  /* Background colors, darkest to lightest surface */
+  --color-black:          #080808;
+  --color-deep-dark:      #0e0d0c;
+  --color-surface:        #141210;
+  --color-card:           #1a1714;
+
+  /* Gold accent palette */
+  --color-gold:           #c9a84c;
+  --color-gold-light:     #e2c47a;
+  --color-gold-dim:       rgba(201, 168, 76, 0.35);
+  --color-gold-border:    rgba(180, 150, 90, 0.18);
+
+  /* Text colors */
+  --color-white:          #f5f0e8;
+  --color-text-muted:     rgba(245, 240, 232, 0.5);
+
+  /* Navigation bar height — used in both nav and mobile menu positioning */
+  --nav-height:           72px;
+  --nav-height-scrolled:  60px;
+}
+
+
+/* ================================================================
+   RESET & BASE STYLES
+   Normalize browser defaults and set global font/scroll behavior.
+================================================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  /* Smooth scrolling when clicking anchor nav links */
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-black);
+  color: var(--color-white);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  /* Prevent horizontal overflow caused by decorative elements */
+  overflow-x: hidden;
+}
+
+
+/* ================================================================
+   CUSTOM SCROLLBAR
+   Thin gold scrollbar on webkit browsers (Chrome, Safari, Edge).
+================================================================ */
+::-webkit-scrollbar        { width: 4px; }
+::-webkit-scrollbar-track  { background: var(--color-black); }
+::-webkit-scrollbar-thumb  { background: var(--color-gold-dim); border-radius: 2px; }
+
+
+/* ================================================================
+   NAVIGATION BAR
+   Fixed to the top of the viewport. Shrinks slightly after the
+   user scrolls down (class "scrolled" is added by JavaScript).
+================================================================ */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  background: linear-gradient(
+    to bottom,
+    rgba(8, 8, 8, 0.97) 0%,
+    rgba(8, 8, 8, 0.85) 100%
+  );
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--color-gold-border);
+  transition: height 0.3s ease, background 0.3s ease;
+}
+
+/* Compact nav state after scrolling past the hero */
+nav.scrolled {
+  height: var(--nav-height-scrolled);
+  background: rgba(8, 8, 8, 0.98);
+}
+
+/* Logo text in the nav */
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.7rem;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  color: var(--color-gold-light);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.nav-logo em {
+  font-style: italic;
+  font-weight: 300;
+}
+
+/* Desktop navigation link list */
+.nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+  align-items: center;
+}
+
+.nav-links a {
+  color: var(--color-text-muted);
+  text-decoration: none;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transition: color 0.25s;
+  position: relative;
+}
+
+/* Animated underline that slides in on hover */
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0; right: 0;
+  height: 1px;
+  background: var(--color-gold);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.nav-links a:hover            { color: var(--color-gold-light); }
+.nav-links a:hover::after     { transform: scaleX(1); }
+
+
+/* ================================================================
+   HAMBURGER BUTTON (MOBILE)
+   Hidden on desktop. Shows three horizontal lines that animate
+   into an X when the mobile menu is open.
+================================================================ */
+.hamburger {
+  display: none; /* shown via media query */
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 4px;
+  background: none;
+  border: none;
+}
+
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: var(--color-gold-light);
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+/* X shape when menu is open */
+.hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+
+/* ================================================================
+   MOBILE DROPDOWN MENU
+   Hidden by default. Slides in as a flex column below the nav
+   when the hamburger is clicked.
+================================================================ */
+.mobile-menu {
+  display: none; /* switched to flex when .open is added by JS */
+  position: fixed;
+  top: var(--nav-height);
+  left: 0; right: 0;
+  background: rgba(8, 8, 8, 0.98);
+  border-bottom: 1px solid var(--color-gold-border);
+  z-index: 99;
+  padding: 20px 0;
+  flex-direction: column;
+}
+
+.mobile-menu.open {
+  display: flex;
+}
+
+.mobile-menu .mobile-nav-link {
+  color: var(--color-text-muted);
+  text-decoration: none;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  padding: 14px 40px;
+  transition: color 0.2s, background 0.2s;
+  border-bottom: 1px solid rgba(180, 150, 90, 0.08);
+}
+
+.mobile-menu .mobile-nav-link:hover {
+  color: var(--color-gold-light);
+  background: rgba(201, 168, 76, 0.05);
+}
+
+
+/* ================================================================
+   HERO SECTION
+   Full-viewport opening screen with the bar name, tagline,
+   decorative gradients, and call-to-action buttons.
+================================================================ */
+#hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  padding: 120px 40px 80px;
+}
+
+/* Layered gradient background: dark base + soft gold glows */
+.hero-background {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 60%, rgba(201, 168, 76, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 75% 30%, rgba(201, 168, 76, 0.04) 0%, transparent 55%),
+    linear-gradient(160deg, #0e0c0a 0%, #080808 50%, #0a0c0e 100%);
+}
+
+/* Two concentric decorative circles behind the title */
+.hero-circles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.hero-circles::before,
+.hero-circles::after {
+  content: '';
+  position: absolute;
+  border: 1px solid rgba(201, 168, 76, 0.07);
+  border-radius: 50%;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.hero-circles::before  { width: 700px;  height: 700px; }
+.hero-circles::after   { width: 1000px; height: 1000px; }
+
+/* Small label with decorative line decorations on each side */
+.hero-eyebrow {
+  position: relative;
+  font-size: 0.62rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.hero-eyebrow::before,
+.hero-eyebrow::after {
+  content: '';
+  flex: 1;
+  max-width: 60px;
+  height: 1px;
+  background: var(--color-gold-dim);
+}
+
+/* Large responsive display title */
+.hero-title {
+  position: relative;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3.5rem, 10vw, 8rem);
+  font-weight: 300;
+  line-height: 0.92;
+  letter-spacing: 0.05em;
+  color: var(--color-white);
+  margin-bottom: 10px;
+}
+
+.hero-title em {
+  font-style: italic;
+  color: var(--color-gold-light);
+  font-weight: 300;
+}
+
+/* Italic tagline below the title */
+.hero-subtitle {
+  position: relative;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.1rem, 3vw, 1.8rem);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--color-text-muted);
+  margin-bottom: 48px;
+  letter-spacing: 0.06em;
+}
+
+/* Wrapper that holds the two CTA buttons side by side */
+.hero-cta-group {
+  position: relative;
+  display: inline-flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Animated line at the bottom of the hero that invites scrolling */
+.hero-scroll-indicator {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.scroll-line {
+  width: 1px;
+  height: 50px;
+  background: linear-gradient(to bottom, transparent, var(--color-gold));
+  animation: scrollLinePulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollLinePulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(1); }
+  50%       { opacity: 1;   transform: scaleY(1.2); }
+}
+
+
+/* ================================================================
+   SHARED BUTTON STYLES
+   Two button variants used across the page:
+   - btn-gold: filled gold on hover
+   - btn-ghost: transparent with subtle border
+================================================================ */
+.btn-gold {
+  display: inline-block;
+  padding: 14px 36px;
+  border: 1px solid var(--color-gold);
+  color: var(--color-gold-light);
+  text-decoration: none;
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  transition: color 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Gold fill that slides in from the left on hover */
+.btn-gold::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--color-gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+  z-index: -1;
+}
+
+.btn-gold:hover              { color: var(--color-black); }
+.btn-gold:hover::before      { transform: scaleX(1); }
+
+/* Larger variant used for the Google Maps CTA */
+.btn-gold--large {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 40px;
+}
+
+.btn-ghost {
+  display: inline-block;
+  padding: 14px 36px;
+  border: 1px solid rgba(245, 240, 232, 0.2);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  transition: border-color 0.3s, color 0.3s;
+}
+
+.btn-ghost:hover {
+  border-color: var(--color-gold-dim);
+  color: var(--color-gold-light);
+}
+
+
+/* ================================================================
+   SHARED SECTION TYPOGRAPHY UTILITIES
+   Reusable classes for section labels, titles, and dividers
+   used consistently across all content sections.
+================================================================ */
+
+/* Small eyebrow label above section titles */
+.section-label {
+  font-size: 0.58rem;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.section-label::before {
+  content: '';
+  width: 30px;
+  height: 1px;
+  background: var(--color-gold-dim);
+}
+
+/* Centered variant: no left line, centered alignment */
+.section-label--centered {
+  justify-content: center;
+}
+
+.section-label--centered::before {
+  display: none;
+}
+
+/* Large serif section heading */
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--color-white);
+  margin-bottom: 20px;
+}
+
+.section-title em {
+  font-style: italic;
+  color: var(--color-gold-light);
+}
+
+.section-title--centered {
+  text-align: center;
+}
+
+/* Short gold line below the section title */
+.section-divider {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(to right, var(--color-gold), transparent);
+  margin-bottom: 40px;
+}
+
+.section-divider--centered {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Constrained content width for full-width sections */
+.section-wrap {
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+
+/* ================================================================
+   FADE-IN ANIMATION
+   Elements with .fade-in start invisible and slide up when they
+   enter the viewport. JavaScript adds the .visible class via
+   IntersectionObserver.
+================================================================ */
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* ================================================================
+   ABOUT / VENUE SECTION
+   Dark background wrapper containing a two-column grid:
+   left = text + info grid, right = framed photo collage.
+================================================================ */
+.about-wrapper {
+  background: var(--color-deep-dark);
+  padding: 100px 40px;
+}
+
+#about {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+/* Paragraph text inside the about column */
+.about-content p {
+  color: var(--color-text-muted);
+  line-height: 1.9;
+  font-size: 0.88rem;
+  margin-bottom: 20px;
+  font-weight: 300;
+}
+
+/* 2×2 grid of quick-info cards (location, view, hours) */
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  border: 1px solid var(--color-gold-border);
+  margin-top: 40px;
+}
+
+.info-cell {
+  padding: 24px;
+  border: 1px solid var(--color-gold-border);
+  background: var(--color-card);
+}
+
+.info-cell .label {
+  font-size: 0.58rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: 10px;
+}
+
+.info-cell p {
+  font-size: 0.82rem;
+  color: var(--color-white);
+  line-height: 1.7;
+  font-weight: 300;
+  margin: 0;
+}
+
+/* Decorative offset frame around the photo grid */
+.about-photo-frame {
+  position: relative;
+  padding: 20px;
+  border: 1px solid var(--color-gold-border);
+}
+
+/* Shadow frame offset slightly to bottom-right */
+.about-photo-frame::before {
+  content: '';
+  position: absolute;
+  top: 6px; left: 6px; right: -6px; bottom: -6px;
+  border: 1px solid rgba(201, 168, 76, 0.1);
+  pointer-events: none;
+}
+
+/* Photo collage: first image spans full width, two below it */
+.about-photo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.about-photo-grid img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  filter: brightness(0.85) contrast(1.05) saturate(0.9);
+  transition: filter 0.4s;
+}
+
+.about-photo-grid img:first-child {
+  grid-column: 1 / -1;
+  aspect-ratio: 16 / 9;
+}
+
+.about-photo-grid img:hover {
+  filter: brightness(1) contrast(1.05) saturate(1);
+}
+
+
+/* ================================================================
+   BARTENDER SECTION
+   Centered layout spotlighting the head bartender.
+================================================================ */
+#bartenders {
+  padding: 100px 40px;
+}
+
+.section-centered {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* Italic quote-style paragraph for the bartender bio */
+.bartender-bio {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: rgba(245, 240, 232, 0.7);
+  line-height: 1.9;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Row of bartender name cards */
+.bartender-list {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  margin-top: 50px;
+  flex-wrap: wrap;
+}
+
+.bartender-card {
+  text-align: center;
+}
+
+.bartender-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  color: var(--color-gold-light);
+  font-style: italic;
+  margin-bottom: 6px;
+}
+
+.bartender-role {
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+
+/* ================================================================
+   MENU SECTION
+   Dark surface background. Contains tabbed navigation above
+   a panel area that swaps between three menu categories.
+================================================================ */
+#menu {
+  background: var(--color-surface);
+  padding: 100px 40px;
+}
+
+.menu-container {
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+/* Horizontal scrollable tab bar */
+.menu-tabs {
+  display: flex;
+  margin-bottom: 60px;
+  border-bottom: 1px solid var(--color-gold-border);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.menu-tabs::-webkit-scrollbar { display: none; }
+
+.menu-tab {
+  padding: 16px 28px;
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.25s;
+  white-space: nowrap;
+  position: relative;
+}
+
+/* Gold underline indicator for the active tab */
+.menu-tab::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 0; right: 0;
+  height: 1px;
+  background: var(--color-gold);
+  transform: scaleX(0);
+  transition: transform 0.3s;
+}
+
+.menu-tab.active         { color: var(--color-gold-light); }
+.menu-tab.active::after  { transform: scaleX(1); }
+.menu-tab:hover          { color: var(--color-gold-light); }
+
+/* Each tab panel is hidden by default; .active makes it visible */
+.menu-panel         { display: none; }
+.menu-panel.active  { display: block; }
+
+/* Responsive grid of menu item cards */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1px;
+  background: var(--color-gold-border);
+  border: 1px solid var(--color-gold-border);
+  margin-bottom: 1px;
+}
+
+/* Individual menu item card */
+.menu-item {
+  background: var(--color-card);
+  padding: 28px 32px;
+  transition: background 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Gold left border that reveals on hover */
+.menu-item::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--color-gold);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.3s ease;
+}
+
+.menu-item:hover            { background: #1e1b16; }
+.menu-item:hover::before    { transform: scaleY(1); }
+
+/* Menu item text styles */
+.menu-item-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem;
+  color: var(--color-white);
+  margin-bottom: 4px;
+  font-weight: 400;
+}
+
+.menu-item-name-chinese {
+  font-size: 0.78rem;
+  color: rgba(201, 168, 76, 0.6);
+  margin-bottom: 10px;
+}
+
+.menu-item-ingredients {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+.menu-item-price {
+  margin-top: 14px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  color: var(--color-gold);
+  font-style: italic;
+}
+
+/* Gold badge that labels each price tier (e.g., "350 NTD$") */
+.price-tier-badge {
+  display: inline-block;
+  margin-bottom: 16px;
+  background: rgba(201, 168, 76, 0.08);
+  border: 1px solid var(--color-gold-dim);
+  padding: 4px 10px;
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  color: var(--color-gold);
+  text-transform: uppercase;
+}
+
+/* Adds top margin when a second tier follows the first grid */
+.price-tier-badge--spaced {
+  margin-top: 24px;
+}
+
+/* Food items have a photo above the text */
+.food-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.food-photo {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  filter: brightness(0.8) saturate(0.85);
+  transition: filter 0.4s;
+  margin-bottom: 20px;
+}
+
+.menu-item:hover .food-photo {
+  filter: brightness(0.95) saturate(1);
+}
+
+
+/* ================================================================
+   GALLERY SECTION
+   Asymmetric mosaic grid. The first photo spans 2 columns and
+   2 rows to create a visual anchor.
+================================================================ */
+#gallery {
+  padding: 100px 40px;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto auto;
+  gap: 8px;
+}
+
+.gallery-item {
+  overflow: hidden;
+  position: relative;
+}
+
+/* Large anchor photo */
+.gallery-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+/* Wide photo spanning two columns */
+.gallery-item:nth-child(4) { grid-column: span 2; }
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+  object-fit: cover;
+  display: block;
+  filter: brightness(0.8) saturate(0.8) contrast(1.05);
+  transition: transform 0.6s ease, filter 0.4s;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.04);
+  filter: brightness(0.95) saturate(1) contrast(1.05);
+}
+
+/* Gold border overlay on hover */
+.gallery-item::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid transparent;
+  transition: border-color 0.3s;
+  pointer-events: none;
+}
+
+.gallery-item:hover::after {
+  border-color: var(--color-gold-dim);
+}
+
+
+/* ================================================================
+   OPENING HOURS SECTION
+   Dark surface with a centered two-column grid of days/times.
+================================================================ */
+#hours {
+  background: var(--color-deep-dark);
+  padding: 100px 40px;
+}
+
+.hours-container {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.hours-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  border: 1px solid var(--color-gold-border);
+  margin-bottom: 50px;
+  background: var(--color-gold-border);
+}
+
+.hours-row {
+  background: var(--color-card);
+  padding: 28px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Saturday row stretches full width since there's an odd number of days */
+.hours-row--full-width {
+  grid-column: 1 / -1;
+  justify-content: center;
+  gap: 60px;
+}
+
+.hours-day {
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.hours-time {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  color: var(--color-gold-light);
+  font-style: italic;
+}
+
+.hours-closed-note {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  letter-spacing: 0.1em;
+}
+
+
+/* ================================================================
+   CONTACT SECTION
+   Two-column layout: left = address/email/social,
+   right = Google Maps link button.
+================================================================ */
+#contact {
+  padding: 100px 40px;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+/* Each labeled contact block (address, email, social) */
+.contact-item {
+  margin-bottom: 32px;
+}
+
+.contact-item-label {
+  font-size: 0.58rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: 10px;
+}
+
+.contact-item p,
+.contact-item a {
+  color: var(--color-text-muted);
+  font-size: 0.88rem;
+  line-height: 1.8;
+  text-decoration: none;
+}
+
+.contact-item a:hover {
+  color: var(--color-gold-light);
+}
+
+/* Row of social media icon buttons */
+.social-links {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.social-link {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--color-gold-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: var(--color-text-muted);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: border-color 0.25s, color 0.25s, background 0.25s;
+}
+
+.social-link:hover {
+  border-color: var(--color-gold);
+  color: var(--color-gold-light);
+  background: rgba(201, 168, 76, 0.05);
+}
+
+/* Container for the Google Maps button, centered vertically */
+.contact-map-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+
+/* ================================================================
+   FOOTER
+   Minimal bar at the bottom with logo and copyright.
+================================================================ */
+footer {
+  border-top: 1px solid var(--color-gold-border);
+  padding: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.footer-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem;
+  color: var(--color-gold-light);
+  letter-spacing: 0.1em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.footer-copyright {
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  color: rgba(245, 240, 232, 0.25);
+  text-transform: uppercase;
+}
+
+
+/* ================================================================
+   TRUSTED BY SECTION
+   Three-column grid showing companies, event types, and venue
+   highlights as social proof for corporate prospects.
+================================================================ */
+
+.trusted-by-intro {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  line-height: 1.9;
+  max-width: 700px;
+  margin-bottom: 60px;
+  font-weight: 300;
+}
+
+/* Three equal columns — one for companies, one for events, one for highlights */
+.trusted-by-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--color-gold-border);
+  border: 1px solid var(--color-gold-border);
+}
+
+.trusted-by-column {
+  background: var(--color-card);
+  padding: 36px 32px;
+}
+
+.trusted-by-column-label {
+  font-size: 0.58rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: 24px;
+}
+
+.trusted-by-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.trusted-by-list li {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  font-weight: 300;
+  padding-left: 16px;
+  position: relative;
+}
+
+/* Small gold dash bullet before each list item */
+.trusted-by-list li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--color-gold-dim);
+  font-size: 0.7rem;
+}
+
+
+/* ================================================================
+   EVENTS / RENTAL SECTION
+   Corporate event offering with services, facilities, table
+   pricing, full-venue privatization, and popular packages.
+================================================================ */
+
+.events-intro {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  line-height: 1.9;
+  max-width: 700px;
+  margin-bottom: 60px;
+  font-weight: 300;
+}
+
+/* Gold sub-heading that introduces each sub-block */
+.events-block-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem;
+  font-style: italic;
+  color: var(--color-gold-light);
+  margin: 56px 0 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-gold-border);
+}
+
+/* Two-column layout used for services/facilities and venue pricing */
+.events-two-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--color-gold-border);
+  border: 1px solid var(--color-gold-border);
+  margin-bottom: 8px;
+}
+
+/* Three-column layout used for table reservations and packages */
+.events-three-columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--color-gold-border);
+  border: 1px solid var(--color-gold-border);
+  margin-bottom: 8px;
+}
+
+/* Generic card used inside both column layouts */
+.events-card {
+  background: var(--color-card);
+  padding: 32px;
+}
+
+.events-card-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: 20px;
+}
+
+.events-card-note {
+  color: var(--color-text-muted);
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.58rem;
+}
+
+/* Bullet list inside service/facility cards */
+.events-feature-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.events-feature-list li {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+  font-weight: 300;
+  padding-left: 16px;
+  position: relative;
+}
+
+.events-feature-list li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--color-gold-dim);
+  font-size: 0.7rem;
+}
+
+/* Row inside the venue pricing cards: label on left, amount on right */
+.venue-price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(180, 150, 90, 0.1);
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.venue-price-label {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  font-weight: 300;
+}
+
+.venue-price-amount {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  color: var(--color-gold-light);
+  font-style: italic;
+  white-space: nowrap;
+}
+
+/* Table reservation cards */
+.pricing-card {
+  background: var(--color-card);
+  padding: 32px;
+  text-align: center;
+  transition: background 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Gold top border highlight on hover */
+.pricing-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--color-gold);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.pricing-card:hover            { background: #1e1b16; }
+.pricing-card:hover::before    { transform: scaleX(1); }
+
+/* Featured / largest table gets a permanent gold top border */
+.pricing-card--featured::before {
+  transform: scaleX(1);
+}
+
+.pricing-card-tables {
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: 10px;
+}
+
+.pricing-card-capacity {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  margin-bottom: 18px;
+  font-weight: 300;
+}
+
+.pricing-card-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  color: var(--color-white);
+  font-weight: 300;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.pricing-card-note {
+  font-size: 0.6rem;
+  color: var(--color-text-muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Popular package cards */
+.package-card {
+  background: var(--color-card);
+  padding: 32px;
+  border-left: 2px solid transparent;
+  transition: border-color 0.25s, background 0.25s;
+}
+
+.package-card:hover {
+  background: #1e1b16;
+  border-left-color: var(--color-gold);
+}
+
+.package-card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  color: var(--color-gold-light);
+  font-style: italic;
+  margin-bottom: 12px;
+}
+
+.package-card-desc {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+/* Small italic note below pricing tables */
+.events-note {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+  margin-top: 12px;
+  margin-bottom: 4px;
+}
+
+/* CTA button row at the bottom of the events section */
+.events-cta {
+  margin-top: 56px;
+  text-align: center;
+}
+
+
+/* ================================================================
+   RESPONSIVE BREAKPOINTS
+   Adjustments for tablet (≤1024px), mobile (≤768px),
+   and small mobile (≤480px).
+================================================================ */
+
+/* ── Tablet ── */
+@media (max-width: 1024px) {
+
+  /* Stack about section vertically */
+  #about {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+
+  /* Stack contact section vertically */
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  /* Two-column gallery on tablet */
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Reset the spanning items for the simpler 2-col layout */
+  .gallery-item:nth-child(1) { grid-column: span 2; grid-row: span 1; }
+  .gallery-item:nth-child(4) { grid-column: span 1; }
+
+  /* Stack trusted-by columns vertically on tablet */
+  .trusted-by-grid { grid-template-columns: 1fr; }
+
+  /* Stack events columns vertically on tablet */
+  .events-two-columns   { grid-template-columns: 1fr; }
+  .events-three-columns { grid-template-columns: 1fr 1fr; }
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+
+  :root {
+    --nav-height: 60px;
+  }
+
+  nav { padding: 0 24px; }
+
+  /* Hide desktop nav links, show hamburger */
+  .nav-links  { display: none; }
+  .hamburger  { display: flex; }
+
+  /* Reduce section padding on smaller screens */
+  section         { padding: 70px 24px; }
+  #hero           { padding: 100px 24px 70px; }
+  .about-wrapper  { padding: 70px 24px; }
+  #menu           { padding: 70px 24px; }
+  #hours          { padding: 70px 24px; }
+  #contact        { padding: 70px 24px; }
+
+  /* Stack hours into a single column */
+  .hours-grid { grid-template-columns: 1fr; }
+
+  /* Stack info cells into a single column */
+  .info-grid  { grid-template-columns: 1fr; }
+
+  /* Keep 2-column gallery on larger phones */
+  .gallery-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .gallery-item:nth-child(1) { grid-column: span 2; }
+  .gallery-item:nth-child(4) { grid-column: span 2; }
+
+  /* Reduce gap between bartender cards */
+  .bartender-list { gap: 40px; }
+
+  /* Stack footer vertically */
+  footer { flex-direction: column; text-align: center; }
+
+  /* Smaller tab padding on mobile */
+  .menu-tab { padding: 14px 18px; }
+
+  /* Stack all event columns to single column on mobile */
+  .events-three-columns { grid-template-columns: 1fr; }
+}
+
+/* ── Small mobile ── */
+@media (max-width: 480px) {
+
+  /* Single-column gallery */
+  .gallery-grid               { grid-template-columns: 1fr; }
+  .gallery-item:nth-child(1),
+  .gallery-item:nth-child(4)  { grid-column: span 1; }
+
+  /* Stack hours-row content vertically */
+  .hours-row { flex-direction: column; gap: 8px; text-align: center; }
+
+  /* Smaller hero title to prevent overflow */
+  .hero-title { font-size: 3rem; }
+}
