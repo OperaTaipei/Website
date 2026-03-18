@@ -372,7 +372,13 @@ nav.scrolled {
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.3s ease;
-  z-index: -1;
+  z-index: 0;
+}
+
+/* Ensure all child content in .btn-gold sits above the sliding fill */
+.btn-gold > * {
+  position: relative;
+  z-index: 1;
 }
 
 .btn-gold:hover              { color: var(--color-black); }
@@ -1034,6 +1040,70 @@ footer {
   letter-spacing: 0.15em;
   color: rgba(245, 240, 232, 0.25);
   text-transform: uppercase;
+}
+
+
+/* ================================================================
+   IMAGE ERROR FALLBACK
+   When an image fails to load, the onerror handler hides the <img>
+   and adds .img-error to the parent. This shows a styled placeholder
+   with a camera icon so the layout never collapses to zero height.
+================================================================ */
+.img-error {
+  background: var(--color-card);
+  border: 1px solid var(--color-gold-border);
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 160px;
+  color: var(--color-gold-dim);
+}
+
+/* Camera SVG icon injected via CSS content */
+.img-error::before {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 40px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='rgba(201%2C168%2C76%2C0.4)' stroke-width='1.2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M3 9a2 2 0 0 1 2-2h.93a2 2 0 0 0 1.664-.89l.812-1.22A2 2 0 0 1 10.07 4h3.86a2 2 0 0 1 1.664.89l.812 1.22A2 2 0 0 0 18.07 7H19a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z'/%3E%3Ccircle cx='12' cy='13' r='3'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0.5;
+}
+
+.img-error::after {
+  content: 'Image unavailable';
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(201, 168, 76, 0.35);
+}
+
+/* ================================================================
+   TEXT OVERFLOW SAFETY
+   Prevent any long words or URLs from breaking the layout on
+   narrow screens. Applied globally as a safety net.
+================================================================ */
+* {
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* ================================================================
+   SECTION VISIBILITY SAFETY
+   Ensure all section content is visible even if fade-in JS fails.
+   The .visible class is the trigger; without it content is hidden.
+   This rule ensures content is always at least readable.
+================================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .fade-in {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
 
 
