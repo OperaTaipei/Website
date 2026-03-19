@@ -5,51 +5,45 @@
    - Mobile hamburger menu toggle
    - Menu tab switching
    - Fade-in animation on scroll (IntersectionObserver)
-   - Image error fallback (shows placeholder when images fail)
+   - Image error fallback
 
    Written defensively: every DOM query is null-checked so the
    page never crashes if an element is missing or renamed.
+
+   NOTE: Content sections use CSS animation as a fallback, so
+   they will always become visible even if this script fails.
 ================================================================ */
 
 
 /* ================================================================
    DOM REFERENCES
-   Grab all the elements we need to interact with up front.
-   Sections covered: navbar, mobile menu, menu tabs, and all
-   fade-in elements (about, bartenders, gallery, trusted-by,
-   events, hours, contact).
 ================================================================ */
-const navbar           = document.getElementById('navbar');
-const hamburgerButton  = document.getElementById('hamburger');
-const mobileMenu       = document.getElementById('mobile-menu');
-const mobileNavLinks   = document.querySelectorAll('.mobile-nav-link');
-const menuTabButtons   = document.querySelectorAll('.menu-tab');
-const menuPanels       = document.querySelectorAll('.menu-panel');
-const fadeInElements   = document.querySelectorAll('.fade-in');
-const allImages        = document.querySelectorAll('img');
+const navbar          = document.getElementById('navbar');
+const hamburgerButton = document.getElementById('hamburger');
+const mobileMenu      = document.getElementById('mobile-menu');
+const mobileNavLinks  = document.querySelectorAll('.mobile-nav-link');
+const menuTabButtons  = document.querySelectorAll('.menu-tab');
+const menuPanels      = document.querySelectorAll('.menu-panel');
+const fadeInElements  = document.querySelectorAll('.fade-in');
+const allImages       = document.querySelectorAll('img');
 
 
 /* ================================================================
    NAV SHRINK ON SCROLL
-   When the user scrolls past the hero section (80px threshold),
-   the "scrolled" class is added to the navbar, which triggers
-   the CSS transition to a more compact height and darker background.
+   Adds "scrolled" class after user scrolls past the hero.
 ================================================================ */
-const SCROLL_THRESHOLD_FOR_COMPACT_NAV = 80;
+const SCROLL_THRESHOLD = 80;
 
 if (navbar) {
   window.addEventListener('scroll', () => {
-    const userHasScrolledPastHero = window.scrollY > SCROLL_THRESHOLD_FOR_COMPACT_NAV;
-    navbar.classList.toggle('scrolled', userHasScrolledPastHero);
+    navbar.classList.toggle('scrolled', window.scrollY > SCROLL_THRESHOLD);
   });
 }
 
 
 /* ================================================================
    MOBILE HAMBURGER MENU
-   Clicking the hamburger button toggles both:
-   - An "open" class on the button itself (animates lines into an X)
-   - An "open" class on the mobile menu (shows/hides the dropdown)
+   Toggles the mobile dropdown and animates the hamburger icon.
 ================================================================ */
 if (hamburgerButton && mobileMenu) {
 
@@ -58,9 +52,8 @@ if (hamburgerButton && mobileMenu) {
     mobileMenu.classList.toggle('open');
   });
 
-  /* Close the mobile menu when the user taps any nav link inside it */
-  mobileNavLinks.forEach(navLink => {
-    navLink.addEventListener('click', () => {
+  mobileNavLinks.forEach(link => {
+    link.addEventListener('click', () => {
       hamburgerButton.classList.remove('open');
       mobileMenu.classList.remove('open');
     });
@@ -71,31 +64,17 @@ if (hamburgerButton && mobileMenu) {
 
 /* ================================================================
    MENU TAB SWITCHING
-   Each tab button has a data-tab attribute (e.g. data-tab="signatures").
-   Clicking a tab:
-   1. Removes "active" from all tab buttons and panels
-   2. Adds "active" to the clicked tab button
-   3. Adds "active" to the matching panel (id = "tab-{data-tab value}")
+   data-tab attribute on buttons maps to id="tab-{value}" panels.
 ================================================================ */
 if (menuTabButtons.length > 0) {
 
   menuTabButtons.forEach(tabButton => {
     tabButton.addEventListener('click', () => {
-
-      /* Deactivate all tabs and panels first */
-      menuTabButtons.forEach(button => button.classList.remove('active'));
+      menuTabButtons.forEach(btn => btn.classList.remove('active'));
       menuPanels.forEach(panel => panel.classList.remove('active'));
-
-      /* Activate the clicked tab */
       tabButton.classList.add('active');
-
-      /* Find and show the matching panel using the data-tab attribute */
-      const targetPanelId = 'tab-' + tabButton.dataset.tab;
-      const targetPanel   = document.getElementById(targetPanelId);
-
-      if (targetPanel) {
-        targetPanel.classList.add('active');
-      }
+      const targetPanel = document.getElementById('tab-' + tabButton.dataset.tab);
+      if (targetPanel) targetPanel.classList.add('active');
     });
   });
 
@@ -103,49 +82,51 @@ if (menuTabButtons.length > 0) {
 
 
 /* ================================================================
-   FADE-IN ON SCROLL (IntersectionObserver)
-   Elements with the class "fade-in" start invisible (defined in CSS).
-   When they enter the viewport, the observer adds the "visible"
-   class which triggers the CSS transition (opacity + slide up).
+   FADE-IN ON SCROLL
+   Uses IntersectionObserver to add .visible when elements enter
+   the viewport. Falls back to revealing all elements immediately
+   if IntersectionObserver is unsupported.
 
-   Falls back gracefully: if IntersectionObserver is not supported
-   by the browser, all fade-in elements are made immediately visible
-   so no content is ever hidden.
-
-   Options:
-   - threshold 0.1  → trigger when 10% of the element is visible
-   - rootMargin     → trigger slightly before the element fully enters
+   The CSS also has a 0.5s animation fallback so content is ALWAYS
+   visible even if this entire script block never executes.
 ================================================================ */
+function revealElement(element) {
+  element.classList.add('visible');
+}
+
 if (fadeInElements.length > 0) {
 
   if ('IntersectionObserver' in window) {
 
-    const fadeInObserverOptions = {
-      threshold:  0.1,
-      rootMargin: '0px 0px -40px 0px'
+    const observerOptions = {
+      threshold:  0.05,
+      rootMargin: '0px 0px -20px 0px'
     };
 
-    const fadeInObserver = new IntersectionObserver((observedEntries) => {
-      observedEntries.forEach(entry => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          /* Stop observing once animated — no need to watch it again */
-          fadeInObserver.unobserve(entry.target);
+          revealElement(entry.target);
+          observer.unobserve(entry.target);
         }
       });
-    }, fadeInObserverOptions);
+    }, observerOptions);
 
-    /* Attach the observer to every fade-in element on the page */
-    fadeInElements.forEach(element => {
-      fadeInObserver.observe(element);
-    });
+    fadeInElements.forEach(el => observer.observe(el));
+
+    /* Also reveal anything already in the viewport on page load */
+    setTimeout(() => {
+      fadeInElements.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight) {
+          revealElement(el);
+        }
+      });
+    }, 100);
 
   } else {
-    /* Fallback for browsers without IntersectionObserver support:
-       immediately reveal all fade-in elements */
-    fadeInElements.forEach(element => {
-      element.classList.add('visible');
-    });
+    /* Immediate fallback for browsers without IntersectionObserver */
+    fadeInElements.forEach(revealElement);
   }
 
 }
@@ -153,31 +134,20 @@ if (fadeInElements.length > 0) {
 
 /* ================================================================
    IMAGE ERROR FALLBACK
-   If an image fails to load (broken URL, network block, etc.),
-   the onerror attribute on each <img> hides the element and adds
-   the class "img-error" to its parent container.
-   The CSS for .img-error then shows a styled placeholder with a
-   camera icon and "Image unavailable" text.
-
-   This function is a safety net in case the inline onerror handler
-   didn't fire (e.g., images loaded from cache then expired).
+   Hides broken images and shows a styled placeholder via .img-error.
 ================================================================ */
-allImages.forEach(imageElement => {
+allImages.forEach(img => {
 
-  /* If the image is already broken when the script runs */
-  if (imageElement.complete && imageElement.naturalWidth === 0) {
-    imageElement.style.display = 'none';
-    if (imageElement.parentElement) {
-      imageElement.parentElement.classList.add('img-error');
-    }
+  /* Already broken when script runs */
+  if (img.complete && img.naturalWidth === 0) {
+    img.style.display = 'none';
+    if (img.parentElement) img.parentElement.classList.add('img-error');
   }
 
-  /* Handle future load failures */
-  imageElement.addEventListener('error', () => {
-    imageElement.style.display = 'none';
-    if (imageElement.parentElement) {
-      imageElement.parentElement.classList.add('img-error');
-    }
+  /* Future failures */
+  img.addEventListener('error', () => {
+    img.style.display = 'none';
+    if (img.parentElement) img.parentElement.classList.add('img-error');
   });
 
 });

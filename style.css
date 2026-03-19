@@ -484,20 +484,32 @@ nav.scrolled {
 
 
 /* ================================================================
-   FADE-IN ANIMATION
-   Elements with .fade-in start invisible and slide up when they
-   enter the viewport. JavaScript adds the .visible class via
-   IntersectionObserver.
+   FADE-IN ON SCROLL ANIMATION
+   Elements with .fade-in start invisible and slide up into view
+   when the IntersectionObserver in script.js adds .visible.
+   The animation-based fallback ensures content shows after 0.5s
+   even if the JS observer never fires (e.g. JS load failure).
 ================================================================ */
 .fade-in {
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 0.7s ease, transform 0.7s ease;
+  /* Fallback: reveal after a short delay even without JS */
+  animation: fade-in-fallback 0.8s ease 0.5s forwards;
 }
 
+/* JS-driven reveal — overrides the animation when .visible is added */
 .fade-in.visible {
   opacity: 1;
   transform: translateY(0);
+  animation: none;
+}
+
+@keyframes fade-in-fallback {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 
@@ -878,60 +890,21 @@ nav.scrolled {
    OPENING HOURS SECTION
    Dark surface with a centered two-column grid of days/times.
 ================================================================ */
-#hours {
-  background: var(--color-deep-dark);
-  padding: 100px 40px;
-}
 
-.hours-container {
-  max-width: 700px;
-  margin: 0 auto;
-  text-align: center;
-}
 
-.hours-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1px;
-  border: 1px solid var(--color-gold-border);
-  margin-bottom: 50px;
-  background: var(--color-gold-border);
-}
 
-.hours-row {
-  background: var(--color-card);
-  padding: 28px 32px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+
+
+
 
 /* Saturday row stretches full width since there's an odd number of days */
-.hours-row--full-width {
-  grid-column: 1 / -1;
-  justify-content: center;
-  gap: 60px;
-}
 
-.hours-day {
-  font-size: 0.68rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
-}
 
-.hours-time {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.2rem;
-  color: var(--color-gold-light);
-  font-style: italic;
-}
 
-.hours-closed-note {
-  font-size: 0.72rem;
-  color: var(--color-text-muted);
-  letter-spacing: 0.1em;
-}
+
+
+
+
 
 
 /* ================================================================
@@ -1507,11 +1480,9 @@ footer {
   #hero           { padding: 100px 24px 70px; }
   .about-wrapper  { padding: 70px 24px; }
   #menu           { padding: 70px 24px; }
-  #hours          { padding: 70px 24px; }
   #contact        { padding: 70px 24px; }
 
-  /* Stack hours into a single column */
-  .hours-grid { grid-template-columns: 1fr; }
+  
 
   /* Stack info cells into a single column */
   .info-grid  { grid-template-columns: 1fr; }
@@ -1546,7 +1517,7 @@ footer {
   .gallery-item:nth-child(4)  { grid-column: span 1; }
 
   /* Stack hours-row content vertically */
-  .hours-row { flex-direction: column; gap: 8px; text-align: center; }
+  
 
   /* Smaller hero title to prevent overflow */
   .hero-title { font-size: 3rem; }
