@@ -682,21 +682,6 @@ nav.scrolled {
   margin: 0 auto;
 }
 
-/* Introductory text below the Menu section title */
-.menu-intro {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.1rem;
-  line-height: 1.9;
-  color: rgba(245, 240, 232, 0.7);
-  max-width: 720px;
-  margin-bottom: 52px;
-  font-weight: 300;
-}
-
-.menu-intro em {
-  font-style: italic;
-  color: var(--color-gold-light);
-}
 
 /* Horizontal scrollable tab bar */
 .menu-tabs {
@@ -908,19 +893,7 @@ nav.scrolled {
 ================================================================ */
 
 
-
-
-
-
-
 /* Saturday row stretches full width since there's an odd number of days */
-
-
-
-
-
-
-
 
 
 /* ================================================================
@@ -1003,7 +976,6 @@ nav.scrolled {
   align-items: center;
   justify-content: center;
 }
-
 
 
 /* ================================================================
@@ -1135,18 +1107,6 @@ footer {
   max-width: 600px;
 }
 
-/* Inline gold text links within the CTA sentence */
-.reservation-social-link {
-  color: var(--color-gold-light);
-  text-decoration: none;
-  border-bottom: 1px solid var(--color-gold-dim);
-  transition: color 0.2s, border-color 0.2s;
-}
-
-.reservation-social-link:hover {
-  color: var(--color-gold);
-  border-bottom-color: var(--color-gold);
-}
 
 /* Row of CTA buttons below the text */
 .reservation-cta-buttons {
@@ -1361,10 +1321,6 @@ footer {
 .pricing-card:hover            { background: #1e1b16; }
 .pricing-card:hover::before    { transform: scaleX(1); }
 
-/* Featured / largest table gets a permanent gold top border */
-.pricing-card--featured::before {
-  transform: scaleX(1);
-}
 
 .pricing-card-tables {
   font-size: 0.6rem;
