@@ -682,6 +682,22 @@ nav.scrolled {
   margin: 0 auto;
 }
 
+/* Introductory text below the Menu section title */
+.menu-intro {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  line-height: 1.9;
+  color: rgba(245, 240, 232, 0.7);
+  max-width: 720px;
+  margin-bottom: 52px;
+  font-weight: 300;
+}
+
+.menu-intro em {
+  font-style: italic;
+  color: var(--color-gold-light);
+}
+
 /* Horizontal scrollable tab bar */
 .menu-tabs {
   display: flex;
