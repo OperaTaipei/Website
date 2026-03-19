@@ -1,0 +1,19 @@
+# ============================================================
+# robots.txt — Opéra Taipei
+# Instructs search engine crawlers which pages to index.
+# ============================================================
+
+User-agent: *
+Allow: /
+
+# Allow all major crawlers access to assets
+Allow: /images/
+Allow: /style.css
+Allow: /script.js
+Allow: /llms.txt
+
+# AI crawler reference file
+LLMs: https://opera-taipei.com/llms.txt
+
+# Point crawlers to the sitemap
+Sitemap: https://opera-taipei.com/sitemap.xml
