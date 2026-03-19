@@ -683,6 +683,11 @@ nav.scrolled {
 }
 
 
+/* Gold highlight utility — used for key phrases within body text */
+.text-gold {
+  color: var(--color-gold-light);
+}
+
 /* Horizontal scrollable tab bar */
 .menu-tabs {
   display: flex;
