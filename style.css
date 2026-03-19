@@ -1108,6 +1108,63 @@ footer {
 
 
 /* ================================================================
+   TABLE RESERVATION SECTION
+   Standalone section with booking notes, a conversational CTA
+   paragraph, and three contact buttons (IG, FB, Email).
+================================================================ */
+
+/* Wrapper below the pricing cards for notes and CTA */
+.reservation-footer {
+  margin-top: 48px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Small italic booking note (existing comment about minimum spend) */
+.reservation-note {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+  letter-spacing: 0.04em;
+  max-width: 560px;
+}
+
+/* Conversational CTA sentence with inline social links */
+.reservation-cta-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem;
+  color: rgba(245, 240, 232, 0.75);
+  line-height: 1.8;
+  max-width: 600px;
+}
+
+/* Inline gold text links within the CTA sentence */
+.reservation-social-link {
+  color: var(--color-gold-light);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-gold-dim);
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.reservation-social-link:hover {
+  color: var(--color-gold);
+  border-bottom-color: var(--color-gold);
+}
+
+/* Row of CTA buttons below the text */
+.reservation-cta-buttons {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+
+/* ================================================================
    TRUSTED BY SECTION
    Three-column grid showing companies, event types, and venue
    highlights as social proof for corporate prospects.
