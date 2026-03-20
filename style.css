@@ -1148,22 +1148,26 @@ footer {
   gap: 20px;
 }
 
-/* Floor plan wrapper — zero layout role.
-   Sizing is 100% controlled by the inline style on the img element.
-   The wrapper exists only as a DOM parent for the onerror img-error class. */
+/* Floor plan wrapper — block-level flex item with a DEFINITE 70vw width.
+   overflow:hidden hard-clips anything that tries to exceed this boundary.
+   flex-shrink:0 prevents the flex algorithm from compressing it below 70vw.
+   This wrapper owns the sizing. The img inside just fills it. */
 .floor-plan-wrapper {
-  align-self: center;
-}
-
-/* Floor plan image — 70vw forces exactly 70% of viewport width.
-   Viewport units bypass all ancestor width/flex/max-width inheritance.
-   height:auto preserves the 1.455 landscape aspect ratio.
-   drop-shadow creates the 12px outer glow: black at border fading to transparent.
-   Three layers: 100% opaque at 0px → 60% at 5px → 0% at 12px. */
-.floor-plan-img {
-  display: block;
   width: 70vw;
   max-width: 70vw;
+  overflow: hidden;
+  align-self: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+/* Floor plan image — fills the wrapper exactly.
+   width:100% = 100% of the wrapper (which is 70vw).
+   height:auto preserves the 1.455 landscape aspect ratio.
+   drop-shadow applies the 12px outer glow at the pixel level. */
+.floor-plan-img {
+  display: block;
+  width: 100%;
   height: auto;
   filter:
     drop-shadow(0 0 3px rgba(0, 0, 0, 1.0))
