@@ -97,30 +97,41 @@ nav.scrolled {
   background: rgba(8, 8, 8, 0.98);
 }
 
-/* Logo image in the nav — sized to fit the nav height with correct aspect ratio */
+/* Logo link wrapper — constrained to nav height to prevent overflow */
 .nav-logo {
   display: flex;
   align-items: center;
   text-decoration: none;
   flex-shrink: 0;
+  height: 100%;
+  max-height: var(--nav-height);
+  overflow: hidden;
+  padding: 10px 0;
 }
 
+/* Logo image — height drives the size, width scales with aspect ratio */
 .nav-logo-img {
-  /* Logo is portrait 2:3 — use height as the constraint */
-  height: 48px;
-  width: auto; /* preserves aspect ratio */
+  height: 100%;
+  max-height: 52px;
+  width: auto;
+  max-width: 36px; /* 52px * 0.675 aspect ratio */
   display: block;
   object-fit: contain;
-  transition: opacity 0.25s;
+  transition: opacity 0.25s, max-height 0.3s;
 }
 
 .nav-logo-img:hover {
   opacity: 0.85;
 }
 
-/* Shrink logo slightly when nav is in compact scrolled state */
+/* Shrink logo when nav enters compact scrolled state */
+nav.scrolled .nav-logo {
+  padding: 8px 0;
+}
+
 nav.scrolled .nav-logo-img {
-  height: 38px;
+  max-height: 40px;
+  max-width: 27px;
 }
 
 /* Text fallback shown only when image fails to load */
@@ -1137,6 +1148,27 @@ footer {
   gap: 20px;
 }
 
+/* 3D floor plan image — capped at 65% width, ratio 1.455 (landscape) preserved */
+.floor-plan-wrapper {
+  width: 65%;
+  max-width: 700px;
+  border: 1px solid var(--color-gold-border);
+  overflow: hidden;
+  background: var(--color-card);
+}
+
+.floor-plan-img {
+  width: 100%;
+  height: auto; /* preserves 1.455 landscape aspect ratio */
+  display: block;
+  filter: brightness(0.95) contrast(1.05);
+  transition: filter 0.4s;
+}
+
+.floor-plan-wrapper:hover .floor-plan-img {
+  filter: brightness(1.05) contrast(1.05);
+}
+
 /* Small italic booking note (existing comment about minimum spend) */
 .reservation-note {
   font-size: 0.75rem;
@@ -1526,6 +1558,9 @@ footer {
 
   /* Stack all event columns to single column on mobile */
   .events-three-columns { grid-template-columns: 1fr; }
+
+  /* Floor plan expands to full width on mobile since 65% would be too small */
+  .floor-plan-wrapper { width: 100%; }
 }
 
 /* ── Small mobile ── */
