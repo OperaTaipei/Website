@@ -1148,49 +1148,42 @@ footer {
   gap: 20px;
 }
 
-/* 3D floor plan wrapper
-   width:75vw gives a DEFINITE computed size = exactly 3/4 of the viewport.
-   max-width without an explicit width only caps — it cannot anchor size.
-   overflow:hidden clips the image to the wrapper boundary. */
+/* Floor plan wrapper — pure visual container, NO sizing responsibility.
+   All sizing is on the img itself using viewport units to bypass inheritance. */
 .floor-plan-wrapper {
-  width: 75vw;
-  max-width: 75vw;
-  overflow: hidden;
-  background: var(--color-card);
+  display: inline-block; /* shrink-wraps to image width exactly */
+  overflow: visible;     /* drop-shadow on img renders outside — must not clip */
   align-self: center;
-  box-sizing: border-box;
-  position: relative;
 }
 
-/* Remove the ::after pseudo-element glow — it is clipped by overflow:hidden */
-.floor-plan-wrapper::after {
-  display: none;
-}
-
-/* 3D floor plan image
-   width:100% fills the wrapper exactly (75vw).
+/* Floor plan image — 70vw forces exactly 70% of viewport width.
+   Viewport units bypass all ancestor width/flex/max-width inheritance.
    height:auto preserves the 1.455 landscape aspect ratio.
-   filter:drop-shadow() applies the outer glow directly on the image pixels —
-   this works correctly inside overflow:hidden because it is a pixel-level filter,
-   not a box-model property.
-   12px total glow: opacity 100% at the image border fading to 0% at 12px. */
+   drop-shadow creates the 12px outer glow: black at border fading to transparent.
+   Three layers: 100% opaque at 0px → 60% at 5px → 0% at 12px. */
 .floor-plan-img {
   display: block;
-  width: 100%;
+  width: 70vw;
+  max-width: 70vw;
   height: auto;
   filter:
-    drop-shadow(0 0 4px rgba(0, 0, 0, 1.0))
-    drop-shadow(0 0 8px rgba(0, 0, 0, 0.6))
-    drop-shadow(0 0 12px rgba(0, 0, 0, 0.2));
+    drop-shadow(0 0 3px rgba(0, 0, 0, 1.0))
+    drop-shadow(0 0 7px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 0 12px rgba(0, 0, 0, 0.0));
   transition: filter 0.4s;
 }
 
 .floor-plan-wrapper:hover .floor-plan-img {
   filter:
-    drop-shadow(0 0 4px rgba(0, 0, 0, 1.0))
-    drop-shadow(0 0 8px rgba(0, 0, 0, 0.6))
-    drop-shadow(0 0 12px rgba(0, 0, 0, 0.2))
+    drop-shadow(0 0 3px rgba(0, 0, 0, 1.0))
+    drop-shadow(0 0 7px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 0 12px rgba(0, 0, 0, 0.0))
     brightness(1.05) contrast(1.05);
+}
+
+/* Neutralised ::after — kept to avoid stale rule side effects */
+.floor-plan-wrapper::after {
+  display: none;
 }
 
 .floor-plan-img {
