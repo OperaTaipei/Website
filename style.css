@@ -1148,22 +1148,26 @@ footer {
   gap: 20px;
 }
 
-/* 3D floor plan image — capped at 700px, never wider than viewport, ratio preserved */
+/* 3D floor plan image
+   max-width: min(700px, 75vw) directly enforces "never wider than 3/4 of screen"
+   at the CSS level using viewport units — no parent width dependency */
 .floor-plan-wrapper {
-  width: 100%;
-  max-width: 700px;
+  width: min(700px, 75vw);
+  max-width: min(700px, 75vw);
   border: 1px solid var(--color-gold-border);
   overflow: hidden;
   background: var(--color-card);
-  /* flex child alignment fix — prevents wrapper from stretching to parent width */
+  flex-shrink: 0;
   align-self: center;
+  box-sizing: border-box;
 }
 
 .floor-plan-img {
-  width: 100%;
-  max-width: 100%;   /* hard safety cap — image can never exceed its container */
-  height: auto;      /* preserves 1.455 landscape aspect ratio */
   display: block;
+  width: 100%;
+  height: auto;         /* preserves 1.455 landscape aspect ratio */
+  max-width: 100%;
+  object-fit: contain;
   filter: brightness(0.95) contrast(1.05);
   transition: filter 0.4s;
 }
