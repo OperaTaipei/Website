@@ -1186,20 +1186,6 @@ footer {
   display: none;
 }
 
-.floor-plan-img {
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  height: auto;      /* preserves 1.455 landscape aspect ratio */
-  object-fit: contain;
-  filter: brightness(0.95) contrast(1.05);
-  transition: filter 0.4s;
-}
-
-.floor-plan-wrapper:hover .floor-plan-img {
-  filter: brightness(1.05) contrast(1.05);
-}
-
 /* Small italic booking note (existing comment about minimum spend) */
 .reservation-note {
   font-size: 0.75rem;
