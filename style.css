@@ -1155,10 +1155,15 @@ footer {
 .floor-plan-wrapper {
   max-width: 75vw;
   border: 1px solid var(--color-gold-border);
-  overflow: hidden;
+  overflow: visible; /* must be visible so box-shadow is not clipped */
   background: var(--color-card);
   align-self: center;
   box-sizing: border-box;
+  /* 6px outer glow: black at the edge fading to transparent */
+  box-shadow:
+    0 0 6px 6px rgba(0, 0, 0, 0.85),
+    0 0 12px 6px rgba(0, 0, 0, 0.4),
+    0 0 18px 6px rgba(0, 0, 0, 0.1);
 }
 
 .floor-plan-img {
