@@ -1148,11 +1148,10 @@ footer {
   gap: 20px;
 }
 
-/* Floor plan wrapper — pure visual container, NO sizing responsibility.
-   All sizing is on the img itself using viewport units to bypass inheritance. */
+/* Floor plan wrapper — zero layout role.
+   Sizing is 100% controlled by the inline style on the img element.
+   The wrapper exists only as a DOM parent for the onerror img-error class. */
 .floor-plan-wrapper {
-  display: inline-block; /* shrink-wraps to image width exactly */
-  overflow: visible;     /* drop-shadow on img renders outside — must not clip */
   align-self: center;
 }
 
