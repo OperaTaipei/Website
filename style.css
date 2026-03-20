@@ -1149,15 +1149,14 @@ footer {
 }
 
 /* 3D floor plan image
-   max-width: min(700px, 75vw) directly enforces "never wider than 3/4 of screen"
-   at the CSS level using viewport units — no parent width dependency */
+   max-width: 75vw caps the wrapper at 3/4 of the screen width.
+   No explicit width — the wrapper sizes to its content and only grows up to the cap.
+   The image inside fills 100% of the wrapper with height:auto to keep its ratio. */
 .floor-plan-wrapper {
-  width: min(700px, 75vw);
-  max-width: min(700px, 75vw);
+  max-width: 75vw;
   border: 1px solid var(--color-gold-border);
   overflow: hidden;
   background: var(--color-card);
-  flex-shrink: 0;
   align-self: center;
   box-sizing: border-box;
 }
@@ -1165,8 +1164,8 @@ footer {
 .floor-plan-img {
   display: block;
   width: 100%;
-  height: auto;         /* preserves 1.455 landscape aspect ratio */
   max-width: 100%;
+  height: auto;      /* preserves 1.455 landscape aspect ratio */
   object-fit: contain;
   filter: brightness(0.95) contrast(1.05);
   transition: filter 0.4s;
