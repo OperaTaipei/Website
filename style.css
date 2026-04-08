@@ -1596,3 +1596,37 @@ footer {
   /* Smaller hero title to prevent overflow */
   .hero-title { font-size: 3rem; }
 }
+
+/* ================================================================
+   LANG SWITCHER
+================================================================ */
+.lang-switcher {
+  display: flex;
+  gap: 4px;
+  margin-left: 12px;
+}
+
+.lang-btn {
+  padding: 4px 10px;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 20px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+
+.lang-btn:hover {
+  color: #d4af37;
+  border-color: #d4af37;
+}
+
+.lang-btn.active {
+  background: rgba(212, 175, 55, 0.15);
+  border-color: #d4af37;
+  color: #d4af37;
+}

@@ -169,12 +169,12 @@
 
     <!-- Desktop navigation links -->
     <ul class="nav-links">
-      <li><a href="#about">The Venue</a></li>
-      <li><a href="#bartenders">Bartenders</a></li>
-      <li><a href="#menu">Menu</a></li>
-      <li><a href="#gallery">Gallery</a></li>
-      <li><a href="#events">Events</a></li>
-      <li><a href="#contact">Contact</a></li>
+      <li><a href="#about" data-i18n="nav_venue">The Venue</a></li>
+      <li><a href="#bartenders" data-i18n="nav_bartenders">Bartenders</a></li>
+      <li><a href="#menu" data-i18n="nav_menu">Menu</a></li>
+      <li><a href="#gallery" data-i18n="nav_gallery">Gallery</a></li>
+      <li><a href="#events" data-i18n="nav_events">Events</a></li>
+      <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
     </ul>
 
     <!-- Hamburger button — hidden on desktop, shown on mobile -->
@@ -183,16 +183,22 @@
       <span></span>
       <span></span>
     </button>
+
+    <!-- Language toggle -->
+    <div class="lang-switcher">
+      <button class="lang-btn active" data-lang="en" aria-label="Switch to English">EN</button>
+      <button class="lang-btn"        data-lang="zh" aria-label="切換至中文">中文</button>
+    </div>
   </nav>
 
   <!-- Mobile dropdown menu — toggled open/closed by the hamburger button -->
   <div class="mobile-menu" id="mobile-menu">
-    <a href="#about"       class="mobile-nav-link">The Venue</a>
-    <a href="#bartenders"  class="mobile-nav-link">Bartenders</a>
-    <a href="#menu"        class="mobile-nav-link">Menu</a>
-    <a href="#gallery"     class="mobile-nav-link">Gallery</a>
-    <a href="#events"      class="mobile-nav-link">Events</a>
-    <a href="#contact"     class="mobile-nav-link">Contact</a>
+    <a href="#about"       class="mobile-nav-link" data-i18n="nav_venue">The Venue</a>
+    <a href="#bartenders"  class="mobile-nav-link" data-i18n="nav_bartenders">Bartenders</a>
+    <a href="#menu"        class="mobile-nav-link" data-i18n="nav_menu">Menu</a>
+    <a href="#gallery"     class="mobile-nav-link" data-i18n="nav_gallery">Gallery</a>
+    <a href="#events"      class="mobile-nav-link" data-i18n="nav_events">Events</a>
+    <a href="#contact"     class="mobile-nav-link" data-i18n="nav_contact">Contact</a>
   </div>
 
 
@@ -208,18 +214,18 @@
     <div class="hero-circles"></div>
 
     <!-- Location label above the main title -->
-    <p class="hero-eyebrow">Floor 15 · Illume Hotel · Taipei</p>
+    <p class="hero-eyebrow" data-i18n="hero_eyebrow">Floor 15 · Illume Hotel · Taipei</p>
 
     <!-- Main title -->
     <h1 class="hero-title" aria-label="Opéra Taipei — Panoramic Cocktail Skybar"><em>Opéra</em><br>TAIPEI</h1>
 
     <!-- Tagline / subtitle -->
-    <p class="hero-subtitle">Crafted cocktails & panoramic skyline</p>
+    <p class="hero-subtitle" data-i18n="hero_subtitle">Crafted cocktails & panoramic skyline</p>
 
     <!-- Call-to-action buttons -->
     <div class="hero-cta-group">
-      <a href="#menu"    class="btn-gold">View Menu</a>
-      <a href="#contact" class="btn-ghost">Find Us</a>
+      <a href="#menu"    class="btn-gold" data-i18n="hero_cta_menu">View Menu</a>
+      <a href="#contact" class="btn-ghost" data-i18n="hero_cta_find">Find Us</a>
     </div>
 
     <!-- Animated vertical line that invites users to scroll down -->
@@ -239,30 +245,30 @@
 
       <!-- Left column: description and key info grid -->
       <div class="about-content">
-        <p class="section-label">Panoramic skybar · Taipei 101 view</p>
-        <h2 class="section-title">Craft cocktail bar<br>above the <em>city</em></h2>
+        <p class="section-label" data-i18n="about_label">Panoramic skybar · Taipei 101 view</p>
+        <h2 class="section-title" data-i18n-html="about_title">Craft cocktail bar<br>above the <em>city</em></h2>
         <div class="section-divider"></div>
 
-        <p>Opera is located at the top of the Illume Hotel in the heart of Taipei. Perched on the 15th floor, it commands a one-of-a-kind panoramic view overlooking Taipei Arena and the iconic 101 tower.</p>
-        <p>You will not be provided with just drinks — you will experience true craftsmanship. Every cocktail is a performance, every visit a memory.</p>
+        <p data-i18n="about_p1">Opera is located at the top of the Illume Hotel in the heart of Taipei. Perched on the 15th floor, it commands a one-of-a-kind panoramic view overlooking Taipei Arena and the iconic 101 tower.</p>
+        <p data-i18n="about_p2">You will not be provided with just drinks — you will experience true craftsmanship. Every cocktail is a performance, every visit a memory.</p>
 
         <!-- Quick-reference info grid: location, view, and opening hours -->
         <div class="info-grid">
           <div class="info-cell">
-            <div class="label">Location</div>
-            <p>SongShan District<br>DunHua North Road, 100<br>Floor 15</p>
+            <div class="label" data-i18n="info_location">Location</div>
+            <p data-i18n-html="info_location_v">SongShan District<br>DunHua North Road, 100<br>Floor 15</p>
           </div>
           <div class="info-cell">
-            <div class="label">View</div>
-            <p>Panoramic 360°<br>Taipei Arena & 101<br>City Skyline</p>
+            <div class="label" data-i18n="info_view">View</div>
+            <p data-i18n-html="info_view_v">Panoramic 360°<br>Taipei Arena & 101<br>City Skyline</p>
           </div>
           <div class="info-cell">
-            <div class="label">Tue – Thu</div>
-            <p>6:00 PM – 1:00 AM</p>
+            <div class="label" data-i18n="info_tue_thu">Tue – Thu</div>
+            <p data-i18n="info_tue_thu_v">6:00 PM – 1:00 AM</p>
           </div>
           <div class="info-cell">
-            <div class="label">Fri – Sat</div>
-            <p>6:00 PM – 3:00 AM</p>
+            <div class="label" data-i18n="info_fri_sat">Fri – Sat</div>
+            <p data-i18n="info_fri_sat_v">6:00 PM – 3:00 AM</p>
           </div>
         </div>
       </div>
@@ -288,11 +294,11 @@
   ============================================================ -->
   <section id="bartenders" class="fade-in">
     <div class="section-centered">
-      <p class="section-label section-label--centered">Behind the bar</p>
-      <h2 class="section-title section-title--centered">The <em>Maestro</em></h2>
+      <p class="section-label section-label--centered" data-i18n="bartender_label">Behind the bar</p>
+      <h2 class="section-title section-title--centered" data-i18n-html="bartender_title">The <em>Maestro</em></h2>
       <div class="section-divider section-divider--centered"></div>
 
-      <p class="bartender-bio">
+      <p class="bartender-bio" data-i18n="bartender_bio">
         Previously owner-operator at R&D (Asia Top 50 Bar), Yann is a cocktail maestro,
         obsessed with flavors and always on the lookout for the next delightful beverage.
       </p>
@@ -301,7 +307,7 @@
       <div class="bartender-list">
         <div class="bartender-card">
           <div class="bartender-name">Yann</div>
-          <div class="bartender-role">Head Bartender · Asia Top 50</div>
+          <div class="bartender-role" data-i18n="bartender_role">Head Bartender · Asia Top 50</div>
         </div>
       </div>
     </div>
@@ -316,11 +322,11 @@
   ============================================================ -->
   <section id="menu">
     <div class="menu-container">
-      <p class="section-label">House-made syrups &amp; infusions · Taipei</p>
-      <h2 class="section-title">The <em>Menu</em></h2>
+      <p class="section-label" data-i18n="menu_label">House-made syrups &amp; infusions · Taipei</p>
+      <h2 class="section-title" data-i18n-html="menu_title">The <em>Menu</em></h2>
       <div class="section-divider"></div>
 
-      <p class="trusted-by-intro">
+      <p class="trusted-by-intro" data-i18n-html="menu_intro">
         Every cocktail on our menu is built from the ground up. We craft all our syrups in-house
         and prepare each infusion ourselves — steeping spirits with <span class="text-gold">fresh fruits, botanicals,
         flowers and spices</span> to draw out flavors you won't find in any bottle off a shelf.
@@ -330,10 +336,10 @@
 
       <!-- Tab buttons — clicking a tab shows the matching panel below -->
       <div class="menu-tabs" role="tablist">
-        <button class="menu-tab active" data-tab="signatures" role="tab">Signature Cocktails</button>
-        <button class="menu-tab"        data-tab="food"       role="tab">Finger Food</button>
-        <button class="menu-tab"        data-tab="classics"   role="tab">Classics</button>
-        <button class="menu-tab"        data-tab="bottles"    role="tab">Bottles</button>
+        <button class="menu-tab active" data-tab="signatures" role="tab" data-i18n="tab_signatures">Signature Cocktails</button>
+        <button class="menu-tab"        data-tab="food"       role="tab" data-i18n="tab_food">Finger Food</button>
+        <button class="menu-tab"        data-tab="classics"   role="tab" data-i18n="tab_classics">Classics</button>
+        <button class="menu-tab"        data-tab="bottles"    role="tab" data-i18n="tab_bottles">Bottles</button>
       </div>
 
 
@@ -746,8 +752,8 @@
   ============================================================ -->
   <section id="gallery" class="fade-in">
     <div class="section-wrap">
-      <p class="section-label">The atmosphere</p>
-      <h2 class="section-title">The <em>Space</em></h2>
+      <p class="section-label" data-i18n="gallery_label">The atmosphere</p>
+      <h2 class="section-title" data-i18n-html="gallery_title">The <em>Space</em></h2>
       <div class="section-divider"></div>
 
       <div class="gallery-grid">
@@ -784,8 +790,8 @@
   <section id="reservations" style="background: var(--color-deep-dark); padding: 100px 40px;">
     <div class="section-wrap fade-in">
 
-      <p class="section-label">Book a table · Skybar Taipei</p>
-      <h2 class="section-title">Table <em>Reservations</em></h2>
+      <p class="section-label" data-i18n="res_label">Book a table · Skybar Taipei</p>
+      <h2 class="section-title" data-i18n-html="res_title">Table <em>Reservations</em></h2>
       <div class="section-divider"></div>
 
       <!-- Three pricing cards: one per table group -->
@@ -793,30 +799,30 @@
 
         <div class="pricing-card">
           <div class="pricing-card-tables">Tables 1, 2, 3, 5</div>
-          <div class="pricing-card-capacity">Up to 8 guests</div>
+          <div class="pricing-card-capacity" data-i18n="res_capacity_1">Up to 8 guests</div>
           <div class="pricing-card-price">10,000 NTD</div>
-          <div class="pricing-card-note">minimum spend</div>
+          <div class="pricing-card-note" data-i18n="res_min_spend">minimum spend</div>
         </div>
 
         <div class="pricing-card">
           <div class="pricing-card-tables">Tables 6, 7</div>
-          <div class="pricing-card-capacity">Up to 4 guests</div>
+          <div class="pricing-card-capacity" data-i18n="res_capacity_2">Up to 4 guests</div>
           <div class="pricing-card-price">5,000 NTD</div>
-          <div class="pricing-card-note">minimum spend</div>
+          <div class="pricing-card-note" data-i18n="res_min_spend">minimum spend</div>
         </div>
 
         <div class="pricing-card">
           <div class="pricing-card-tables">Tables 4, 8</div>
-          <div class="pricing-card-capacity">Up to 12 guests</div>
+          <div class="pricing-card-capacity" data-i18n="res_capacity_3">Up to 12 guests</div>
           <div class="pricing-card-price">15,000 NTD</div>
-          <div class="pricing-card-note">minimum spend</div>
+          <div class="pricing-card-note" data-i18n="res_min_spend">minimum spend</div>
         </div>
 
       </div>
 
       <!-- Booking notes and contact CTA -->
       <div class="reservation-footer">
-        <p class="reservation-note">
+        <p class="reservation-note" data-i18n="res_note">
           Table or entire section available for booking. Prices are minimum spend — all drinks and food included.
         </p>
 
@@ -830,12 +836,12 @@
             onerror="this.onerror=null;this.style.display='none';this.parentElement.classList.add('img-error');">
         </div>
 
-        <p class="reservation-cta-text">
+        <p class="reservation-cta-text" data-i18n="res_cta_text">
           Ready to book your table? Reach out to us directly — we'll confirm your reservation within 24 hours.
         </p>
         <div class="reservation-cta-buttons">
           <a href="https://www.instagram.com/operataipei/" target="_blank" rel="noopener noreferrer" class="btn-gold">Instagram</a>
-          <a href="mailto:contact@opera-taipei.com" class="btn-ghost">Email Us</a>
+          <a href="/cdn-cgi/l/email-protection#690a06071d080a1d2906190c1b08441d0800190c00470a0604" class="btn-ghost">Email Us</a>
         </div>
       </div>
 
@@ -850,11 +856,11 @@
   ============================================================ -->
   <section id="trusted-by" style="background: var(--color-deep-dark); padding: 100px 40px;">
     <div class="section-wrap fade-in">
-      <p class="section-label">Social proof</p>
-      <h2 class="section-title">Trusted by <em>Companies</em></h2>
+      <p class="section-label" data-i18n="trusted_label">Social proof</p>
+      <h2 class="section-title" data-i18n-html="trusted_title">Trusted by <em>Companies</em></h2>
       <div class="section-divider"></div>
 
-      <p class="trusted-by-intro">
+      <p class="trusted-by-intro" data-i18n="trusted_intro">
         Opera has been regularly hosting corporate events, transforming the space to match
         each client's needs and branding — from intimate gatherings of 20 to full buyouts of 300 guests.
       </p>
@@ -863,7 +869,7 @@
 
         <!-- Column 1: Company names -->
         <div class="trusted-by-column">
-          <div class="trusted-by-column-label">Companies</div>
+          <div class="trusted-by-column-label" data-i18n="trusted_col1">Companies</div>
           <ul class="trusted-by-list">
             <li>Taiwan Foreign Correspondent Club</li>
             <li>Meta TW Association</li>
@@ -878,29 +884,29 @@
 
         <!-- Column 2: Event types hosted -->
         <div class="trusted-by-column">
-          <div class="trusted-by-column-label">Event Types</div>
+          <div class="trusted-by-column-label" data-i18n="trusted_col2">Event Types</div>
           <ul class="trusted-by-list">
-            <li>Year-end Parties</li>
-            <li>Seminars</li>
-            <li>Workshops</li>
-            <li>Weddings</li>
-            <li>Product Launches</li>
-            <li>Cocktail Receptions</li>
-            <li>Award Ceremonies</li>
-            <li>Private Buyouts</li>
+            <li data-i18n="trusted_e1">Year-end Parties</li>
+            <li data-i18n="trusted_e2">Seminars</li>
+            <li data-i18n="trusted_e3">Workshops</li>
+            <li data-i18n="trusted_e4">Weddings</li>
+            <li data-i18n="trusted_e5">Product Launches</li>
+            <li data-i18n="trusted_e6">Cocktail Receptions</li>
+            <li data-i18n="trusted_e7">Award Ceremonies</li>
+            <li data-i18n="trusted_e8">Private Buyouts</li>
           </ul>
         </div>
 
         <!-- Column 3: Key venue highlights -->
         <div class="trusted-by-column">
-          <div class="trusted-by-column-label">What Makes Us Special</div>
+          <div class="trusted-by-column-label" data-i18n="trusted_col3">What Makes Us Special</div>
           <ul class="trusted-by-list">
-            <li>Panoramic view of Taipei skyline &amp; 101 Tower</li>
-            <li>Capacity for over 300 guests</li>
-            <li>Professional sound system &amp; LED wall screens</li>
-            <li>8 HD TVs throughout the venue</li>
-            <li>A venue with its own identity &amp; atmosphere</li>
-            <li>We speak French, English &amp; Chinese</li>
+            <li data-i18n="trusted_s1">Panoramic view of Taipei skyline &amp; 101 Tower</li>
+            <li data-i18n="trusted_s2">Capacity for over 300 guests</li>
+            <li data-i18n="trusted_s3">Professional sound system &amp; LED wall screens</li>
+            <li data-i18n="trusted_s4">8 HD TVs throughout the venue</li>
+            <li data-i18n="trusted_s5">A venue with its own identity &amp; atmosphere</li>
+            <li data-i18n="trusted_s6">We speak French, English &amp; Chinese</li>
           </ul>
         </div>
 
@@ -916,106 +922,106 @@
   ============================================================ -->
   <section id="events" style="padding: 100px 40px;">
     <div class="section-wrap fade-in">
-      <p class="section-label">Corporate hire · 20–300 guests · Taipei</p>
-      <h2 class="section-title">Private Event &amp; Corporate <em>Venue</em></h2>
+      <p class="section-label" data-i18n="events_label">Corporate hire · 20–300 guests · Taipei</p>
+      <h2 class="section-title" data-i18n-html="events_title">Private Event &amp; Corporate <em>Venue</em></h2>
       <div class="section-divider"></div>
 
-      <p class="events-intro">
+      <p class="events-intro" data-i18n="events_intro">
         Let's craft your company event together. Contact us to share your needs
         and we'll provide a detailed quotation tailored to your vision.
       </p>
 
 
       <!-- ── FULL VENUE PRIVATIZATION ── -->
-      <div class="events-block-title">Full Venue Privatization</div>
+      <div class="events-block-title" data-i18n="events_full_priv">Full Venue Privatization</div>
 
       <div class="events-two-columns">
 
         <!-- Daytime pricing -->
         <div class="events-card">
-          <div class="events-card-label">Day Time <span class="events-card-note">(until 20:00)</span></div>
+          <div class="events-card-label"><span data-i18n="events_day">Day Time</span> <span class="events-card-note" data-i18n="events_day_note">(until 20:00)</span></div>
           <div class="venue-price-row">
-            <span class="venue-price-label">Hourly — venue only</span>
+            <span class="venue-price-label" data-i18n="events_hr_venue">Hourly — venue only</span>
             <span class="venue-price-amount">5,000 NTD / hr</span>
           </div>
           <div class="venue-price-row">
-            <span class="venue-price-label">Hourly — with drinks &amp; food</span>
+            <span class="venue-price-label" data-i18n="events_hr_drinks">Hourly — with drinks &amp; food</span>
             <span class="venue-price-amount">15,000 NTD / hr</span>
           </div>
         </div>
 
         <!-- Nighttime pricing -->
         <div class="events-card">
-          <div class="events-card-label">Night Time <span class="events-card-note">(from 21:00)</span></div>
+          <div class="events-card-label"><span data-i18n="events_night">Night Time</span> <span class="events-card-note" data-i18n="events_night_note">(from 21:00)</span></div>
           <div class="venue-price-row">
-            <span class="venue-price-label">Weekday</span>
+            <span class="venue-price-label" data-i18n="events_weekday">Weekday</span>
             <span class="venue-price-amount">100,000 NTD</span>
           </div>
           <div class="venue-price-row">
-            <span class="venue-price-label">Weekend</span>
+            <span class="venue-price-label" data-i18n="events_weekend">Weekend</span>
             <span class="venue-price-amount">200,000 NTD</span>
           </div>
         </div>
 
       </div>
 
-      <p class="events-note">Indicated prices are minimum spend — all food, beverages and services included.</p>
+      <p class="events-note" data-i18n="events_note">Indicated prices are minimum spend — all food, beverages and services included.</p>
 
 
       <!-- ── POPULAR PACKAGES ── -->
-      <div class="events-block-title">Popular Packages</div>
+      <div class="events-block-title" data-i18n="events_packages">Popular Packages</div>
 
       <div class="events-three-columns">
 
         <div class="package-card">
-          <div class="package-card-title">Open Bar</div>
-          <div class="package-card-desc">Custom cocktail menu crafted by our team. Quotation required.</div>
+          <div class="package-card-title" data-i18n="pkg1_title">Open Bar</div>
+          <div class="package-card-desc" data-i18n="pkg1_desc">Custom cocktail menu crafted by our team. Quotation required.</div>
         </div>
 
         <div class="package-card">
-          <div class="package-card-title">Prepaid Tickets</div>
-          <div class="package-card-desc">300 NTD$ drink tickets per guest — flexible and easy to manage.</div>
+          <div class="package-card-title" data-i18n="pkg2_title">Prepaid Tickets</div>
+          <div class="package-card-desc" data-i18n="pkg2_desc">300 NTD$ drink tickets per guest — flexible and easy to manage.</div>
         </div>
 
         <div class="package-card">
-          <div class="package-card-title">All You Can Drink</div>
-          <div class="package-card-desc">400 NTD$ per guest per hour. Food budget recommended at 400 NTD$ per person.</div>
+          <div class="package-card-title" data-i18n="pkg3_title">All You Can Drink</div>
+          <div class="package-card-desc" data-i18n="pkg3_desc">400 NTD$ per guest per hour. Food budget recommended at 400 NTD$ per person.</div>
         </div>
 
       </div>
 
 
       <!-- ── SERVICES & FACILITIES ── -->
-      <div class="events-block-title">Services &amp; Facilities</div>
+      <div class="events-block-title" data-i18n="events_services">Services &amp; Facilities</div>
 
       <div class="events-two-columns">
 
         <!-- Services list -->
         <div class="events-card">
-          <div class="events-card-label">Services <span class="events-card-note">(quoted on request)</span></div>
+          <div class="events-card-label"><span data-i18n="services_label">Services</span> <span class="events-card-note" data-i18n="services_note">(quoted on request)</span></div>
           <ul class="events-feature-list">
-            <li>Crafted drinks menu</li>
-            <li>Alcohol sourcing</li>
-            <li>Floor staff</li>
-            <li>Photographer</li>
-            <li>Welcome desk</li>
-            <li>Finger food &amp; catering</li>
-            <li>DJ</li>
-            <li>Performers &amp; staging</li>
+            <li data-i18n="svc1">Crafted drinks menu</li>
+            <li data-i18n="svc2">Alcohol sourcing</li>
+            <li data-i18n="svc3">Floor staff</li>
+            <li data-i18n="svc4">Photographer</li>
+            <li data-i18n="svc5">Welcome desk</li>
+            <li data-i18n="svc6">Finger food &amp; catering</li>
+            <li data-i18n="svc7">DJ</li>
+            <li data-i18n="svc8">Performers &amp; staging</li>
           </ul>
         </div>
 
         <!-- Facilities list -->
         <div class="events-card">
-          <div class="events-card-label">Facilities</div>
+          <div class="events-card-label" data-i18n="facilities_label">Facilities</div>
           <ul class="events-feature-list">
-            <li>19 sofas · 9 tables · 12 high tables</li>
-            <li>29 bar stools · 8 TVs</li>
-            <li>2 LED wall screens</li>
-            <li>Pool table · 2 darts games</li>
-            <li>DJ station · 2 wireless microphones</li>
-            <li>Ambient lighting</li>
-            <li>Service elevator &amp; storage</li>
+            <li data-i18n="fac1">19 sofas · 9 tables · 12 high tables</li>
+            <li data-i18n="fac2">29 bar stools · 8 TVs</li>
+            <li data-i18n="fac3">2 LED wall screens</li>
+            <li data-i18n="fac4">Pool table · 2 darts games</li>
+            <li data-i18n="fac5">DJ station · 2 wireless microphones</li>
+            <li data-i18n="fac6">Ambient lighting</li>
+            <li data-i18n="fac7">Service elevator &amp; storage</li>
           </ul>
         </div>
 
@@ -1024,8 +1030,8 @@
 
       <!-- Corporate contact CTA -->
       <div class="events-cta">
-        <a href="mailto:contact@opera-taipei.com" class="btn-gold btn-gold--large">
-          Contact our Events Team
+        <a href="/cdn-cgi/l/email-protection#5e3d31302a3f3d2a1e312e3b2c3f732a3f372e3b37703d3133" class="btn-gold btn-gold--large">
+          <span data-i18n="events_cta_btn">Contact our Events Team</span>
         </a>
       </div>
 
@@ -1040,25 +1046,25 @@
   ============================================================ -->
   <section id="contact">
     <div class="section-wrap fade-in">
-      <p class="section-label">Find us</p>
-      <h2 class="section-title">Get in <em>Touch</em></h2>
+      <p class="section-label" data-i18n="contact_label">Find us</p>
+      <h2 class="section-title" data-i18n-html="contact_title">Get in <em>Touch</em></h2>
       <div class="section-divider"></div>
 
       <!-- Three-column info row: one column per contact type -->
       <div class="contact-columns">
 
         <div class="contact-item">
-          <div class="contact-item-label">Address</div>
-          <p>Illume Hotel, 15F<br>No. 100, DunHua North Road<br>SongShan District, Taipei<br>台北松山區敦化北路100號15樓</p>
+          <div class="contact-item-label" data-i18n="contact_addr_lbl">Address</div>
+          <p data-i18n-html="contact_addr_v">Illume Hotel, 15F<br>No. 100, DunHua North Road<br>SongShan District, Taipei<br>台北松山區敦化北路100號15樓</p>
         </div>
 
         <div class="contact-item">
-          <div class="contact-item-label">Email</div>
-          <a href="mailto:contact@opera-taipei.com">contact@opera-taipei.com</a>
+          <div class="contact-item-label" data-i18n="contact_email_lbl">Email</div>
+          <a href="/cdn-cgi/l/email-protection#e2818d8c96838196a28d92879083cf96838b92878bcc818d8f"><span class="__cf_email__" data-cfemail="5a3935342e3b392e1a352a3f283b772e3b332a3f3374393537">[email&#160;protected]</span></a>
         </div>
 
         <div class="contact-item">
-          <div class="contact-item-label">Follow</div>
+          <div class="contact-item-label" data-i18n="contact_follow">Follow</div>
           <div class="social-links">
             <a href="https://www.facebook.com/profile.php?id=100094965340485" target="_blank" class="social-link" aria-label="Facebook">FB</a>
             <a href="https://www.instagram.com/operataipei/"                  target="_blank" class="social-link" aria-label="Instagram">IG</a>
@@ -1078,7 +1084,7 @@
             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
             <circle cx="12" cy="10" r="3"/>
           </svg>
-          Open in Google Maps
+          <span data-i18n="contact_maps_btn">Open in Google Maps</span>
         </a>
       </div>
 
@@ -1093,11 +1099,13 @@
   <footer>
     <a href="#hero" class="footer-logo-link">
       <img src="images/opera-logo.png" alt="Opéra Taipei" class="footer-logo-img"
-           onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='block';">
-      <span class="footer-logo-fallback"><em>Opéra</em> TAIPEI</span>
+           onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='bl           onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='block';">
+      <span class="footer-logo-text" style="display:none;">Opéra</span>
     </a>
-    <div class="footer-copyright">© 2025 Opéra Taipei · Floor 15, Illume Hotel</div>
+    <p class="footer-copy" data-i18n="footer_copy">© 2025 Opéra Taipei. All rights reserved.</p>
   </footer>
+
+  <script src="translations.json" type="application/json" id="translations-data"></script>
   <script src="script.js"></script>
 </body>
 </html>
