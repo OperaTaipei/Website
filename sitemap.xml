@@ -1,66 +1,166 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   sitemap.xml — Opéra Taipei
-  Submitted to Google Search Console to accelerate indexing.
-  All sections listed as URL fragments with priority weights reflecting
-  their SEO importance (bar landing + event hire pages ranked highest).
+  Updated: added xhtml:link hreflang alternates for zh-Hant (繁體中文)
+  and x-default to prevent duplicate content penalties across language versions.
+  Reference: https://developers.google.com/search/docs/specialty/international/localized-versions
 -->
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
-  <!-- Homepage / Hero — primary landing page -->
+  <!-- Homepage / Hero — English (x-default) -->
   <url>
     <loc>https://opera-taipei.com/</loc>
-    <lastmod>2025-03-19</lastmod>
+    <lastmod>2025-04-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://opera-taipei.com/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant"   href="https://opera-taipei.com/zh/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://opera-taipei.com/"/>
   </url>
 
-  <!-- About / Venue — panoramic bar description -->
+  <!-- Homepage / Hero — Traditional Chinese -->
+  <url>
+    <loc>https://opera-taipei.com/zh/</loc>
+    <lastmod>2025-04-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://opera-taipei.com/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant"   href="https://opera-taipei.com/zh/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://opera-taipei.com/"/>
+  </url>
+
+  <!-- About / Venue — EN -->
   <url>
     <loc>https://opera-taipei.com/#about</loc>
-    <lastmod>2025-03-19</lastmod>
+    <lastmod>2025-04-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://opera-taipei.com/#about"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant"   href="https://opera-taipei.com/zh/#about"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://opera-taipei.com/#about"/>
   </url>
 
-  <!-- Menu — cocktails, finger food -->
+  <!-- About / Venue — ZH -->
+  <url>
+    <loc>https://opera-taipei.com/zh/#about</loc>
+    <lastmod>2025-04-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://opera-taipei.com/#about"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant"   href="https://opera-taipei.com/zh/#about"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://opera-taipei.com/#about"/>
+  </url>
+
+  <!-- Menu — EN -->
   <url>
     <loc>https://opera-taipei.com/#menu</loc>
-    <lastmod>2025-03-19</lastmod>
+    <lastmod>2025-04-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://opera-taipei.com/#menu"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant"   href="https://opera-taipei.com/zh/#menu"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://opera-taipei.com/#menu"/>
   </url>
 
-  <!-- Gallery -->
+  <!-- Menu — ZH -->
+  <url>
+    <loc>https://opera-taipei.com/zh/#menu</loc>
+    <lastmod>2025-04-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://opera-taipei.com/#menu"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant"   href="https://opera-taipei.com/zh/#menu"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://opera-taipei.com/#menu"/>
+  </url>
+
+  <!-- Gallery — EN -->
   <url>
     <loc>https://opera-taipei.com/#gallery</loc>
-    <lastmod>2025-03-19</lastmod>
+    <lastmod>2025-04-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://opera-taipei.com/#gallery"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant"   href="https://opera-taipei.com/zh/#gallery"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://opera-taipei.com/#gallery"/>
   </url>
 
-  <!-- Table Reservations -->
+  <!-- Gallery — ZH -->
+  <url>
+    <loc>https://opera-taipei.com/zh/#gallery</loc>
+    <lastmod>2025-04-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://opera-taipei.com/#gallery"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant"   href="https://opera-taipei.com/zh/#gallery"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://opera-taipei.com/#gallery"/>
+  </url>
+
+  <!-- Reservations — EN -->
   <url>
     <loc>https://opera-taipei.com/#reservations</loc>
-    <lastmod>2025-03-19</lastmod>
+    <lastmod>2025-04-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://opera-taipei.com/#reservations"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant"   href="https://opera-taipei.com/zh/#reservations"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://opera-taipei.com/#reservations"/>
   </url>
 
-  <!-- Private Events & Corporate Hire — high-value SEO target -->
+  <!-- Reservations — ZH -->
+  <url>
+    <loc>https://opera-taipei.com/zh/#reservations</loc>
+    <lastmod>2025-04-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://opera-taipei.com/#reservations"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant"   href="https://opera-taipei.com/zh/#reservations"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://opera-taipei.com/#reservations"/>
+  </url>
+
+  <!-- Events / Corporate Hire — EN (high-value SEO) -->
   <url>
     <loc>https://opera-taipei.com/#events</loc>
-    <lastmod>2025-03-19</lastmod>
+    <lastmod>2025-04-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://opera-taipei.com/#events"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant"   href="https://opera-taipei.com/zh/#events"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://opera-taipei.com/#events"/>
   </url>
 
-  <!-- Contact -->
+  <!-- Events / Corporate Hire — ZH (高價值關鍵字：台北包場 / 尾牙) -->
+  <url>
+    <loc>https://opera-taipei.com/zh/#events</loc>
+    <lastmod>2025-04-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://opera-taipei.com/#events"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant"   href="https://opera-taipei.com/zh/#events"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://opera-taipei.com/#events"/>
+  </url>
+
+  <!-- Contact — EN -->
   <url>
     <loc>https://opera-taipei.com/#contact</loc>
-    <lastmod>2025-03-19</lastmod>
+    <lastmod>2025-04-08</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://opera-taipei.com/#contact"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant"   href="https://opera-taipei.com/zh/#contact"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://opera-taipei.com/#contact"/>
+  </url>
+
+  <!-- Contact — ZH -->
+  <url>
+    <loc>https://opera-taipei.com/zh/#contact</loc>
+    <lastmod>2025-04-08</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://opera-taipei.com/#contact"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant"   href="https://opera-taipei.com/zh/#contact"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://opera-taipei.com/#contact"/>
   </url>
 
 </urlset>
