@@ -154,82 +154,10 @@ allImages.forEach(img => {
 
 
 /* ================================================================
-   DUAL LANGUAGE — i18n
-   Loads translations.json, then wires up the EN / 中文 buttons.
-
-   Two attribute conventions:
-     data-i18n="key"       → sets element.textContent
-     data-i18n-html="key"  → sets element.innerHTML  (allows <em>, <br>)
-
-   CTA buttons (Instagram, Email, FB, IG, Maps) have no data-i18n
-   attribute and are therefore never touched.
+   DUAL LANGUAGE
+   Language switching is handled via static pages (Option B):
+     /           → English  (index.html)
+     /zh/        → 繁體中文  (zh/index.html)
+   The lang-btn links in the nav navigate between these two pages.
+   No JS translation layer is needed here.
 ================================================================ */
-(function () {
-  'use strict';
-
-  let translations = null;
-  let currentLang  = 'en';
-
-  /* -- Apply a language to the whole page -- */
-  function applyLang(lang) {
-    if (!translations || !translations[lang]) { return; }
-
-    const dict = translations[lang];
-
-    /* Plain-text nodes */
-    document.querySelectorAll('[data-i18n]').forEach(function (el) {
-      const key = el.getAttribute('data-i18n');
-      if (Object.prototype.hasOwnProperty.call(dict, key)) {
-        el.textContent = dict[key];
-      }
-    });
-
-    /* HTML nodes (contain <em>, <br>, <span>, etc.) */
-    document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
-      const key = el.getAttribute('data-i18n-html');
-      if (Object.prototype.hasOwnProperty.call(dict, key)) {
-        el.innerHTML = dict[key];
-      }
-    });
-
-    /* Update <html lang="…"> for accessibility and SEO */
-    document.documentElement.lang = (lang === 'zh') ? 'zh-Hant' : 'en';
-
-    currentLang = lang;
-  }
-
-  /* -- Wire up the EN / 中文 toggle buttons -- */
-  function initLangButtons() {
-    document.querySelectorAll('.lang-btn').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        const lang = btn.getAttribute('data-lang');
-        if (lang === currentLang) { return; }
-
-        /* Update active state */
-        document.querySelectorAll('.lang-btn').forEach(function (b) {
-          b.classList.remove('active');
-        });
-        btn.classList.add('active');
-
-        applyLang(lang);
-      });
-    });
-  }
-
-  /* -- Load translations.json then bootstrap -- */
-  fetch('translations.json')
-    .then(function (res) {
-      if (!res.ok) { throw new Error('translations.json fetch failed: ' + res.status); }
-      return res.json();
-    })
-    .then(function (data) {
-      translations = data;
-      initLangButtons();
-      /* Default language is EN — page HTML is already in EN, no need to re-apply */
-    })
-    .catch(function (err) {
-      console.warn('i18n: could not load translations —', err.message);
-      /* Page remains in English; lang buttons are visible but do nothing */
-    });
-
-}());
