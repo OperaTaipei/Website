@@ -1160,7 +1160,6 @@ footer {
   flex-shrink: 0;
   box-sizing: border-box;
   border: 1px solid var(--color-gold-border);
-  box-shadow: 0 0 0 1px rgba(201, 168, 76, 0.08);
 }
 
 .floor-plan-wrapper:hover {
