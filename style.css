@@ -1159,25 +1159,21 @@ footer {
   align-self: center;
   flex-shrink: 0;
   box-sizing: border-box;
-}
-
-/* Floor plan image — fills the wrapper exactly.
-   width:100% = 100% of the wrapper (which is 70vw).
-   height:auto preserves the 1.455 landscape aspect ratio.
-   drop-shadow applies the 12px outer glow at the pixel level. */
-.floor-plan-img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-.floor-plan-wrapper {
   border: 1px solid var(--color-gold-border);
   box-shadow: 0 0 0 1px rgba(201, 168, 76, 0.08);
 }
 
 .floor-plan-wrapper:hover {
   border-color: var(--color-gold-dim);
+}
+
+/* Floor plan image — fills the wrapper exactly.
+   width:100% = 100% of the wrapper (which is 70vw).
+   height:auto preserves the 1.455 landscape aspect ratio. */
+.floor-plan-img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 /* Small italic booking note (existing comment about minimum spend) */
