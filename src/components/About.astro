@@ -1,0 +1,51 @@
+---
+interface Props {
+  t: any;
+}
+
+const { t } = Astro.props;
+---
+
+<div class="about-wrapper">
+  <section id="about" class="fade-in">
+
+    <div class="about-content">
+      <p class="section-label">{t.about_label}</p>
+      <h2 class="section-title" set:html={t.about_title} />
+      <div class="section-divider"></div>
+
+      <p set:html={t.about_p1}></p>
+      <p set:html={t.about_p2}></p>
+
+      <div class="info-grid">
+        <div class="info-cell">
+          <div class="label">{t.info_location}</div>
+          <p set:html={t.info_location_v}></p>
+        </div>
+        <div class="info-cell">
+          <div class="label">{t.info_view}</div>
+          <p set:html={t.info_view_v}></p>
+        </div>
+        <div class="info-cell">
+          <div class="label">{t.info_tue_thu}</div>
+          <p set:html={t.info_tue_thu_v}></p>
+        </div>
+        <div class="info-cell">
+          <div class="label">{t.info_fri_sat}</div>
+          <p set:html={t.info_fri_sat_v}></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-visual">
+      <div class="about-photo-frame">
+        <div class="about-photo-grid">
+          <img src="/images/nz93511-enhanced-nr.jpg" alt="Opera Taipei venue layout" loading="lazy" onerror="this.onerror=null;this.style.display='none';this.parentElement.classList.add('img-error');">
+          <img src="/images/nz93619-enhanced-nr.jpg" alt="Opera Taipei bar counter" loading="lazy" onerror="this.onerror=null;this.style.display='none';this.parentElement.classList.add('img-error');">
+          <img src="/images/nz93801-enhanced-nr.jpg" alt="Opera Taipei city view" loading="lazy" onerror="this.onerror=null;this.style.display='none';this.parentElement.classList.add('img-error');">
+        </div>
+      </div>
+    </div>
+
+  </section>
+</div>

@@ -1,0 +1,73 @@
+---
+interface Props {
+  t: any;
+  lang: string;
+}
+
+const { t, lang } = Astro.props;
+
+// Determine path links for language switcher
+const getLangLink = (targetLang: string) => {
+  if (targetLang === 'en') return '/';
+  return `/${targetLang}/`;
+};
+---
+
+<nav id="navbar">
+  <a href="#hero" class="nav-logo" aria-label="Opéra Taipei Home">
+    <img src="/images/opera-logo.png" alt="Opéra Taipei Logo" class="nav-logo-img"
+         onerror="this.onerror=null;this.style.display='none';this.parentElement.classList.add('nav-logo-text');">
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#about">{t.nav_venue}</a></li>
+    <li><a href="#bartenders">{t.nav_bartenders}</a></li>
+    <li><a href="#menu">{t.nav_menu}</a></li>
+    <li><a href="#gallery">{t.nav_gallery}</a></li>
+    <li><a href="#events">{t.nav_events}</a></li>
+    <li><a href="#contact">{t.nav_contact}</a></li>
+  </ul>
+
+  <button class="hamburger" id="hamburger" aria-label="Toggle mobile menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <div class="lang-switcher">
+    <a href={getLangLink('en')} class={`lang-btn ${lang === 'en' ? 'active' : ''}`} aria-label="English">EN</a>
+    <a href={getLangLink('zh')} class={`lang-btn ${lang === 'zh' ? 'active' : ''}`} aria-label="切換至繁體中文">中文</a>
+    <a href={getLangLink('fr')} class={`lang-btn ${lang === 'fr' ? 'active' : ''}`} aria-label="Passer en français">FR</a>
+    <a href={getLangLink('ja')} class={`lang-btn ${lang === 'ja' ? 'active' : ''}`} aria-label="日本語に切り替え">JA</a>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#about" class="mobile-nav-link">{t.nav_venue}</a>
+  <a href="#bartenders" class="mobile-nav-link">{t.nav_bartenders}</a>
+  <a href="#menu" class="mobile-nav-link">{t.nav_menu}</a>
+  <a href="#gallery" class="mobile-nav-link">{t.nav_gallery}</a>
+  <a href="#events" class="mobile-nav-link">{t.nav_events}</a>
+  <a href="#contact" class="mobile-nav-link">{t.nav_contact}</a>
+</div>
+
+<script>
+  // Mobile Hamburger menu toggler logic
+  const hamburgerButton = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+  if (hamburgerButton && mobileMenu) {
+    hamburgerButton.addEventListener('click', () => {
+      hamburgerButton.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+
+    mobileNavLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        hamburgerButton.classList.remove('open');
+        mobileMenu.classList.remove('open');
+      });
+    });
+  }
+</script>

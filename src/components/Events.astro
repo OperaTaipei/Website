@@ -1,0 +1,182 @@
+---
+interface Props {
+  t: any;
+}
+
+const { t } = Astro.props;
+---
+
+<!-- Gallery Section first (matching design flow) -->
+<section id="gallery" class="fade-in">
+  <div class="section-wrap">
+    <p class="section-label">{t.gallery_label}</p>
+    <h2 class="section-title" set:html={t.gallery_title} />
+    <div class="section-divider"></div>
+
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <img src="/images/nz93950-enhanced-nr.jpg" alt="Opera Taipei panoramic view" loading="lazy" onerror="this.onerror=null;this.style.display='none';this.parentElement.classList.add('img-error');">
+      </div>
+      <div class="gallery-item">
+        <img src="/images/nz93619-enhanced-nr.jpg" alt="Opera Taipei bar area" loading="lazy" onerror="this.onerror=null;this.style.display='none';this.parentElement.classList.add('img-error');">
+      </div>
+      <div class="gallery-item">
+        <img src="/images/nz93801-enhanced-nr.jpg" alt="Opera Taipei interior" loading="lazy" onerror="this.onerror=null;this.style.display='none';this.parentElement.classList.add('img-error');">
+      </div>
+      <div class="gallery-item">
+        <img src="/images/nz94160-enhanced-nr.jpg" alt="Opera Taipei at night" loading="lazy" onerror="this.onerror=null;this.style.display='none';this.parentElement.classList.add('img-error');">
+      </div>
+      <div class="gallery-item">
+        <img src="/images/pxl_20230816_104507838.jpg" alt="Opera Taipei cocktail details" loading="lazy" onerror="this.onerror=null;this.style.display='none';this.parentElement.classList.add('img-error');">
+      </div>
+      <div class="gallery-item">
+        <img src="/images/pxl_20230816_104529730.jpg" alt="Opera Taipei ambiance" loading="lazy" onerror="this.onerror=null;this.style.display='none';this.parentElement.classList.add('img-error');">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Trusted By Section -->
+<section id="trusted-by" style="background: var(--color-deep-dark); padding: 100px 40px;">
+  <div class="section-wrap fade-in">
+    <p class="section-label">{t.trusted_label}</p>
+    <h2 class="section-title" set:html={t.trusted_title} />
+    <div class="section-divider"></div>
+
+    <p class="trusted-by-intro">
+      {t.trusted_intro}
+    </p>
+
+    <div class="trusted-by-grid">
+      <div class="trusted-by-column">
+        <div class="trusted-by-column-label">{t.trusted_col1}</div>
+        <ul class="trusted-by-list">
+          <li>Taiwan Foreign Correspondent Club</li>
+          <li>Meta TW Association</li>
+          <li>French Chamber of Commerce</li>
+          <li>Dragon Chamber Award</li>
+          <li>Gigabyte</li>
+          <li>McKinsey</li>
+          <li>Amazon</li>
+          <li>COACH</li>
+        </ul>
+      </div>
+      <div class="trusted-by-column">
+        <div class="trusted-by-column-label">{t.trusted_col2}</div>
+        <ul class="trusted-by-list">
+          <li>{t.trusted_e1}</li>
+          <li>{t.trusted_e2}</li>
+          <li>{t.trusted_e3}</li>
+          <li>{t.trusted_e4}</li>
+          <li>{t.trusted_e5}</li>
+          <li>{t.trusted_e6}</li>
+          <li>{t.trusted_e7}</li>
+          <li>{t.trusted_e8}</li>
+        </ul>
+      </div>
+      <div class="trusted-by-column">
+        <div class="trusted-by-column-label">{t.trusted_col3}</div>
+        <ul class="trusted-by-list">
+          <li>{t.trusted_s1}</li>
+          <li>{t.trusted_s2}</li>
+          <li>{t.trusted_s3}</li>
+          <li>{t.trusted_s4}</li>
+          <li>{t.trusted_s5}</li>
+          <li>{t.trusted_s6}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Corporate Events Hiring Details -->
+<section id="events" style="padding: 100px 40px;">
+  <div class="section-wrap fade-in">
+    <p class="section-label">{t.events_label}</p>
+    <h2 class="section-title" set:html={t.events_title} />
+    <div class="section-divider"></div>
+
+    <p class="events-intro">
+      {t.events_intro}
+    </p>
+
+    <div class="events-block-title">{t.events_full_priv}</div>
+    <div class="events-two-columns">
+      <div class="events-card">
+        <div class="events-card-label">{t.events_day} <span class="events-card-note">{t.events_day_note}</span></div>
+        <div class="venue-price-row">
+          <span class="venue-price-label">{t.events_hr_venue}</span>
+          <span class="venue-price-amount">5,000 NTD / hr</span>
+        </div>
+        <div class="venue-price-row">
+          <span class="venue-price-label">{t.events_hr_drinks}</span>
+          <span class="venue-price-amount">15,000 NTD / hr</span>
+        </div>
+      </div>
+      <div class="events-card">
+        <div class="events-card-label">{t.events_night} <span class="events-card-note">{t.events_night_note}</span></div>
+        <div class="venue-price-row">
+          <span class="venue-price-label">{t.events_weekday}</span>
+          <span class="venue-price-amount">100,000 NTD</span>
+        </div>
+        <div class="venue-price-row">
+          <span class="venue-price-label">{t.events_weekend}</span>
+          <span class="venue-price-amount">200,000 NTD</span>
+        </div>
+      </div>
+    </div>
+    <p class="events-note">{t.events_note}</p>
+
+    <div class="events-block-title">{t.events_packages}</div>
+    <div class="events-three-columns">
+      <div class="package-card">
+        <div class="package-card-title">{t.pkg1_title}</div>
+        <div class="package-card-desc">{t.pkg1_desc}</div>
+      </div>
+      <div class="package-card">
+        <div class="package-card-title">{t.pkg2_title}</div>
+        <div class="package-card-desc">{t.pkg2_desc}</div>
+      </div>
+      <div class="package-card">
+        <div class="package-card-title">{t.pkg3_title}</div>
+        <div class="package-card-desc">{t.pkg3_desc}</div>
+      </div>
+    </div>
+
+    <div class="events-block-title">{t.events_services}</div>
+    <div class="events-two-columns">
+      <div class="events-card">
+        <div class="events-card-label">{t.services_label} <span class="events-card-note">{t.services_note}</span></div>
+        <ul class="events-feature-list">
+          <li>{t.svc1}</li>
+          <li>{t.svc2}</li>
+          <li>{t.svc3}</li>
+          <li>{t.svc4}</li>
+          <li>{t.svc5}</li>
+          <li>{t.svc6}</li>
+          <li>{t.svc7}</li>
+          <li>{t.svc8}</li>
+        </ul>
+      </div>
+      <div class="events-card">
+        <div class="events-card-label">{t.facilities_label}</div>
+        <ul class="events-feature-list">
+          <li>{t.fac1}</li>
+          <li>{t.fac2}</li>
+          <li>{t.fac3}</li>
+          <li>{t.fac4}</li>
+          <li>{t.fac5}</li>
+          <li>{t.fac6}</li>
+          <li>{t.fac7}</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="events-cta">
+      <a href="mailto:contact@opera-taipei.com" class="btn-gold btn-gold--large">
+        <span>{t.events_cta_btn}</span>
+      </a>
+    </div>
+
+  </div>
+</section>

@@ -1,0 +1,229 @@
+---
+interface Props {
+  t: any;
+}
+
+const { t } = Astro.props;
+---
+
+<section id="reservations" style="background: var(--color-deep-dark); padding: 100px 40px;">
+  <div class="section-wrap fade-in">
+
+    <p class="section-label">{t.res_label}</p>
+    <h2 class="section-title" set:html={t.res_title} />
+    <div class="section-divider"></div>
+
+    <!-- Table Pricing Cards -->
+    <div class="events-three-columns">
+      <div class="pricing-card">
+        <div class="pricing-card-tables">Tables 1, 2, 3, 5</div>
+        <div class="pricing-card-capacity">{t.res_capacity_1}</div>
+        <div class="pricing-card-price">10,000 NTD</div>
+        <div class="pricing-card-note">{t.res_min_spend}</div>
+      </div>
+      <div class="pricing-card">
+        <div class="pricing-card-tables">Tables 6, 7</div>
+        <div class="pricing-card-capacity">{t.res_capacity_2}</div>
+        <div class="pricing-card-price">5,000 NTD</div>
+        <div class="pricing-card-note">{t.res_min_spend}</div>
+      </div>
+      <div class="pricing-card">
+        <div class="pricing-card-tables">Tables 4, 8</div>
+        <div class="pricing-card-capacity">{t.res_capacity_3}</div>
+        <div class="pricing-card-price">15,000 NTD</div>
+        <div class="pricing-card-note">{t.res_min_spend}</div>
+      </div>
+    </div>
+
+    <!-- Floor Plan Visual -->
+    <div class="floor-plan-container">
+      <div class="floor-plan-wrapper">
+        <img src="/images/3DPlanOpera.png"
+             alt="3D floor plan of Opéra Taipei showing table layout, bar, LED screens, pool table and dart games"
+             class="floor-plan-img" loading="lazy"
+             onerror="this.onerror=null;this.style.display='none';this.parentElement.classList.add('img-error');">
+      </div>
+    </div>
+
+    <!-- User Booking Guidance -->
+    <div class="reservation-footer">
+      <p class="reservation-note">
+        {t.res_note}
+      </p>
+
+      <div class="booking-channels-card">
+        <h4 class="booking-card-title">How to Book Your Table</h4>
+        <p class="booking-card-subtitle">
+          Please contact our team directly through our reservation channels. Bookings are processed manually and confirmed within 24 hours.
+        </p>
+
+        <!-- Direct Actions -->
+        <div class="booking-action-channels">
+          <a href="https://www.instagram.com/operataipei/" target="_blank" rel="noopener noreferrer" class="channel-btn ig-btn">
+            <span class="btn-icon">📸</span>
+            <span class="btn-text-wrap">
+              <strong>Instagram DM</strong>
+              <small>Fastest confirmation</small>
+            </span>
+          </a>
+
+          <a href="mailto:contact@opera-taipei.com?subject=Table Reservation Request - Opéra Taipei&body=Hi Opéra Team,%0D%0A%0D%0AI would like to request a table reservation with the following details:%0D%0A%0D%0A- Name:%0D%0A- Phone Number:%0D%0A- Date & Time:%0D%0A- Number of Guests:%0D%0A- Table / Area Preference:%0D%0A%0D%0AThank you!" class="channel-btn mail-btn">
+            <span class="btn-icon">✉️</span>
+            <span class="btn-text-wrap">
+              <strong>Email Request</strong>
+              <small>Pre-filled draft template</small>
+            </span>
+          </a>
+        </div>
+
+        <div class="booking-info-reminder">
+          <span class="reminder-badge">Tip</span>
+          <p>Please include your <strong>Name, Date/Time, Phone, and number of guests</strong> to speed up confirmation.</p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .floor-plan-container {
+    margin: 40px 0;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .booking-channels-card {
+    background: var(--color-card);
+    border: 1px solid var(--color-gold-border);
+    border-radius: 12px;
+    padding: 35px;
+    max-width: 720px;
+    margin: 30px auto 0;
+    text-align: center;
+  }
+  
+  .booking-card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    color: #f5f0e8;
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+  }
+  
+  .booking-card-subtitle {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin-bottom: 30px;
+    line-height: 1.5;
+  }
+  
+  .booking-action-channels {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 25px;
+  }
+  
+  .channel-btn {
+    flex: 1;
+    max-width: 260px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 14px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    text-align: left;
+    transition: transform 0.25s, background-color 0.25s, border-color 0.25s;
+  }
+  
+  .ig-btn {
+    background: rgba(201, 168, 76, 0.08);
+    border: 1px solid rgba(201, 168, 76, 0.3);
+    color: #e2c47a;
+  }
+  .ig-btn:hover {
+    background: rgba(201, 168, 76, 0.15);
+    transform: translateY(-2px);
+  }
+  
+  .mail-btn {
+    background: rgba(245, 240, 232, 0.04);
+    border: 1px solid rgba(245, 240, 232, 0.1);
+    color: #f5f0e8;
+  }
+  .mail-btn:hover {
+    background: rgba(245, 240, 232, 0.08);
+    transform: translateY(-2px);
+  }
+  
+  .btn-icon {
+    font-size: 1.5rem;
+  }
+  
+  .btn-text-wrap {
+    display: flex;
+    flex-direction: column;
+  }
+  .btn-text-wrap strong {
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  .btn-text-wrap small {
+    font-size: 0.7rem;
+    opacity: 0.65;
+    margin-top: 2px;
+  }
+  
+  .booking-info-reminder {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(8, 8, 8, 0.4);
+    padding: 10px 18px;
+    border-radius: 20px;
+    border: 1px solid rgba(180, 150, 90, 0.05);
+    max-width: 580px;
+  }
+  .reminder-badge {
+    background: #c9a84c;
+    color: #080808;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+  }
+  .booking-info-reminder p {
+    font-size: 0.78rem;
+    color: rgba(245, 240, 232, 0.75);
+    margin: 0;
+    text-align: left;
+  }
+  
+  @media (max-width: 600px) {
+    .booking-action-channels {
+      flex-direction: column;
+      align-items: center;
+    }
+    .channel-btn {
+      width: 100%;
+      max-width: 100%;
+    }
+    .booking-channels-card {
+      padding: 20px;
+    }
+    .booking-info-reminder {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 12px;
+    }
+    .booking-info-reminder p {
+      text-align: center;
+    }
+  }
+</style>

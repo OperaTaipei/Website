@@ -1,0 +1,350 @@
+---
+import menuData from '../data/menu.json';
+import MenuItemModal from './MenuItemModal.astro';
+import zh from '../i18n/zh.json';
+
+
+interface Props {
+  t: any;
+  lang: string;
+}
+
+const { t, lang } = Astro.props;
+
+// Group menu items by category
+const signatures = menuData.filter(item => item.category === 'signatures');
+const food = menuData.filter(item => item.category === 'food');
+const classics = menuData.filter(item => item.category === 'classics');
+const bottles = menuData.filter(item => item.category === 'bottles');
+
+// Unique tags for filter buttons
+const drinkTags = ['refreshing', 'spirit-forward', 'sour', 'smoky', 'spicy', 'sweet', 'classic'];
+---
+
+<section id="menu">
+  <div class="menu-container">
+    <p class="section-label">{t.menu_label}</p>
+    <h2 class="section-title">The <em>Menu</em></h2>
+    <div class="section-divider"></div>
+
+    <p class="trusted-by-intro">
+      {t.menu_intro}
+    </p>
+
+    <!-- Category Tabs -->
+    <div class="menu-tabs" role="tablist">
+      <button class="menu-tab active" data-tab="signatures" role="tab">{t.tab_signatures}</button>
+      <button class="menu-tab"        data-tab="food"       role="tab">{t.tab_food}</button>
+      <button class="menu-tab"        data-tab="classics"   role="tab">{t.tab_classics}</button>
+      <button class="menu-tab"        data-tab="bottles"    role="tab">{t.tab_bottles}</button>
+    </div>
+
+    <!-- Active Tag Filters (for Cocktails) -->
+    <div class="menu-filters-bar" id="menu-filters-bar">
+      <span class="filter-label">{lang === 'zh' ? '篩選口味：' : 'Filter by flavor:'}</span>
+      <div class="filter-tags">
+        <button class="filter-btn active" data-filter="all">{lang === 'zh' ? '全部' : 'All'}</button>
+        {drinkTags.map(tag => (
+          <button class="filter-btn" data-filter={tag}>
+            {t.menu_tags[tag] || tag}
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <!-- SIGNATURES -->
+    <div class="menu-panel active" id="tab-signatures">
+      <div class="price-tier-badge">350 NTD$</div>
+      <div class="menu-grid">
+        {signatures.filter(item => item.price === 350).map(item => {
+          const itemText = t.menu_items[item.id] || {};
+          return (
+            <div 
+              class="menu-item clickable-menu-item" 
+              data-id={item.id}
+              data-tags={JSON.stringify(item.tags)}
+              role="button"
+              aria-label={`View details for ${itemText.name}`}
+            >
+              <div class="menu-item-name">{itemText.name}</div>
+              <div class="menu-item-name-chinese">{lang === 'zh' ? '' : zh.menu_items[item.id]?.name}</div>
+              <div class="menu-item-ingredients">{itemText.ingredients}</div>
+              <div class="item-meta-row">
+                {item.tags.map(tag => (
+                  <span class="item-tag-badge">{t.menu_tags[tag] || tag}</span>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div class="price-tier-badge price-tier-badge--spaced">400 NTD$</div>
+      <div class="menu-grid">
+        {signatures.filter(item => item.price === 400).map(item => {
+          const itemText = t.menu_items[item.id] || {};
+          return (
+            <div 
+              class="menu-item clickable-menu-item" 
+              data-id={item.id}
+              data-tags={JSON.stringify(item.tags)}
+              role="button"
+              aria-label={`View details for ${itemText.name}`}
+            >
+              <div class="menu-item-name">{itemText.name}</div>
+              <div class="menu-item-name-chinese">{lang === 'zh' ? '' : zh.menu_items[item.id]?.name}</div>
+              <div class="menu-item-ingredients">{itemText.ingredients}</div>
+              <div class="item-meta-row">
+                {item.tags.map(tag => (
+                  <span class="item-tag-badge">{t.menu_tags[tag] || tag}</span>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+
+    <!-- FINGER FOOD -->
+    <div class="menu-panel" id="tab-food">
+      <div class="menu-grid">
+        {food.map(item => {
+          const itemText = t.menu_items[item.id] || {};
+          return (
+            <div 
+              class="menu-item food-item clickable-menu-item" 
+              data-id={item.id}
+              role="button"
+              aria-label={`View details for ${itemText.name}`}
+            >
+              <div class="food-photo-container">
+                <img class="food-photo" src={item.image} alt={itemText.name} loading="lazy" onerror="this.onerror=null;this.style.display='none';this.parentElement.classList.add('img-error');">
+              </div>
+              <div class="menu-item-name">{itemText.name}</div>
+              <div class="menu-item-name-chinese">{lang === 'zh' ? '' : zh.menu_items[item.id]?.name}</div>
+              <div class="menu-item-price">{item.price} NTD</div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+
+    <!-- CLASSICS -->
+    <div class="menu-panel" id="tab-classics">
+      <div class="price-tier-badge">350 NTD$</div>
+      <div class="menu-grid">
+        {classics.filter(item => item.price === 350).map(item => {
+          const itemText = t.menu_items[item.id] || {};
+          return (
+            <div 
+              class="menu-item clickable-menu-item" 
+              data-id={item.id}
+              data-tags={JSON.stringify(item.tags)}
+              role="button"
+              aria-label={`View details for ${itemText.name}`}
+            >
+              <div class="menu-item-name">{itemText.name}</div>
+              <div class="menu-item-name-chinese">{lang === 'zh' ? '' : zh.menu_items[item.id]?.name}</div>
+              <div class="menu-item-ingredients">{itemText.ingredients}</div>
+              <div class="item-meta-row">
+                {item.tags.map(tag => (
+                  <span class="item-tag-badge">{t.menu_tags[tag] || tag}</span>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div class="price-tier-badge price-tier-badge--spaced">400 NTD$</div>
+      <div class="menu-grid">
+        {classics.filter(item => item.price === 400).map(item => {
+          const itemText = t.menu_items[item.id] || {};
+          return (
+            <div 
+              class="menu-item clickable-menu-item" 
+              data-id={item.id}
+              data-tags={JSON.stringify(item.tags)}
+              role="button"
+              aria-label={`View details for ${itemText.name}`}
+            >
+              <div class="menu-item-name">{itemText.name}</div>
+              <div class="menu-item-name-chinese">{lang === 'zh' ? '' : zh.menu_items[item.id]?.name}</div>
+              <div class="menu-item-ingredients">{itemText.ingredients}</div>
+              <div class="item-meta-row">
+                {item.tags.map(tag => (
+                  <span class="item-tag-badge">{t.menu_tags[tag] || tag}</span>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+
+    <!-- BOTTLES -->
+    <div class="menu-panel" id="tab-bottles">
+      <!-- House Spirit -->
+      <div class="price-tier-badge">House Spirit</div>
+      <div class="menu-grid">
+        {bottles.filter(item => item.id === 'house-spirit').map(item => {
+          const itemText = t.menu_items[item.id] || {};
+          return (
+            <div class="menu-item">
+              <div class="menu-item-name">{itemText.name}</div>
+              <div class="menu-item-name-chinese">{itemText.ingredients}</div>
+              <div class="menu-item-price">3,000 NTD</div>
+            </div>
+          );
+        })}
+      </div>
+
+      <!-- Wine -->
+      <div class="price-tier-badge price-tier-badge--spaced">Wine</div>
+      <div class="menu-grid">
+        {bottles.filter(item => ['house-wine', 'chateau-edmus', 'les-bellissands', 'pouilly-fuisse'].includes(item.id)).map(item => {
+          const itemText = t.menu_items[item.id] || {};
+          return (
+            <div class="menu-item">
+              <div class="menu-item-name">{itemText.name}</div>
+              {itemText.ingredients && <div class="menu-item-ingredients">{itemText.ingredients}</div>}
+              <div class="menu-item-price">{item.price.toLocaleString()} NTD</div>
+            </div>
+          );
+        })}
+      </div>
+
+      <!-- Champagne -->
+      <div class="price-tier-badge price-tier-badge--spaced">Champagne</div>
+      <div class="menu-grid">
+        {bottles.filter(item => ['marquis-brut', 'marquis-brut-3', 'pommery-brut', 'pommery-brut-3'].includes(item.id)).map(item => {
+          const itemText = t.menu_items[item.id] || {};
+          return (
+            <div class="menu-item">
+              <div class="menu-item-name">{itemText.name}</div>
+              {itemText.ingredients && <div class="menu-item-ingredients">{itemText.ingredients}</div>}
+              <div class="menu-item-price">{item.price.toLocaleString()} NTD</div>
+            </div>
+          );
+        })}
+      </div>
+
+      <!-- Whiskey -->
+      <div class="price-tier-badge price-tier-badge--spaced">Whiskey</div>
+      <div class="menu-grid">
+        {bottles.filter(item => ['highland-park-12', 'singleton-12', 'talisker-10', 'lagavulin-8', 'jw-xr21', 'balvenie-12', 'balvenie-21', 'macallan-15'].includes(item.id)).map(item => {
+          const itemText = t.menu_items[item.id] || {};
+          return (
+            <div class="menu-item">
+              <div class="menu-item-name">{itemText.name}</div>
+              {itemText.ingredients && <div class="menu-item-ingredients">{itemText.ingredients}</div>}
+              <div class="menu-item-price">{item.price.toLocaleString()} NTD</div>
+            </div>
+          );
+        })}
+      </div>
+
+      <!-- Cognac, Tequila, Vodka, Gin -->
+      <div class="price-tier-badge price-tier-badge--spaced">Other Spirits</div>
+      <div class="menu-grid">
+        {bottles.filter(item => ['merlet-vsop', 'don-julio-repo', 'don-julio-anejo', 'don-julio-1942', 'clase-azul', 'grey-goose', 'roku-gin', 'monkey-47'].includes(item.id)).map(item => {
+          const itemText = t.menu_items[item.id] || {};
+          return (
+            <div class="menu-item">
+              <div class="menu-item-name">{itemText.name}</div>
+              {itemText.ingredients && <div class="menu-item-ingredients">{itemText.ingredients}</div>}
+              <div class="menu-item-price">{item.price.toLocaleString()} NTD</div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Item Detail Modal -->
+<MenuItemModal t={t} lang={lang} />
+
+<script>
+  // Tab Switching Logic with slide transitions
+  const tabs = document.querySelectorAll('.menu-tab');
+  const panels = document.querySelectorAll('.menu-panel');
+  const filtersBar = document.getElementById('menu-filters-bar');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      panels.forEach(p => {
+        p.classList.remove('active');
+        p.style.transform = 'translateY(15px)';
+        p.style.opacity = '0';
+      });
+
+      tab.classList.add('active');
+      const targetPanel = document.getElementById('tab-' + (tab as HTMLElement).dataset.tab);
+      if (targetPanel) {
+        targetPanel.classList.add('active');
+        // Trigger reflow for CSS transition
+        void targetPanel.offsetWidth;
+        targetPanel.style.transform = 'translateY(0)';
+        targetPanel.style.opacity = '1';
+      }
+
+      // Hide or show tag filters based on category
+      const currentTab = (tab as HTMLElement).dataset.tab;
+      if (filtersBar) {
+        if (currentTab === 'signatures' || currentTab === 'classics') {
+          filtersBar.style.display = 'flex';
+        } else {
+          filtersBar.style.display = 'none';
+        }
+      }
+    });
+  });
+
+  // Dynamic Flavor Filtering Logic
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const filterValue = (btn as HTMLElement).dataset.filter;
+      const activePanel = document.querySelector('.menu-panel.active');
+      if (!activePanel) return;
+
+      const items = activePanel.querySelectorAll('.menu-item');
+      items.forEach(item => {
+        const itemTagsJson = (item as HTMLElement).dataset.tags;
+        if (!itemTagsJson) return;
+        const itemTags = JSON.parse(itemTagsJson);
+
+        if (filterValue === 'all' || itemTags.includes(filterValue)) {
+          (item as HTMLElement).style.display = 'block';
+          (item as HTMLElement).style.opacity = '1';
+        } else {
+          (item as HTMLElement).style.opacity = '0';
+          setTimeout(() => {
+            if ((btn as HTMLElement).classList.contains('active')) {
+              (item as HTMLElement).style.display = 'none';
+            }
+          }, 200);
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+  /* Local overrides for menu panel transitions */
+  .menu-panel {
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .menu-panel.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>

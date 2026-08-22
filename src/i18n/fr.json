@@ -1,0 +1,498 @@
+{
+  "nav_venue": "Le Lieu",
+  "nav_bartenders": "Barmen",
+  "nav_menu": "Menu",
+  "nav_gallery": "Galerie",
+  "nav_events": "Événements",
+  "nav_contact": "Contact",
+
+  "hero_eyebrow": "15ème étage · Hôtel Illume · Taipei",
+  "hero_subtitle": "Cocktails d'exception & panorama urbain",
+  "hero_cta_menu": "Voir le Menu",
+  "hero_cta_find": "Nous Trouver",
+
+  "about_label": "Skybar panoramique · Vue sur Taipei 101",
+  "about_title": "Bar à cocktails de spécialité<br>au-dessus de la <em>ville</em>",
+  "about_p1": "Opera est situé au sommet de l'Hôtel Illume, au cœur de Taipei. Perché au 15ème étage, il offre une vue panoramique unique sur la Taipei Arena et l'emblématique tour 101.",
+  "about_p2": "Nous ne vous servons pas de simples verres — vous vivez un véritable artisanat. Chaque cocktail est une performance, chaque visite un souvenir.",
+  "info_location": "Adresse",
+  "info_location_v": "District de SongShan<br>DunHua North Road, 100<br>15ème étage",
+  "info_view": "Vue",
+  "info_view_v": "Panoramique 360°<br>Taipei Arena & 101<br>Horizon urbain",
+  "info_tue_thu": "Mar – Jeu",
+  "info_tue_thu_v": "18h00 – 01h00",
+  "info_fri_sat": "Ven – Sam",
+  "info_fri_sat_v": "18h00 – 03h00",
+
+  "bartender_label": "Derrière le bar",
+  "bartender_title": "Le <em>Maestro</em>",
+  "bartender_bio": "Anciennement propriétaire et exploitant du R&D (classé dans le Top 50 des bars d'Asie), Yann est un maestro du cocktail, obsédé par les saveurs et toujours en quête de la prochaine boisson délicieuse.",
+  "bartender_role": "Chef Barman · Top 50 Asie",
+
+  "menu_label": "Sirops maison & infusions · Taipei",
+  "menu_title": "Le <em>Menu</em>",
+  "menu_intro": "Chaque cocktail de notre menu est créé à partir de zéro. Nous fabriquons tous nos sirops maison et préparons chaque infusion nous-mêmes — en faisant macérer les alcools avec des fruits frais, des plantes, des fleurs et des épices pour en extraire des saveurs introuvables en bouteille industrielle. Du sirop de pastèque pressé le matin même au whisky infusé au thé oolong reposant pendant des jours, chaque ingrédient est intentionnel, chaque détail soigné.",
+  "tab_signatures": "Cocktails Créations",
+  "tab_food": "Finger Food",
+  "tab_classics": "Classiques",
+  "tab_bottles": "Bouteilles",
+
+  "gallery_label": "L'ambiance",
+  "gallery_title": "L'<em>Espace</em>",
+
+  "res_label": "Réserver une table · Skybar Taipei",
+  "res_title": "Réservations de <em>tables</em>",
+  "res_capacity_1": "Jusqu'à 8 personnes",
+  "res_capacity_2": "Jusqu'à 4 personnes",
+  "res_capacity_3": "Jusqu'à 12 personnes",
+  "res_min_spend": "minimum de commande",
+  "res_note": "Table ou section entière disponible à la réservation. Les prix correspondent à un minimum de commande — boissons et nourriture incluses.",
+  "res_cta_text": "Prêt à réserver votre table ? Contactez-nous directement — nous confirmerons votre réservation sous 24 heures.",
+
+  "trusted_label": "Partenaires",
+  "trusted_title": "Recommandé par les <em>Entreprises</em>",
+  "trusted_intro": "L'Opera accueille régulièrement des événements d'entreprise, transformant l'espace selon les besoins et l'identité visuelle de chaque client — des rassemblements intimes de 20 personnes aux privatisations complètes jusqu'à 300 invités.",
+  "trusted_col1": "Entreprises",
+  "trusted_col2": "Types d'événements",
+  "trusted_col3": "Nos atouts",
+  "trusted_e1": "Soirées de fin d'année",
+  "trusted_e2": "Séminaires",
+  "trusted_e3": "Ateliers",
+  "trusted_e4": "Mariages",
+  "trusted_e5": "Lancements de produits",
+  "trusted_e6": "Cocktails dînatoires",
+  "trusted_e7": "Remises de prix",
+  "trusted_e8": "Privatisations complètes",
+  "trusted_s1": "Vue panoramique sur la skyline de Taipei & la tour 101",
+  "trusted_s2": "Capacité d'accueil de plus de 300 personnes",
+  "trusted_s3": "Système de sonorisation professionnel & écrans LED muraux",
+  "trusted_s4": "8 écrans HD répartis dans tout l'établissement",
+  "trusted_s5": "Un lieu doté de sa propre identité et atmosphère",
+  "trusted_s6": "Notre personnel parle français, anglais et chinois",
+
+  "events_label": "Événements d'entreprise · 20–300 personnes · Taipei",
+  "events_title": "Lieu d'événements privés & <em>d'entreprise</em>",
+  "events_intro": "Créons ensemble votre événement d'entreprise. Contactez-nous pour partager vos besoins et nous vous fournirons un devis détaillé sur mesure.",
+  "events_full_priv": "Privatisation Complète du Lieu",
+  "events_day": "Journée",
+  "events_day_note": "(jusqu'à 20h00)",
+  "events_night": "Soirée",
+  "events_night_note": "(à partir de 21h00)",
+  "events_hr_venue": "Taux horaire — espace uniquement",
+  "events_hr_drinks": "Taux horaire — avec boissons & buffet",
+  "events_weekday": "En semaine",
+  "events_weekend": "Le week-end",
+  "events_note": "Les tarifs indiqués correspondent à un minimum de commande — nourriture, boissons et services inclus.",
+  "events_packages": "Formules Populaires",
+  "pkg1_title": "Open Bar",
+  "pkg1_desc": "Menu de cocktails sur mesure préparé par notre équipe. Devis sur demande.",
+  "pkg2_title": "Tickets prépayés",
+  "pkg2_desc": "Tickets de boisson de 300 NTD par invité — flexibles et faciles à gérer.",
+  "pkg3_title": "Boissons à volonté",
+  "pkg3_desc": "400 NTD par personne et par heure. Budget buffet recommandé à 400 NTD par personne.",
+  "events_services": "Services & Équipements",
+  "services_label": "Services",
+  "services_note": "(sur devis)",
+  "svc1": "Menu de boissons personnalisé",
+  "svc2": "Approvisionnement en alcools",
+  "svc3": "Personnel de salle",
+  "svc4": "Photographe professionnel",
+  "svc5": "Accueil et émargement",
+  "svc6": "Finger food & traiteur",
+  "svc7": "DJ",
+  "svc8": "Artistes & scène",
+  "facilities_label": "Équipements",
+  "fac1": "19 canapés · 9 tables · 12 tables hautes",
+  "fac2": "29 tabourets de bar · 8 télévisions",
+  "fac3": "2 écrans LED géants",
+  "fac4": "Table de billard · 2 jeux de fléchettes",
+  "fac5": "Régie DJ · 2 micros sans fil",
+  "fac6": "Éclairage d'ambiance personnalisé",
+  "fac7": "Ascenseur de service & stockage",
+  "events_cta_btn": "Contacter notre équipe événementielle",
+
+  "contact_label": "Nous situer",
+  "contact_title": "Entrer en <em>Contact</em>",
+  "contact_addr_lbl": "Adresse",
+  "contact_addr_v": "Hôtel Illume, 15F<br>No. 100, DunHua North Road<br>District de SongShan, Taipei<br>台北松山區敦化北路100號15樓",
+  "contact_email_lbl": "E-mail",
+  "contact_follow": "Suivez-nous",
+  "contact_maps_btn": "Ouvrir dans Google Maps",
+
+  "footer_copy": "© 2025 Opéra Taipei. Tous droits réservés.",
+
+  "menu_tags": {
+    "refreshing": "Rafraîchissant",
+    "fruity": "Fruité",
+    "spirit-forward": "Corsé / Robuste",
+    "bittersweet": "Amer-Doux",
+    "sour": "Acidulé / Sour",
+    "smoky": "Fumé",
+    "spicy": "Épicé",
+    "sweet": "Doux",
+    "herbal": "Herbal",
+    "creamy": "Onctueux",
+    "nutty": "Amande / Noix",
+    "sharing": "À partager",
+    "savory": "Salé / Savoureux",
+    "nuts": "Contient des noix",
+    "seafood": "Fruits de mer",
+    "filling": "Copieux",
+    "classic": "Classique"
+  },
+
+  "menu_radar": {
+    "sweetness": "Douceur",
+    "acidity": "Acidité",
+    "strength": "Force en Alcool",
+    "bitterness": "Amertume"
+  },
+
+  "menu_items": {
+    "watermelon-gt": {
+      "name": "Watermelon Gin & Tonic",
+      "description": "Un gin tonic d'été frais et léger fait avec du jus de pastèque frais pressé quotidiennement, du gin artisanal, du tonic dry, et garni de cubes de pastèque congelés.",
+      "ingredients": "Gin, Citron Vert, Sirop de Pastèque, Glaçons de Pastèque, Tonic"
+    },
+    "earl-grey-negroni": {
+      "name": "Earl Grey Negroni",
+      "description": "Une version raffinée du classique amer-doux, utilisant du gin lentement infusé avec des feuilles de thé Earl Grey bio, du vermouth rouge doux et du Campari.",
+      "ingredients": "Gin Infusé à l'Earl Grey, Vermouth Doux, Campari"
+    },
+    "earl-grey-sour": {
+      "name": "Earl Grey Sour",
+      "description": "Un cocktail acidulé et floral équilibrant le gin infusé à l'Earl Grey avec du citron jaune frais, du miel sauvage et du jus de pomme fraîchement pressé.",
+      "ingredients": "Gin Infusé à l'Earl Grey, Citron Jaune, Miel, Pomme"
+    },
+    "oolong-old-fashioned": {
+      "name": "Oolong Old Fashioned",
+      "description": "Un cocktail corsé à savourer lentement, mettant en valeur un bourbon américain vieilli infusé à froid avec des feuilles de thé oolong des montagnes d'Alishan.",
+      "ingredients": "Whisky Infusé à l'Oolong"
+    },
+    "szechuan-mule": {
+      "name": "Szechuan Mule",
+      "description": "Une note épicée et gazeuse faite de vodka de grain, citron vert, gingembre frais pressé et notre liqueur de poivre vert du Sichuan maison qui laisse une finale engourdissante et citronnée.",
+      "ingredients": "Vodka, Citron Vert, Gingembre, Liqueur de Poivre de Sichuan Maison"
+    },
+    "passion-fruit-daiquiri": {
+      "name": "Passion Fruit Daiquiri",
+      "description": "Une acidité tropicale alliant rhum blanc des Caraïbes, citron vert, pulpe de fruit de la passion locale et graines de poivre Magao de montagne broyées.",
+      "ingredients": "Rhum, Citron Vert, Fruit de la Passion, Poivre Magao"
+    },
+    "calamansi-white-pepper-margarita": {
+      "name": "Calamansi White Pepper Margarita",
+      "description": "Une variante épicée de la margarita combinant de la tequila, du citron vert, du jus de calamansi frais et une pincée de poivre blanc moulu sur le rebord du verre.",
+      "ingredients": "Tequila, Citron Vert, Calamansi, Poivre Blanc"
+    },
+    "guava-cooler": {
+      "name": "Guava Cooler",
+      "description": "Jus de goyave rose locale secoué avec du rhum léger, du citron vert, et un sirop rafraîchissant maison de concombre et feuilles de combava.",
+      "ingredients": "Rhum, Citron Vert, Goyave, Sirop de Concombre & Feuille de Combava"
+    },
+    "sour-plum-whiskey-sour": {
+      "name": "Sour Plum Soup Whiskey Sour",
+      "description": "Un cocktail acidulé d'inspiration taïwanaise avec du whisky infusé à la soupe traditionnelle de prunes acides (Suanmeitang), citron, sirop simple, bitters, et une touche de whisky d'Islay fumé.",
+      "ingredients": "Whisky Infusé à la Soupe de Prunes Acides, Citron, Sirop Simple, Bitters, Islay Fumé"
+    },
+    "chocolate-negroni": {
+      "name": "Chocolate Negroni",
+      "description": "Un digestif luxueux mélangeant du Cognac VSOP, de la liqueur de cacao noir maison, du Triple Sec et du Campari.",
+      "ingredients": "Cognac VSOP, Liqueur de Chocolat Maison, Triple Sec, Campari"
+    },
+    "umabee": {
+      "name": "Umabee",
+      "description": "Un cocktail doux et floral secouant du gin avec du citron frais, du concentré de vin pétillant réduit, le tout saupoudré de pollen d'abeille bio.",
+      "ingredients": "Gin, Citron, Réduction de Vin Pétillant, Pollen d'Abeille"
+    },
+    "absinthe-emerald": {
+      "name": "Absinthe Emerald",
+      "description": "Un cocktail puissant et herbacé mêlant du gin, de l'absinthe, du citron jaune frais, du yuzu kosho japonais et des feuilles de shiso fraîches pilées.",
+      "ingredients": "Gin, Absinthe, Citron, Sirop Simple, Yuzu Kosho, Feuilles de Shiso"
+    },
+    "el-diablo-verde": {
+      "name": "El Diablo Verde",
+      "description": "Cocktail de mezcal fumé et épicé avec du mezcal Durango, du citron vert, du piment jalapeño frais et de la crème de cassis Merlet.",
+      "ingredients": "Mezcal Durango, Citron Vert, Jalapeño, Crème de Cassis Merlet"
+    },
+    "niaoli-calvados": {
+      "name": "Niaoli Calvados",
+      "description": "Cocktail élégant mariant de l'eau-de-vie de pomme, du citron, et des petites poires taïwanaises caramélisées maison (Niaoli).",
+      "ingredients": "Eau de Vie de Pomme, Citron, Poire Confite"
+    },
+    "melon-matcha": {
+      "name": "Melon Matcha",
+      "description": "Un magnifique cocktail crémeux mêlant du gin, de la liqueur de melon, du Lillet rectifié à l'acide, du thé matcha vert japonais et du blanc d'œuf pour une texture soyeuse.",
+      "ingredients": "Gin, Liqueur de Melon, Lillet Rectifié, Thé Matcha, Blanc d'Œuf"
+    },
+    "almond-buck": {
+      "name": "Almond Buck",
+      "description": "Un highball réconfortant associant du bourbon américain, de la liqueur d'amande Amaretto Adriatico Bianco, du citron frais, et notre sirop de gingembre épicé maison.",
+      "ingredients": "Bourbon, Amaretto Adriatico Bianco, Citron, Sirop de Gingembre"
+    },
+    "salsa-nachos": {
+      "name": "House Salsa & Nachos",
+      "description": "Nachos de maïs croustillants servis avec notre salsa maison fraîche à base de tomates, coriandre et oignons.",
+      "ingredients": "Salsa Maison, Nachos"
+    },
+    "roasted-nuts": {
+      "name": "Brown Sugar Roasted Nuts",
+      "description": "Mélange de noix rôties lentement sur place avec du sucre roux taïwanais et des épices aromatiques.",
+      "ingredients": "Noix Assorties, Sucre Roux, Épices"
+    },
+    "duck-prosciutto": {
+      "name": "Homemade Duck Prosciutto",
+      "description": "Magret de canard de qualité supérieure séché et affiné sur place pour une saveur salée intense.",
+      "ingredients": "Magret de Canard Séché"
+    },
+    "nachos-platter": {
+      "name": "Nachos Platter",
+      "description": "Grand plateau de nachos de maïs cuits au four avec du fromage fondu, des jalapeños, de la salsa et de la crème sure.",
+      "ingredients": "Nachos, Fromage, Jalapeños, Salsa, Crème Sure"
+    },
+    "chicken-wrap": {
+      "name": "Roasted Chicken Wrap",
+      "description": "Wrap de blanc de poulet grillé avec des légumes frais croquants et une sauce au yaourt crémeuse.",
+      "ingredients": "Poulet Grillé, Tortilla, Légumes Mixte, Sauce Yaourt"
+    },
+    "salmon-toast": {
+      "name": "Cured Salmon on Sour Cream Toast",
+      "description": "Tranches de saumon atlantique mariné maison servies sur du pain au levain grillé avec de la crème sure à l'aneth.",
+      "ingredients": "Pain Grillé, Saumon Mariné, Crème Sure à l'Aneth"
+    },
+    "old-fashioned": {
+      "name": "Old Fashioned",
+      "description": "Le classique indémodable du whisky : bourbon américain, sucre roux, et bitters aromatiques Angostura.",
+      "ingredients": "Bourbon, Sucre Roux, Bitters"
+    },
+    "dirty-martini": {
+      "name": "Dirty Martini",
+      "description": "Un grand classique sec et salé associant du gin, du vermouth dry et de la saumure d'olive verte.",
+      "ingredients": "Gin, Saumure d'Olive, Olive"
+    },
+    "espresso-martini": {
+      "name": "Espresso Martini",
+      "description": "Un cocktail riche et énergisant à base de vodka, d'espresso fraîchement extrait, de sucre roux et d'un amaro au café maison.",
+      "ingredients": "Vodka, Espresso, Sucre Roux, Amaro au Café Maison"
+    },
+    "paloma": {
+      "name": "Paloma",
+      "description": "Cocktail rafraîchissant à base de tequila d'agave bleu, jus de citron vert frais, jus de pamplemousse rose, un trait de Campari et eau pétillante.",
+      "ingredients": "Tequila, Citron Vert, Pamplemousse, Campari, Sel, Eau Pétillante"
+    },
+    "clover-club": {
+      "name": "Clover Club",
+      "description": "Un classique datant d'avant la prohibition mêlant gin, jus de citron, framboises fraîches, vermouth dry et blanc d'œuf pour une finale veloutée.",
+      "ingredients": "Gin, Citron, Framboise, Vermouth, Blanc d'Œuf"
+    },
+    "bloody-mary": {
+      "name": "Bloody Mary",
+      "description": "Un classique salé et épicé : vodka, citron vert, jus de tomate riche, et notre mélange d'épices maison (Worcestershire, Tabasco, poivre noir).",
+      "ingredients": "Vodka, Citron Vert, Jus de Tomate, Assaisonnement, Sauce Worcestershire, Tabasco, Poivre"
+    },
+    "pina-colada": {
+      "name": "Pina Colada",
+      "description": "Un délice tropical mariant rhum léger, jus de citron vert, jus de menthe ou de fruits frais, et crème de noix de coco sucrée.",
+      "ingredients": "Rhum, Citron Vert, Jus d'Ananas, Crème de Coco"
+    },
+    "manhattan": {
+      "name": "Manhattan",
+      "description": "Élégant et robuste classique mêlant whisky américain, vermouth doux italien, bitters Angostura et une cerise confite au brandy.",
+      "ingredients": "Bourbon, Vermouth Doux, Cerise, Bitters"
+    },
+    "penicillin": {
+      "name": "Penicillin",
+      "description": "Mélange apaisant de Scotch whisky, citron frais, sirop de miel et de gingembre, couronné de Scotch d'Islay tourbé et fumé.",
+      "ingredients": "Scotch, Citron, Gingembre, Miel, Islay Fumé"
+    },
+    "new-york-sour": {
+      "name": "New York Sour",
+      "description": "Un magnifique sour visuel : bourbon, jus de citron jaune, sirop simple, surmonté d'un filet de vin de Porto rouge rubis.",
+      "ingredients": "Bourbon, Citron, Sirop Simple, Bitters, Porto Rouge"
+    },
+    "pisco-sour": {
+      "name": "Pisco Sour",
+      "description": "Le classique péruvien mariant l'eau-de-vie de pisco avec du citron vert frais, du sirop simple, du blanc d'œuf et quelques gouttes de bitters aromatiques Amargo Chuncho.",
+      "ingredients": "Pisco, Citron, Sirop Simple, Bitters Péruviens, Blanc d'Œuf"
+    },
+    "caipirinha": {
+      "name": "Caipirinha",
+      "description": "Le cocktail national du Brésil : quartiers de citron vert frais et sucre roux pilés puis secoués avec de la cachaça.",
+      "ingredients": "Cachaça, Citron Vert, Sucre Roux, Bitters"
+    },
+    "house-spirit": {
+      "name": "Bouteille Alcool Maison",
+      "description": "Bouteille entière de notre gamme d'alcool maison au choix : Vodka, Gin, Bourbon, Rhum ou Tequila.",
+      "ingredients": "Vodka · Gin · Whisky · Rhum · Tequila"
+    },
+    "house-wine": {
+      "name": "Bouteille de Vin Maison",
+      "description": "Sélection de notre bouteille de vin rouge ou blanc maison.",
+      "ingredients": "Vin Rouge ou Blanc"
+    },
+    "chateau-edmus": {
+      "name": "Château Edmus St Émilion 2013",
+      "description": "Grand Cru de Bordeaux de Saint-Émilion, rond et élégant, dominé par le Merlot.",
+      "ingredients": "Bordeaux Saint-Émilion Grand Cru"
+    },
+    "les-bellissands": {
+      "name": "Les Bellissands 1er Cru 2018",
+      "description": "Vin rouge de Bourgogne fin et délicat, cépage Pinot Noir, issu d'une parcelle premier cru.",
+      "ingredients": "Bourgogne Premier Cru Pinot Noir"
+    },
+    "pouilly-fuisse": {
+      "name": "Pouilly Fuissé 2018",
+      "description": "Vin blanc sec et élégant de Bourgogne issu du cépage Chardonnay.",
+      "ingredients": "Bourgogne Chardonnay"
+    },
+    "marquis-brut": {
+      "name": "Marquis de Pomereuil Brut",
+      "description": "Bouteille de Champagne français brut festif et minéral.",
+      "ingredients": "Champagne Brut"
+    },
+    "marquis-brut-3": {
+      "name": "Marquis de Pomereuil Brut 3L",
+      "description": "Bouteille format Jéroboam (3 litres) de Champagne Marquis de Pomereuil Brut pour les grandes occasions.",
+      "ingredients": "Champagne Jéroboam 3L"
+    },
+    "pommery-brut": {
+      "name": "Pommery Brut",
+      "description": "Bouteille de Champagne de renommée mondiale, vive et ronde avec de jolies notes fruitées.",
+      "ingredients": "Champagne Pommery Brut"
+    },
+    "pommery-brut-3": {
+      "name": "Pommery Brut 3L",
+      "description": "Bouteille format Jéroboam (3 litres) de Champagne Pommery Brut.",
+      "ingredients": "Champagne Jéroboam 3L"
+    },
+    "highland-park-12": {
+      "name": "Highland Park 12 ans",
+      "description": "Whisky de malt d'Écosse aux notes de miel de bruyère et de tourbe fine.",
+      "ingredients": "Single Malt Scotch Whisky"
+    },
+    "singleton-12": {
+      "name": "Singleton 12 ans",
+      "description": "Whisky single malt écossais équilibré, doux et fruité avec des notes de noisette.",
+      "ingredients": "Single Malt Scotch Whisky"
+    },
+    "talisker-10": {
+      "name": "Talisker 10 ans",
+      "description": "Single malt tourbé avec des notes salines, fumées et une finale poivrée.",
+      "ingredients": "Single Malt Scotch Whisky"
+    },
+    "lagavulin-8": {
+      "name": "Lagavulin 8 ans",
+      "description": "Whisky d'Islay single malt tourbé, fumé et intense.",
+      "ingredients": "Single Malt Scotch Islay"
+    },
+    "jw-xr21": {
+      "name": "Johnnie Walker XR21",
+      "description": "Édition exclusive de whisky écossais assemblé de 21 ans d'âge, doux et miellé.",
+      "ingredients": "Scotch Whisky d'Exception"
+    },
+    "balvenie-12": {
+      "name": "Balvenie Double Wood 12 ans",
+      "description": "Single malt vieilli en fûts de chêne traditionnels puis affiné en fûts de Xérès (Sherry).",
+      "ingredients": "Single Malt Scotch Whisky"
+    },
+    "balvenie-21": {
+      "name": "Balvenie Port Wood 21 ans",
+      "description": "Whisky exceptionnel vieilli en fûts de porto, offrant des notes riches de fruits secs et d'épices.",
+      "ingredients": "Single Malt Scotch d'Exception"
+    },
+    "macallan-15": {
+      "name": "Macallan 15 ans",
+      "description": "Single malt d'exception vieilli en fûts de chêne ayant contenu du Sherry.",
+      "ingredients": "Single Malt Scotch Whisky"
+    },
+    "merlet-vsop": {
+      "name": "Merlet VSOP Brothers Blend",
+      "description": "Cognac français élégant aux arômes de fruits blancs et de vanille boisée.",
+      "ingredients": "Cognac VSOP"
+    },
+    "don-julio-repo": {
+      "name": "Don Julio Reposado",
+      "description": "Tequila reposado vieillie en fûts de chêne blanc avec de délicates notes de caramel.",
+      "ingredients": "Tequila Reposado"
+    },
+    "don-julio-anejo": {
+      "name": "Don Julio Añejo",
+      "description": "Tequila añejo riche vieillie 18 mois avec des notes de caramel et de miel.",
+      "ingredients": "Tequila Añejo"
+    },
+    "don-julio-1942": {
+      "name": "Don Julio 1942",
+      "description": "Tequila añejo légendaire, douce et onctueuse avec des notes riches de vanille et caramel.",
+      "ingredients": "Tequila Añejo d'Exception"
+    },
+    "clase-azul": {
+      "name": "Clase Azul Reposado",
+      "description": "Tequila d'exception douce et sucrée présentée dans sa carafe en céramique peinte à la main.",
+      "ingredients": "Tequila Reposado d'Exception"
+    },
+    "grey-goose": {
+      "name": "Grey Goose",
+      "description": "Vodka française haut de gamme distillée à base de blé et d'eau de source.",
+      "ingredients": "Vodka Premium"
+    },
+    "roku-gin": {
+      "name": "Roku Gin",
+      "description": "Gin artisanal japonais composé de six plantes botaniques saisonnières.",
+      "ingredients": "Gin Artisanal Japonais"
+    },
+    "monkey-47": {
+      "name": "Monkey 47 (500ml)",
+      "description": "Gin d'une complexité rare issu de la Forêt-Noire en Allemagne, distillé avec 47 plantes.",
+      "ingredients": "Gin de la Forêt-Noire"
+    }
+  },
+
+  "ingredients_dictionary": {
+    "Gin": "Gin sec premium distillé avec des baies de genièvre aromatiques.",
+    "Citron Vert": "Citron vert frais pressé pour une acidité d'agrume nette.",
+    "Sirop de Pastèque": "Jus de pastèque frais pressé mijoté maison quotidiennement.",
+    "Glaçons de Pastèque": "Jus de pastèque pur congelé pour que le verre ne soit jamais dilué.",
+    "Tonic": "Eau tonique fraîche de qualité supérieure.",
+    "Gin Infusé à l'Earl Grey": "Gin infusé lentement à froid avec des feuilles de thé noir Earl Grey bio.",
+    "Vermouth Doux": "Vin fortifié sucré aromatique infusé aux plantes.",
+    "Campari": "Apéritif italien classique aux oranges amères et plantes.",
+    "Citron Jaune": "Jus de citron jaune bio frais.",
+    "Miel": "Miel de fleurs sauvages bio produit localement à Taïwan.",
+    "Pomme": "Jus de pommes fraîches pressées locales.",
+    "Whisky Infusé à l'Oolong": "Bourbon américain infusé à froid avec du thé oolong d'Alishan pendant 72 heures.",
+    "Vodka": "Vodka de grain pure distillée trois fois.",
+    "Gingembre": "Jus de gingembre frais piquant pressé à la minute.",
+    "Liqueur de Poivre de Sichuan Maison": "Infusion de poivre vert du Sichuan apportant une finale parfumée et légèrement anesthésiante.",
+    "Rhum": "Rhum blanc léger de canne à sucre des Caraïbes.",
+    "Fruit de la Passion": "Pulpe et graines fraîches de fruits de la passion locaux.",
+    "Poivre Magao": "Poivre sauvage taïwanais de montagne aux arômes de citronnelle et de gingembre.",
+    "Tequila": "Tequila de qualité supérieure distillée à 100% à partir d'agave bleu.",
+    "Calamansi": "Agrume acide local proche du citron vert et de la mandarine.",
+    "Poivre Blanc": "Pincée de grains de poivre blanc moulu de qualité.",
+    "Goyave": "Jus doux et parfumé de goyave rose locale.",
+    "Sirop de Concombre & Feuille de Combava": "Jus de concombre frais mijoté avec des feuilles de kaffir lime (combava) parfumées.",
+    "Whisky Infusé à la Soupe de Prunes Acides": "Whisky infusé avec la soupe traditionnelle taïwanaise aux prunes fumées (Suanmeitang).",
+    "Sirop Simple": "Sirop de sucre de canne pur fait maison.",
+    "Bitters": "Bitters aromatiques classiques.",
+    "Islay Fumé": "Single malt tourbé écossais d'Islay apportant une note de feu de camp.",
+    "Cognac VSOP": "Brandy de raisin doublement distillé élevé en fûts de chêne français.",
+    "Liqueur de Chocolat Maison": "Liqueur riche de cacao noir amer préparée sur place.",
+    "Triple Sec": "Liqueur d'écorces d'oranges douces et amères.",
+    "Réduction de Vin Pétillant": "Réduction concentrée de vin blanc pétillant apportant une sucrosité vineuse.",
+    "Pollen d'Abeille": "Pollen d'abeille naturel en grains doux.",
+    "Absinthe": "Spiritueux herbacé fort parfumé à l'anis et à la grande absinthe.",
+    "Yuzu Kosho": "Condiment fermenté japonais à base de zeste de yuzu, piment vert et sel.",
+    "Feuilles de Shiso": "Feuilles fraîches aromatiques de shiso (pérille) verte.",
+    "Mezcal Durango": "Spiritueux d'agave artisanal mexicain au goût fumé caractéristique.",
+    "Jalapeño": "Rondelles de piment jalapeño vert frais.",
+    "Crème de Cassis Merlet": "Liqueur haut de gamme française de baies de cassis noir.",
+    "Eau de Vie de Pomme": "Eau de vie blanche distillée à partir de cidre de pomme frais.",
+    "Poire Confite": "Petite poire asiatique sauvage confite lentement au sucre.",
+    "Liqueur de Melon": "Liqueur française fine aromatisée au melon vert.",
+    "Lillet Rectifié": "Apéritif Lillet blanc équilibré en acidité avec de l'acide citrique et malique.",
+    "Thé Matcha": "Thé vert japonais finement broyé sur meule de pierre.",
+    "Blanc d'Œuf": "Blanc d'œuf pasteurisé pour une texture mousseuse et aérienne.",
+    "Bourbon": "Whisky de maïs américain élevé en fûts de chêne neufs brûlés.",
+    "Amaretto Adriatico Bianco": "Liqueur d'amande blanche italienne premium.",
+    "Sirop de Gingembre": "Jus de gingembre frais mijoté avec du sucre."
+  }
+}

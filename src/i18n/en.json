@@ -1,0 +1,498 @@
+{
+  "nav_venue": "The Venue",
+  "nav_bartenders": "Bartenders",
+  "nav_menu": "Menu",
+  "nav_gallery": "Gallery",
+  "nav_events": "Events",
+  "nav_contact": "Contact",
+
+  "hero_eyebrow": "Floor 15 · Illume Hotel · Taipei",
+  "hero_subtitle": "Crafted cocktails & panoramic skyline",
+  "hero_cta_menu": "View Menu",
+  "hero_cta_find": "Find Us",
+
+  "about_label": "Panoramic skybar · Taipei 101 view",
+  "about_title": "Craft cocktail bar<br>above the <em>city</em>",
+  "about_p1": "Opera is located at the top of the Illume Hotel in the heart of Taipei. Perched on the 15th floor, it commands a one-of-a-kind panoramic view overlooking Taipei Arena and the iconic 101 tower.",
+  "about_p2": "You will not be provided with just drinks — you will experience true craftsmanship. Every cocktail is a performance, every visit a memory.",
+  "info_location": "Location",
+  "info_location_v": "SongShan District<br>DunHua North Road, 100<br>Floor 15",
+  "info_view": "View",
+  "info_view_v": "Panoramic 360°<br>Taipei Arena & 101<br>City Skyline",
+  "info_tue_thu": "Tue – Thu",
+  "info_tue_thu_v": "6:00 PM – 1:00 AM",
+  "info_fri_sat": "Fri – Sat",
+  "info_fri_sat_v": "6:00 PM – 3:00 AM",
+
+  "bartender_label": "Behind the bar",
+  "bartender_title": "The <em>Maestro</em>",
+  "bartender_bio": "Previously owner-operator at R&D (Asia Top 50 Bar), Yann is a cocktail maestro, obsessed with flavors and always on the lookout for the next delightful beverage.",
+  "bartender_role": "Head Bartender · Asia Top 50",
+
+  "menu_label": "House-made syrups & infusions · Taipei",
+  "menu_title": "The <em>Menu</em>",
+  "menu_intro": "Every cocktail on our menu is built from the ground up. We craft all our syrups in-house and prepare each infusion ourselves — steeping spirits with fresh fruits, botanicals, flowers and spices to draw out flavors you won't find in any bottle off a shelf. From a watermelon syrup made the morning of service to an oolong-infused whiskey left to rest for days, every ingredient is intentional, every detail considered.",
+  "tab_signatures": "Signature Cocktails",
+  "tab_food": "Finger Food",
+  "tab_classics": "Classics",
+  "tab_bottles": "Bottles",
+
+  "gallery_label": "The atmosphere",
+  "gallery_title": "The <em>Space</em>",
+
+  "res_label": "Book a table · Skybar Taipei",
+  "res_title": "Table <em>Reservations</em>",
+  "res_capacity_1": "Up to 8 guests",
+  "res_capacity_2": "Up to 4 guests",
+  "res_capacity_3": "Up to 12 guests",
+  "res_min_spend": "minimum spend",
+  "res_note": "Table or entire section available for booking. Prices are minimum spend — all drinks and food included.",
+  "res_cta_text": "Ready to book your table? Reach out to us directly — we'll confirm your reservation within 24 hours.",
+
+  "trusted_label": "Social proof",
+  "trusted_title": "Trusted by <em>Companies</em>",
+  "trusted_intro": "Opera has been regularly hosting corporate events, transforming the space to match each client's needs and branding — from intimate gatherings of 20 to full buyouts of 300 guests.",
+  "trusted_col1": "Companies",
+  "trusted_col2": "Event Types",
+  "trusted_col3": "What Makes Us Special",
+  "trusted_e1": "Year-end Parties",
+  "trusted_e2": "Seminars",
+  "trusted_e3": "Workshops",
+  "trusted_e4": "Weddings",
+  "trusted_e5": "Product Launches",
+  "trusted_e6": "Cocktail Receptions",
+  "trusted_e7": "Award Ceremonies",
+  "trusted_e8": "Private Buyouts",
+  "trusted_s1": "Panoramic view of Taipei skyline & 101 Tower",
+  "trusted_s2": "Capacity for over 300 guests",
+  "trusted_s3": "Professional sound system & LED wall screens",
+  "trusted_s4": "8 HD TVs throughout the venue",
+  "trusted_s5": "A venue with its own identity & atmosphere",
+  "trusted_s6": "We speak French, English & Chinese",
+
+  "events_label": "Corporate hire · 20–300 guests · Taipei",
+  "events_title": "Private Event & Corporate <em>Venue</em>",
+  "events_intro": "Let's craft your company event together. Contact us to share your needs and we'll provide a detailed quotation tailored to your vision.",
+  "events_full_priv": "Full Venue Privatization",
+  "events_day": "Day Time",
+  "events_day_note": "(until 20:00)",
+  "events_night": "Night Time",
+  "events_night_note": "(from 21:00)",
+  "events_hr_venue": "Hourly — venue only",
+  "events_hr_drinks": "Hourly — with drinks & food",
+  "events_weekday": "Weekday",
+  "events_weekend": "Weekend",
+  "events_note": "Indicated prices are minimum spend — all food, beverages and services included.",
+  "events_packages": "Popular Packages",
+  "pkg1_title": "Open Bar",
+  "pkg1_desc": "Custom cocktail menu crafted by our team. Quotation required.",
+  "pkg2_title": "Prepaid Tickets",
+  "pkg2_desc": "300 NTD$ drink tickets per guest — flexible and easy to manage.",
+  "pkg3_title": "All You Can Drink",
+  "pkg3_desc": "400 NTD$ per guest per hour. Food budget recommended at 400 NTD$ per person.",
+  "events_services": "Services & Facilities",
+  "services_label": "Services",
+  "services_note": "(quoted on request)",
+  "svc1": "Crafted drinks menu",
+  "svc2": "Alcohol sourcing",
+  "svc3": "Floor staff",
+  "svc4": "Photographer",
+  "svc5": "Welcome desk",
+  "svc6": "Finger food & catering",
+  "svc7": "DJ",
+  "svc8": "Performers & staging",
+  "facilities_label": "Facilities",
+  "fac1": "19 sofas · 9 tables · 12 high tables",
+  "fac2": "29 bar stools · 8 TVs",
+  "fac3": "2 LED wall screens",
+  "fac4": "Pool table · 2 darts games",
+  "fac5": "DJ station · 2 wireless microphones",
+  "fac6": "Ambient lighting",
+  "fac7": "Service elevator & storage",
+  "events_cta_btn": "Contact our Events Team",
+
+  "contact_label": "Find us",
+  "contact_title": "Get in <em>Touch</em>",
+  "contact_addr_lbl": "Address",
+  "contact_addr_v": "Illume Hotel, 15F<br>No. 100, DunHua North Road<br>SongShan District, Taipei<br>台北松山區敦化北路100號15樓",
+  "contact_email_lbl": "Email",
+  "contact_follow": "Follow",
+  "contact_maps_btn": "Open in Google Maps",
+
+  "footer_copy": "© 2025 Opéra Taipei. All rights reserved.",
+
+  "menu_tags": {
+    "refreshing": "Refreshing",
+    "fruity": "Fruity",
+    "spirit-forward": "Spirit-Forward",
+    "bittersweet": "Bittersweet",
+    "sour": "Sour",
+    "smoky": "Smoky",
+    "spicy": "Spicy",
+    "sweet": "Sweet",
+    "herbal": "Herbal",
+    "creamy": "Creamy",
+    "nutty": "Nutty",
+    "sharing": "Sharing",
+    "savory": "Savory",
+    "nuts": "Contains Nuts",
+    "seafood": "Seafood",
+    "filling": "Filling",
+    "classic": "Classic"
+  },
+
+  "menu_radar": {
+    "sweetness": "Sweetness",
+    "acidity": "Acidity / Sourness",
+    "strength": "Spirit Strength",
+    "bitterness": "Bitterness"
+  },
+
+  "menu_items": {
+    "watermelon-gt": {
+      "name": "Watermelon Gin & Tonic",
+      "description": "A light and breezy summer tonic made with daily fresh cold-pressed watermelon juice, craft gin, and dry tonic water, garnished with frozen watermelon cubes.",
+      "ingredients": "Gin, Lime, Watermelon Syrup, Watermelon Ice Cubes, Tonic"
+    },
+    "earl-grey-negroni": {
+      "name": "Earl Grey Negroni",
+      "description": "A refined twist on the bittersweet classic, using gin slow-steeped with select organic Earl Grey tea leaves, sweet vermouth, and Campari.",
+      "ingredients": "Earl Grey Infused Gin, Sweet Vermouth, Campari"
+    },
+    "earl-grey-sour": {
+      "name": "Earl Grey Sour",
+      "description": "Bright and aromatic citrus sour balancing Earl Grey infused gin with tangy fresh lemon, wildflower honey, and fresh apple juice.",
+      "ingredients": "Earl Grey Infused Gin, Lemon, Honey, Apple"
+    },
+    "oolong-old-fashioned": {
+      "name": "Oolong Old Fashioned",
+      "description": "A bold, slow-sipping craft cocktail highlighting premium American bourbon whiskey cold-steeped with high-mountain Alishan oolong tea leaves.",
+      "ingredients": "Oolong Infused Whiskey"
+    },
+    "szechuan-mule": {
+      "name": "Szechuan Mule",
+      "description": "Spicy, carbonated kick made with grain vodka, fresh lime, crushed ginger root, and our house-made green Szechuan peppercorn liqueur that leaves a subtle citrus numbing finish.",
+      "ingredients": "Vodka, Lime, Ginger, Homemade Green Szechuan Peppercorn Liqueur"
+    },
+    "passion-fruit-daiquiri": {
+      "name": "Passion Fruit Daiquiri",
+      "description": "Tropical tartness combining white Caribbean rum, lime, fresh local passion fruit pulp, and crushed Magao (wild mountain pepper) seeds.",
+      "ingredients": "Rum, Lime, Passion Fruit, Magao"
+    },
+    "calamansi-white-pepper-margarita": {
+      "name": "Calamansi White Pepper Margarita",
+      "description": "Crisp and punchy tequila classic elevated with freshly squeezed local calamansi lime juice and a dash of ground white peppercorn.",
+      "ingredients": "Tequila, Lime, Calamansi, White Peppercorn"
+    },
+    "guava-cooler": {
+      "name": "Guava Cooler",
+      "description": "Sweet pink local guava juice shaken with light rum, lime, and a refreshing house-infused cucumber and kaffir lime leaf syrup.",
+      "ingredients": "Rum, Lime, Guava, Cucumber & Kaffir Lime Leaf Syrup"
+    },
+    "sour-plum-whiskey-sour": {
+      "name": "Sour Plum Soup Whiskey Sour",
+      "description": "Rich Taiwanese-inspired sour using whiskey infused with slow-cooked sour plum soup (Suanmeitang), finished with fresh lemon, simple syrup, bitters, and a spritz of smoky Islay malt.",
+      "ingredients": "Sour Plum Soup Infused Whiskey, Lemon, Simple, Bitters, Smoky Islay"
+    },
+    "chocolate-negroni": {
+      "name": "Chocolate Negroni",
+      "description": "Luxurious digestif mixing rich VSOP Cognac, house-prepared dark cacao liqueur, Triple Sec orange liqueur, and Campari.",
+      "ingredients": "VSOP Cognac, Homemade Chocolate Liqueur, Triple Sec, Campari"
+    },
+    "umabee": {
+      "name": "Umabee",
+      "description": "Elegantly sweet cocktail shaking dry gin with fresh lemon, concentrated sparkling wine reduction, and finished with organic bee pollen.",
+      "ingredients": "Gin, Lemon, Sparkling Wine Reduction, Bee Pollen"
+    },
+    "absinthe-emerald": {
+      "name": "Absinthe Emerald",
+      "description": "An intense, herbaceous performance blending gin, absinthe, fresh lemon juice, Japanese yuzu kosho, and fresh muddled shiso leaves.",
+      "ingredients": "Gin, Absinthe, Lemon, Simple, Yuzu Kosho, Shiso Leaves"
+    },
+    "el-diablo-verde": {
+      "name": "El Diablo Verde",
+      "description": "Smoky, spicy mezcal cocktail featuring Durango mezcal, fresh lime, sliced green jalapeño chili, and Merlet Crème de Cassis blackcurrant liqueur.",
+      "ingredients": "Durango Mezcal, Lime, Jalapeño, Merlet Crème de Cassis"
+    },
+    "niaoli-calvados": {
+      "name": "Niaoli Calvados",
+      "description": "Elegant local hybrid featuring apple eau de vie, lemon, and sweet candied Taiwanese bird pear (Niaoli).",
+      "ingredients": "Apple Eau de Vie, Lemon, Candied Asian Pear"
+    },
+    "melon-matcha": {
+      "name": "Melon Matcha",
+      "description": "Beautiful layered sour linking gin, sweet melonade, acid-rectified Lillet, stone-ground green matcha tea, and egg whites for a velvety texture.",
+      "ingredients": "Gin, Melonade, Acid Rectified Lillet, Matcha Tea, Egg Whites"
+    },
+    "almond-buck": {
+      "name": "Almond Buck",
+      "description": "Comforting highball mixing American bourbon, premium Amaretto Adriatico Bianco (white almond liqueur), fresh lemon, and spicy house ginger syrup.",
+      "ingredients": "Bourbon, Amaretto Adriatico Bianco, Lemon, Ginger Syrup"
+    },
+    "salsa-nachos": {
+      "name": "House Salsa & Nachos",
+      "description": "Crisp corn tortilla nachos served with fresh house-made tomato, cilantro, and onion salsa.",
+      "ingredients": "House Salsa, Tortilla Chips"
+    },
+    "roasted-nuts": {
+      "name": "Brown Sugar Roasted Nuts",
+      "description": "Assorted nuts slow-roasted in-house with Taiwanese brown sugar and aromatic spices.",
+      "ingredients": "Assorted Nuts, Brown Sugar, Spices"
+    },
+    "duck-prosciutto": {
+      "name": "Homemade Duck Prosciutto",
+      "description": "Thinly sliced premium duck breast cured and wind-dried in-house for intense savory flavor.",
+      "ingredients": "Cured Duck Breast"
+    },
+    "nachos-platter": {
+      "name": "Nachos Platter",
+      "description": "Large sharing platter of corn tortilla chips baked with melted cheese, jalapeños, salsa, and sour cream.",
+      "ingredients": "Tortilla Chips, Cheese, Jalapeños, Salsa, Sour Cream"
+    },
+    "chicken-wrap": {
+      "name": "Roasted Chicken Wrap",
+      "description": "Grilled chicken breast wrap packed with fresh vegetables and creamy yogurt dressing.",
+      "ingredients": "Grilled Chicken, Flour Tortilla, Mixed Vegetables, Yogurt Dressing"
+    },
+    "salmon-toast": {
+      "name": "Cured Salmon on Sour Cream Toast",
+      "description": "House-cured Atlantic salmon slices served over toasted sourdough bread spread with dill sour cream.",
+      "ingredients": "Sourdough Toast, Cured Salmon, Dill Sour Cream"
+    },
+    "old-fashioned": {
+      "name": "Old Fashioned",
+      "description": "The quintessential whiskey classic: American bourbon, brown sugar, and aromatic Angostura bitters.",
+      "ingredients": "Bourbon, Brown Sugar, Bitters"
+    },
+    "dirty-martini": {
+      "name": "Dirty Martini",
+      "description": "A savory, dry favorite shaking gin with dry vermouth, green olive brine, and garnished with olives.",
+      "ingredients": "Gin, Dirty Juice, Olive"
+    },
+    "espresso-martini": {
+      "name": "Espresso Martini",
+      "description": "A rich, energizing cocktail of triple-distilled vodka, freshly pulled espresso coffee, brown sugar, and house-made coffee amaro.",
+      "ingredients": "Vodka, Espresso, Brown Sugar, Homemade Coffee Amaro"
+    },
+    "paloma": {
+      "name": "Paloma",
+      "description": "Bright and effervescent tequila cooler mixing blue agave tequila, fresh lime juice, pink grapefruit juice, a splash of Campari, and carbonated water.",
+      "ingredients": "Tequila, Lime, Grapefruit, Campari, Salt, Co2"
+    },
+    "clover-club": {
+      "name": "Clover Club",
+      "description": "A pre-prohibition classic combining gin, lemon juice, fresh raspberries, dry vermouth, and egg whites for a silky finish.",
+      "ingredients": "Gin, Lemon, Raspberry, Vermouth, Egg Whites"
+    },
+    "bloody-mary": {
+      "name": "Bloody Mary",
+      "description": "A spicy, savory meal in a glass: vodka, lime, rich tomato juice, house seasoning blend (Worcestershire sauce, Tabasco, peppercorns).",
+      "ingredients": "Vodka, Lime, Tomato Juice, Dirty Juice, Worcestershire, Tabasco, Peppercorn"
+    },
+    "pina-colada": {
+      "name": "Pina Colada",
+      "description": "Tropical paradise of light rum, lime juice, pineapple juice, and rich sweet coconut cream blended until smooth.",
+      "ingredients": "Rum, Lime, Pineapple, Cream of Coconut"
+    },
+    "manhattan": {
+      "name": "Manhattan",
+      "description": "Elegant and spirit-forward classic combining American rye/bourbon whiskey, sweet Italian vermouth, Angostura bitters, and a brandied cherry.",
+      "ingredients": "Bourbon, Sweet Vermouth, Cherry, Bitters"
+    },
+    "penicillin": {
+      "name": "Penicillin",
+      "description": "Soothing blend of blended Scotch whiskey, fresh lemon, ginger-honey syrup, finished with a float of peated smoky Islay malt.",
+      "ingredients": "Scotch, Lemon, Ginger, Honey, Smoky Islay"
+    },
+    "new-york-sour": {
+      "name": "New York Sour",
+      "description": "Visually stunning sour: bourbon whiskey, lemon juice, simple syrup, topped with a float of ruby port wine.",
+      "ingredients": "Bourbon, Lemon, Golden Simple, Bitters, Ruby Port"
+    },
+    "pisco-sour": {
+      "name": "Pisco Sour",
+      "description": "The Peruvian classic shaking pisco brandy with fresh lime juice, simple syrup, egg whites, and finished with aromatic Amargo Chuncho bitters.",
+      "ingredients": "Pisco, Lemon, Simple, Amargo Chuncho, Egg Whites"
+    },
+    "caipirinha": {
+      "name": "Caipirinha",
+      "description": "Brazil's national cocktail: muddled fresh lime wedges and raw brown sugar shaken with cachaça sugarcane spirit.",
+      "ingredients": "Cachaca, Lime, Brown Sugar, Bitters"
+    },
+    "house-spirit": {
+      "name": "House Spirit",
+      "description": "Full bottle of our premium house spirit select from Vodka, Gin, Bourbon Whiskey, Light Rum, or Silver Tequila.",
+      "ingredients": "Vodka · Gin · Whiskey · Rum · Tequila"
+    },
+    "house-wine": {
+      "name": "House Red / White",
+      "description": "Select bottle of our carefully sourced house red or house white wine.",
+      "ingredients": "Red or White Wine Bottle"
+    },
+    "chateau-edmus": {
+      "name": "Château Edmus St Émilion 2013",
+      "description": "Premium French Merlot-dominant Bordeaux blend from St Émilion.",
+      "ingredients": "Saint-Émilion Grand Cru Bordeaux"
+    },
+    "les-bellissands": {
+      "name": "Les Bellissands 1er Cru 2018",
+      "description": "Exquisite French Pinot Noir from a premier cru vineyard in Burgundy.",
+      "ingredients": "Burgundy Premier Cru Pinot Noir"
+    },
+    "pouilly-fuisse": {
+      "name": "Pouilly Fuissé 2018",
+      "description": "Elegant, dry French Chardonnay white wine from southern Burgundy.",
+      "ingredients": "Burgundy Chardonnay"
+    },
+    "marquis-brut": {
+      "name": "Marquis de Pomereuil Brut",
+      "description": "Crisp and celebratory French Champagne bottle.",
+      "ingredients": "Champagne Brut"
+    },
+    "marquis-brut-3": {
+      "name": "Marquis de Pomereuil Brut 3L",
+      "description": "Double magnum (Jeroboam) celebration bottle of Marquis de Pomereuil Brut Champagne.",
+      "ingredients": "3-Liter Champagne Bottle"
+    },
+    "pommery-brut": {
+      "name": "Pommery Brut",
+      "description": "A world-renowned classic Champagne bottle with fresh, lively notes.",
+      "ingredients": "Pommery Champagne Brut"
+    },
+    "pommery-brut-3": {
+      "name": "Pommery Brut 3L",
+      "description": "Double magnum celebration bottle of Pommery Brut Champagne.",
+      "ingredients": "3-Liter Champagne Bottle"
+    },
+    "highland-park-12": {
+      "name": "Highland Park 12 years",
+      "description": "Single malt Scotch whiskey featuring heather-honey sweetness and peat smoke.",
+      "ingredients": "Single Malt Scotch Bottle"
+    },
+    "singleton-12": {
+      "name": "Singleton 12 years",
+      "description": "Smooth and easy-drinking single malt Scotch with luscious fruit notes.",
+      "ingredients": "Single Malt Scotch Bottle"
+    },
+    "talisker-10": {
+      "name": "Talisker 10 years",
+      "description": "Bold, peated single malt Scotch with maritime saltiness and black pepper spice.",
+      "ingredients": "Single Malt Scotch Bottle"
+    },
+    "lagavulin-8": {
+      "name": "Lagavulin 8 years",
+      "description": "Intensely smoky and sweet Islay single malt Scotch whiskey bottle.",
+      "ingredients": "Single Malt Islay Scotch Bottle"
+    },
+    "jw-xr21": {
+      "name": "Johnnie Walker XR21",
+      "description": "Exceptional blended Scotch whiskey created to honor Sir Alexander Walker.",
+      "ingredients": "Premium Blended Scotch Bottle"
+    },
+    "balvenie-12": {
+      "name": "Balvenie Double Wood 12 years",
+      "description": "Classic Speyside single malt aged in traditional oak then finished in sherry casks.",
+      "ingredients": "Single Malt Scotch Bottle"
+    },
+    "balvenie-21": {
+      "name": "Balvenie Port Wood 21 years",
+      "description": "Magnificent single malt finished in high-quality port pipes, adding deep fruit tones.",
+      "ingredients": "Ultra-Premium Single Malt Scotch Bottle"
+    },
+    "macallan-15": {
+      "name": "Macallan 15 years",
+      "description": "Exquisite double cask single malt aged in sherry-seasoned American and European oak.",
+      "ingredients": "Premium Single Malt Scotch Bottle"
+    },
+    "merlet-vsop": {
+      "name": "Merlet VSOP Brothers Blend",
+      "description": "Superb French Cognac featuring orchard fruit notes and vanilla oak finish.",
+      "ingredients": "VSOP Cognac Bottle"
+    },
+    "don-julio-repo": {
+      "name": "Don Julio Reposado",
+      "description": "Golden tequila aged for 8 months in white oak barrels, with citrus and spice notes.",
+      "ingredients": "Reposado Tequila Bottle"
+    },
+    "don-julio-anejo": {
+      "name": "Don Julio Añejo",
+      "description": "Rich tequila aged for 18 months, with complex caramel, wild honey, and oak notes.",
+      "ingredients": "Añejo Tequila Bottle"
+    },
+    "don-julio-1942": {
+      "name": "Don Julio 1942",
+      "description": "Iconic, ultra-premium tequila aged in small batches, tasting of warm caramel and vanilla.",
+      "ingredients": "Ultra-Premium Añejo Tequila Bottle"
+    },
+    "clase-azul": {
+      "name": "Clase Azul Reposado",
+      "description": "Legendary reposado tequila housed in a hand-painted ceramic decanter.",
+      "ingredients": "Ultra-Premium Ceramic Decanter Tequila Bottle"
+    },
+    "grey-goose": {
+      "name": "Grey Goose Vodka",
+      "description": "Premium French wheat vodka distilled with natural spring water.",
+      "ingredients": "Premium Vodka Bottle"
+    },
+    "roku-gin": {
+      "name": "Roku Gin",
+      "description": "Japanese craft gin featuring six seasonal botanicals.",
+      "ingredients": "Japanese Craft Gin Bottle"
+    },
+    "monkey-47": {
+      "name": "Monkey 47 (500ml)",
+      "description": "Unrivaled complex gin from the Black Forest containing 47 unique botanicals.",
+      "ingredients": "Black Forest Craft Gin Bottle"
+    }
+  },
+
+  "ingredients_dictionary": {
+    "Gin": "Premium London Dry Gin distilled with botanical juniper berries.",
+    "Lime": "Freshly squeezed green limes for clean citrus acidity.",
+    "Watermelon Syrup": "House-pressed watermelon juice simmered fresh daily.",
+    "Watermelon Ice Cubes": "Frozen fresh watermelon juice so the drink never dilutes.",
+    "Tonic": "Chilled premium tonic water.",
+    "Earl Grey Infused Gin": "Gin cold-steeped with premium Earl Grey tea leaves.",
+    "Sweet Vermouth": "Aromatic sweetened fortified wine.",
+    "Campari": "Classic Italian bitter orange aperitif.",
+    "Lemon": "Fresh organic yellow lemons.",
+    "Honey": "Local Taiwanese organic wildflower honey.",
+    "Apple": "Freshly pressed local organic apples.",
+    "Oolong Infused Whiskey": "Bourbon whiskey cold-infused with high-mountain Alishan oolong tea for 72 hours.",
+    "Vodka": "Triple-distilled clean grain vodka.",
+    "Ginger": "Freshly juiced local spicy ginger root.",
+    "Homemade Green Szechuan Peppercorn Liqueur": "Infused Green Szechuan peppercorns drawing a numbing and aromatic citrus finish.",
+    "Rum": "Premium light Caribbean cane rum.",
+    "Passion Fruit": "Freshly scooped local sweet-tart passion fruits.",
+    "Magao": "Taiwanese wild mountain pepper with lemongrass and ginger aromas.",
+    "Tequila": "100% blue agave tequila.",
+    "Calamansi": "Local citrus hybrid resembling sweet lime and tangerine.",
+    "White Peppercorn": "Crushed aromatic white peppercorn.",
+    "Guava": "Sweet local pink guava juice.",
+    "Cucumber & Kaffir Lime Leaf Syrup": "House-pressed cucumber juice simmered with aromatic kaffir lime leaves.",
+    "Sour Plum Soup Infused Whiskey": "Whiskey cold-infused with traditional slow-cooked sour plum tea (Suanmeitang).",
+    "Simple": "Classic house-made cane sugar syrup.",
+    "Bitters": "Aromatic herbal bitters.",
+    "Smoky Islay": "Peated single malt Scotch whiskey from Islay, adding a campfire aroma.",
+    "VSOP Cognac": "Double-distilled French grape brandy aged in oak barrels.",
+    "Homemade Chocolate Liqueur": "Rich dark chocolate liqueur prepared in-house.",
+    "Triple Sec": "Premium orange peel liqueur.",
+    "Sparkling Wine Reduction": "Concentrated white sparkling wine reduction adding deep grape sweetness.",
+    "Bee Pollen": "Natural sweet bee pollen granules.",
+    "Absinthe": "Anise-flavored herbal spirit with wormwood.",
+    "Yuzu Kosho": "Japanese fermented paste made from fresh yuzu peel, green chili, and salt.",
+    "Shiso Leaves": "Fresh aromatic green shiso (perilla) leaves.",
+    "Durango Mezcal": "Artisanal smoky agave spirit from Durango, Mexico.",
+    "Jalapeño": "Fresh sliced spicy green jalapeño chili peppers.",
+    "Merlet Crème de Cassis": "Premium French blackcurrant liqueur.",
+    "Apple Eau de Vie": "Clear fruit brandy distilled from fresh apples.",
+    "Candied Asian Pear": "Slow-simmered caramelized local pear.",
+    "Melonade": "Premium French melon liqueur.",
+    "Acid Rectified Lillet": "Lillet blanc fortified wine balanced with citric and malic acids.",
+    "Matcha Tea": "Stone-ground premium Japanese green tea.",
+    "Egg Whites": "Fresh pasteurized egg whites adding a silky foam head.",
+    "Bourbon": "Premium American charred-oak bourbon whiskey.",
+    "Amaretto Adriatico Bianco": "Premium Italian white almond liqueur.",
+    "Ginger Syrup": "Fresh ginger juice simmered with organic sugar."
+  }
+}
