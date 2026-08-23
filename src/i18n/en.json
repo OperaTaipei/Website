@@ -512,5 +512,15 @@
     "Cointreau": "Premium French orange liqueur made with sweet and bitter orange peels.",
     "Maison Fontaine Absinthe Blanche": "Ultra-premium white absinthe distilled in Pontarlier, France.",
     "Champagne": "Crisp and elegant French sparkling wine."
-  }
+  },
+  "booking_title": "How to Book Your Table",
+  "booking_subtitle": "Please contact our team directly through our reservation channels. Bookings are processed manually and confirmed within 24 hours.",
+  "booking_ig": "Instagram DM",
+  "booking_ig_sub": "Fastest confirmation",
+  "booking_email": "Email Request",
+  "booking_email_sub": "Pre-filled draft template",
+  "booking_tip": "Tip",
+  "booking_reminder": "Please include your <strong>Name, Date/Time, Phone, and number of guests</strong> to speed up confirmation.",
+  "booking_mail_subject": "Table Reservation Request - Opéra Taipei",
+  "booking_mail_body": "Hi Opéra Team,%0D%0A%0D%0AI would like to request a table reservation with the following details:%0D%0A%0D%0A- Name:%0D%0A- Phone Number:%0D%0A- Date & Time:%0D%0A- Number of Guests:%0D%0A- Table / Area Preference:%0D%0A%0D%0AThank you!"
 }

@@ -512,5 +512,15 @@
     "Cointreau": "Liqueur d'orange française premium à base d'écorces d'oranges douces et amères.",
     "Absinthe Blanche Maison Fontaine": "Absinthe blanche ultra-premium distillée à Pontarlier en France.",
     "Champagne": "Vin effervescent français élégant et prestigieux."
-  }
+  },
+  "booking_title": "Comment réserver votre table",
+  "booking_subtitle": "Veuillez contacter notre équipe directement via nos canaux de réservation. Les réservations sont traitées manuellement et confirmées sous 24 heures.",
+  "booking_ig": "Instagram DM",
+  "booking_ig_sub": "Confirmation la plus rapide",
+  "booking_email": "Demande par e-mail",
+  "booking_email_sub": "Modèle pré-rempli",
+  "booking_tip": "Conseil",
+  "booking_reminder": "Veuillez indiquer votre <strong>Nom, Date/Heure, Téléphone et nombre d'invités</strong> pour accélérer la confirmation.",
+  "booking_mail_subject": "Demande de réservation de table - Opéra Taipei",
+  "booking_mail_body": "Bonjour l'équipe Opéra,%0D%0A%0D%0AJe souhaite faire une demande de réservation de table avec les détails suivants :%0D%0A%0D%0A- Nom :%0D%0A- Numéro de téléphone :%0D%0A- Date & Heure :%0D%0A- Nombre d'invités :%0D%0A- Préférence de table / zone :%0D%0A%0D%0AMerci !"
 }

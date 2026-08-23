@@ -52,31 +52,31 @@ const { t } = Astro.props;
       </p>
 
       <div class="booking-channels-card">
-        <h4 class="booking-card-title">How to Book Your Table</h4>
+        <h4 class="booking-card-title">{t.booking_title}</h4>
         <p class="booking-card-subtitle">
-          Please contact our team directly through our reservation channels. Bookings are processed manually and confirmed within 24 hours.
+          {t.booking_subtitle}
         </p>
 
         <!-- Direct Actions -->
         <div class="booking-action-channels">
           <a href="https://www.instagram.com/operataipei/" target="_blank" rel="noopener noreferrer" class="channel-btn ig-btn">
             <span class="btn-text-wrap">
-              <strong>Instagram DM</strong>
-              <small>Fastest confirmation</small>
+              <strong>{t.booking_ig}</strong>
+              <small>{t.booking_ig_sub}</small>
             </span>
           </a>
 
-          <a href="mailto:contact@opera-taipei.com?subject=Table Reservation Request - Opéra Taipei&body=Hi Opéra Team,%0D%0A%0D%0AI would like to request a table reservation with the following details:%0D%0A%0D%0A- Name:%0D%0A- Phone Number:%0D%0A- Date & Time:%0D%0A- Number of Guests:%0D%0A- Table / Area Preference:%0D%0A%0D%0AThank you!" class="channel-btn mail-btn">
+          <a href={`mailto:contact@opera-taipei.com?subject=${t.booking_mail_subject}&body=${t.booking_mail_body}`} class="channel-btn mail-btn">
             <span class="btn-text-wrap">
-              <strong>Email Request</strong>
-              <small>Pre-filled draft template</small>
+              <strong>{t.booking_email}</strong>
+              <small>{t.booking_email_sub}</small>
             </span>
           </a>
         </div>
 
         <div class="booking-info-reminder">
-          <span class="reminder-badge">Tip</span>
-          <p>Please include your <strong>Name, Date/Time, Phone, and number of guests</strong> to speed up confirmation.</p>
+          <span class="reminder-badge">{t.booking_tip}</span>
+          <p set:html={t.booking_reminder} />
         </div>
       </div>
 

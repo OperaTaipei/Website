@@ -512,5 +512,15 @@
     "君度橙皮酒": "選用甜橙與苦橙皮釀製的法國頂級橙皮利口酒。",
     "芳泉白苦艾酒": "法國蓬塔利耶蒸餾的頂級白苦艾酒。",
     "香檳": "清脆高雅的法國氣泡葡萄酒。"
-  }
+  },
+  "booking_title": "如何預訂您的桌位",
+  "booking_subtitle": "請透過我們的預約管道直接聯絡團隊。所有預約皆為人工處理，並在24小時內完成確認。",
+  "booking_ig": "Instagram 私訊",
+  "booking_ig_sub": "最快獲得確認",
+  "booking_email": "電子郵件預約",
+  "booking_email_sub": "已預填資訊範本",
+  "booking_tip": "提醒",
+  "booking_reminder": "請提供您的<strong>姓名、日期/時間、電話以及人數</strong>，以加速預訂確認流程。",
+  "booking_mail_subject": "桌位預訂申請 - Opéra Taipei",
+  "booking_mail_body": "你好 Opéra 團隊，%0D%0A%0D%0A我想要申請預訂桌位，詳細資訊如下：%0D%0A%0D%0A- 姓名：%0D%0A- 電話號碼：%0D%0A- 日期與時間：%0D%0A- 賓客總人數：%0D%0A- 桌位 / 區域偏好：%0D%0A%0D%0A謝謝！"
 }
