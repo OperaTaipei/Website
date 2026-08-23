@@ -918,6 +918,7 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
             </select>
           </div>
           <div style="display: flex; gap: 0.5rem;">
+            <button class="btn btn-secondary" onclick="backupDatabase()">Backup database</button>
             <button class="btn btn-secondary" onclick="exportToMarkdown()">Export .md</button>
             <button class="btn" onclick="generatePrintedLayout()">Print pdf</button>
           </div>
@@ -1760,6 +1761,24 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
 
       printWindow.document.write(html);
       printWindow.document.close();
+    }
+
+    function backupDatabase() {
+      const link1 = document.createElement('a');
+      link1.href = '/opera-admin/api/backup?type=structure';
+      link1.download = 'schema_backup.sql';
+      document.body.appendChild(link1);
+      link1.click();
+      document.body.removeChild(link1);
+
+      setTimeout(() => {
+        const link2 = document.createElement('a');
+        link2.href = '/opera-admin/api/backup?type=data';
+        link2.download = 'data_backup.sql';
+        document.body.appendChild(link2);
+        link2.click();
+        document.body.removeChild(link2);
+      }, 500);
     }
   </script>
 </body>
