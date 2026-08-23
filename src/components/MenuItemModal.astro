@@ -31,12 +31,6 @@ const { t, lang } = Astro.props;
           <div class="ingredients-label">{lang === 'zh' ? '調配成分 (點擊看說明)：' : 'Ingredients (click for details):'}</div>
           <div class="menu-modal-ingredients-pills" id="modal-ingredients-pills"></div>
         </div>
-
-        <!-- Radar Ratings (SVG Sliders) -->
-        <div class="menu-modal-radar-section" id="modal-radar-section">
-          <h4 class="flavor-profile-title">{lang === 'zh' ? '風味指標' : 'Flavor Profile'}</h4>
-          <div class="radar-sliders" id="modal-sliders-container"></div>
-        </div>
       </div>
     </div>
   </div>
@@ -57,8 +51,6 @@ const { t, lang } = Astro.props;
   const modalTags = document.getElementById('modal-tags');
   const modalIngredientsSection = document.getElementById('modal-ingredients-section');
   const modalIngredientsPills = document.getElementById('modal-ingredients-pills');
-  const modalRadarSection = document.getElementById('modal-radar-section');
-  const modalSlidersContainer = document.getElementById('modal-sliders-container');
   const tooltip = document.getElementById('ingredient-tooltip');
 
   // Open Modal logic
@@ -127,50 +119,6 @@ const { t, lang } = Astro.props;
           });
         } else {
           modalIngredientsSection.style.display = 'none';
-        }
-      }
-
-      // Set SVG Radar Ratings
-      if (modalSlidersContainer && modalRadarSection) {
-        modalSlidersContainer.innerHTML = '';
-        if (data.radar) {
-          modalRadarSection.style.display = 'block';
-          
-          Object.entries(data.radar).forEach(([key, val]) => {
-            const row = document.createElement('div');
-            row.className = 'radar-row';
-
-            const label = document.createElement('span');
-            label.className = 'radar-label';
-            label.textContent = translations.menu_radar[key] || key;
-
-            // Build rating bar (using divs for clean scaling on mobile)
-            const barContainer = document.createElement('div');
-            barContainer.className = 'rating-bar-container';
-
-            const fill = document.createElement('div');
-            fill.className = 'rating-bar-fill';
-            fill.style.width = '0%'; // Start at 0 for entrance animation
-
-            barContainer.appendChild(fill);
-
-            const score = document.createElement('span');
-            score.className = 'rating-score';
-            score.textContent = `${val}/5`;
-
-            row.appendChild(label);
-            row.appendChild(barContainer);
-            row.appendChild(score);
-
-            modalSlidersContainer.appendChild(row);
-
-            // Animate width expansion
-            setTimeout(() => {
-              fill.style.width = `${(val / 5) * 100}%`;
-            }, 100);
-          });
-        } else {
-          modalRadarSection.style.display = 'none';
         }
       }
 
@@ -393,56 +341,6 @@ const { t, lang } = Astro.props;
     border-color: rgba(201, 168, 76, 0.4);
   }
 
-  /* Flavor Sliders */
-  .menu-modal-radar-section {
-    border-top: 1px solid rgba(180, 150, 90, 0.08);
-    padding-top: 20px;
-  }
-  .flavor-profile-title {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: rgba(245, 240, 232, 0.4);
-    margin-bottom: 15px;
-  }
-  .radar-sliders {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  .radar-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-  }
-  .radar-label {
-    font-size: 0.8rem;
-    color: rgba(245, 240, 232, 0.8);
-    width: 140px;
-    flex-shrink: 0;
-  }
-  .rating-bar-container {
-    flex-grow: 1;
-    background: rgba(245, 240, 232, 0.05);
-    height: 4px;
-    border-radius: 2px;
-    overflow: hidden;
-  }
-  .rating-bar-fill {
-    background: #c9a84c;
-    height: 100%;
-    border-radius: 2px;
-    transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
-  .rating-score {
-    font-size: 0.75rem;
-    color: #c9a84c;
-    width: 30px;
-    text-align: right;
-    font-weight: 500;
-  }
-
   /* Tooltip Popover */
   .ingredient-tooltip-popover {
     position: absolute;
@@ -495,14 +393,6 @@ const { t, lang } = Astro.props;
 
     .menu-modal-details {
       padding: 20px;
-    }
-
-    .radar-row {
-      gap: 10px;
-    }
-    .radar-label {
-      width: 100px;
-      font-size: 0.75rem;
     }
   }
 </style>
