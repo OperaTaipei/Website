@@ -719,47 +719,64 @@ nav.scrolled .nav-logo-img {
   color: var(--color-gold-light);
 }
 
+/* Container to host the tabs and the mobile gradient overlay */
+.menu-tabs-container {
+  position: relative;
+  margin-bottom: 50px;
+}
+
+/* Fading hint overlay for mobile horizontal scrolling */
+.menu-tabs-container::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 40px;
+  background: linear-gradient(to right, transparent, var(--color-bg-dark, #0d0d0d));
+  pointer-events: none;
+}
+
 /* Horizontal scrollable tab bar */
 .menu-tabs {
   display: flex;
-  margin-bottom: 60px;
-  border-bottom: 1px solid var(--color-gold-border);
+  gap: 12px;
   overflow-x: auto;
+  padding-bottom: 8px;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
 }
 
 .menu-tabs::-webkit-scrollbar { display: none; }
 
+/* Capsule Pill Tabs */
 .menu-tab {
-  padding: 16px 28px;
-  background: none;
-  border: none;
-  color: var(--color-text-muted);
+  padding: 10px 22px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(212, 175, 55, 0.3); /* Subtle gold border */
+  border-radius: 30px; /* Rounded pill shape */
+  color: rgba(255, 255, 255, 0.7);
   font-family: 'Montserrat', sans-serif;
-  font-size: 0.62rem;
-  letter-spacing: 0.2em;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: color 0.25s;
+  transition: all 0.25s ease;
   white-space: nowrap;
-  position: relative;
 }
 
-/* Gold underline indicator for the active tab */
-.menu-tab::after {
-  content: '';
-  position: absolute;
-  bottom: -1px; left: 0; right: 0;
-  height: 1px;
-  background: var(--color-gold);
-  transform: scaleX(0);
-  transition: transform 0.3s;
+/* Hover State (Desktop) */
+.menu-tab:hover {
+  background: rgba(212, 175, 55, 0.1);
+  color: var(--color-gold-light, #f3e5ab);
+  border-color: var(--color-gold, #d4af37);
 }
 
-.menu-tab.active         { color: var(--color-gold-light); }
-.menu-tab.active::after  { transform: scaleX(1); }
-.menu-tab:hover          { color: var(--color-gold-light); }
+/* Active State (Both) */
+.menu-tab.active {
+  background: var(--color-gold, #d4af37);
+  color: #000 !important; /* High contrast black text on gold background */
+  border-color: var(--color-gold, #d4af37);
+}
 
 /* Each tab panel is hidden by default; .active makes it visible */
 .menu-panel         { display: none; }
