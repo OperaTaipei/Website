@@ -5,12 +5,10 @@
   "nav_gallery": "Galerie",
   "nav_events": "Événements",
   "nav_contact": "Contact",
-
   "hero_eyebrow": "15ème étage · Hôtel Illume · Taipei",
   "hero_subtitle": "Cocktails d'exception & panorama urbain",
   "hero_cta_menu": "Voir le Menu",
   "hero_cta_find": "Nous Trouver",
-
   "about_label": "Skybar panoramique · Vue sur Taipei 101",
   "about_title": "Bar à cocktails de spécialité<br>au-dessus de la <em>ville</em>",
   "about_p1": "Opera est situé au sommet de l'Hôtel Illume, au cœur de Taipei. Perché au 15ème étage, il offre une vue panoramique unique sur la Taipei Arena et l'emblématique tour 101.",
@@ -23,23 +21,23 @@
   "info_tue_thu_v": "18h00 – 01h00",
   "info_fri_sat": "Ven – Sam",
   "info_fri_sat_v": "18h00 – 03h00",
-
   "bartender_label": "Derrière le bar",
   "bartender_title": "Le <em>Maestro</em>",
   "bartender_bio": "Anciennement propriétaire et exploitant du R&D (classé dans le Top 50 des bars d'Asie), Yann est un maestro du cocktail, obsédé par les saveurs et toujours en quête de la prochaine boisson délicieuse.",
   "bartender_role": "Chef Barman · Top 50 Asie",
-
   "menu_label": "Sirops maison & infusions · Taipei",
   "menu_title": "Le <em>Menu</em>",
   "menu_intro": "Chaque cocktail de notre menu est créé à partir de zéro. Nous fabriquons tous nos sirops maison et préparons chaque infusion nous-mêmes — en faisant macérer les alcools avec des fruits frais, des plantes, des fleurs et des épices pour en extraire des saveurs introuvables en bouteille industrielle. Du sirop de pastèque pressé le matin même au whisky infusé au thé oolong reposant pendant des jours, chaque ingrédient est intentionnel, chaque détail soigné.",
   "tab_signatures": "Cocktails Créations",
   "tab_food": "Finger Food",
+  "tab_ontap": "Pression",
+  "ontap_sub_cocktails": "Cocktails 9.5% alc. 250 NTD$",
+  "ontap_sub_mocktails": "MOCKTAILS 0% alc. 200 NTD$",
+  "ontap_sub_beer": "Bière",
   "tab_classics": "Classiques",
   "tab_bottles": "Bouteilles",
-
   "gallery_label": "L'ambiance",
   "gallery_title": "L'<em>Espace</em>",
-
   "res_label": "Réserver une table · Skybar Taipei",
   "res_title": "Réservations de <em>tables</em>",
   "res_capacity_1": "Jusqu'à 8 personnes",
@@ -48,7 +46,6 @@
   "res_min_spend": "minimum de commande",
   "res_note": "Table ou section entière disponible à la réservation. Les prix correspondent à un minimum de commande — boissons et nourriture incluses.",
   "res_cta_text": "Prêt à réserver votre table ? Contactez-nous directement — nous confirmerons votre réservation sous 24 heures.",
-
   "trusted_label": "Partenaires",
   "trusted_title": "Recommandé par les <em>Entreprises</em>",
   "trusted_intro": "L'Opera accueille régulièrement des événements d'entreprise, transformant l'espace selon les besoins et l'identité visuelle de chaque client — des rassemblements intimes de 20 personnes aux privatisations complètes jusqu'à 300 invités.",
@@ -69,7 +66,6 @@
   "trusted_s4": "8 écrans HD répartis dans tout l'établissement",
   "trusted_s5": "Un lieu doté de sa propre identité et atmosphère",
   "trusted_s6": "Notre personnel parle français, anglais et chinois",
-
   "events_label": "Événements d'entreprise · 20–300 personnes · Taipei",
   "events_title": "Lieu d'événements privés & <em>d'entreprise</em>",
   "events_intro": "Créons ensemble votre événement d'entreprise. Contactez-nous pour partager vos besoins et nous vous fournirons un devis détaillé sur mesure.",
@@ -110,7 +106,6 @@
   "fac6": "Éclairage d'ambiance personnalisé",
   "fac7": "Ascenseur de service & stockage",
   "events_cta_btn": "Contacter notre équipe événementielle",
-
   "contact_label": "Nous situer",
   "contact_title": "Entrer en <em>Contact</em>",
   "contact_addr_lbl": "Adresse",
@@ -118,9 +113,7 @@
   "contact_email_lbl": "E-mail",
   "contact_follow": "Suivez-nous",
   "contact_maps_btn": "Ouvrir dans Google Maps",
-
   "footer_copy": "© 2025 Opéra Taipei. Tous droits réservés.",
-
   "menu_tags": {
     "refreshing": "Rafraîchissant",
     "fruity": "Fruité",
@@ -140,14 +133,12 @@
     "filling": "Copieux",
     "classic": "Classique"
   },
-
   "menu_radar": {
     "sweetness": "Douceur",
     "acidity": "Acidité",
     "strength": "Force en Alcool",
     "bitterness": "Amertume"
   },
-
   "menu_items": {
     "watermelon-gt": {
       "name": "Watermelon Gin & Tonic",
@@ -238,6 +229,37 @@
       "name": "Cured Salmon on Sour Cream Toast",
       "description": "Tranches de saumon atlantique mariné maison servies sur du pain au levain grillé avec de la crème sure à l'aneth.",
       "ingredients": "Pain Grillé, Saumon Mariné, Crème Sure à l'Aneth"
+    },
+    "apple-osmanthus": {
+      "name": "APPLE OSMANTHUS"
+    },
+    "raspberry-rooibos": {
+      "name": "RASPBERRY ROOIBOS"
+    },
+    "passion-fruit-oolong": {
+      "name": "PASSION FRUIT OOLONG"
+    },
+    "tepache": {
+      "name": "TEPACHE",
+      "ingredients": "Ananas, Gingembre, Jalapeño"
+    },
+    "bissap": {
+      "name": "BISSAP",
+      "ingredients": "Hibiscus & Menthe"
+    },
+    "citrus-jade": {
+      "name": "CITRUS JADE",
+      "ingredients": "Pamplemousse, Thé vert"
+    },
+    "oolong-sparkling": {
+      "name": "OOLONG SPARKLING",
+      "ingredients": "Mélange de cinq thés Oolong"
+    },
+    "red-point-lager": {
+      "name": "RED POINT LAGER 4.8% alc. 200NTD$"
+    },
+    "red-point-taipa": {
+      "name": "RED POINT TaiPA 5.8% alc. 250 NTD$"
     },
     "dirty-martini": {
       "name": "Dirty Martini",
@@ -430,7 +452,6 @@
       "ingredients": "Gin de la Forêt-Noire"
     }
   },
-
   "ingredients_dictionary": {
     "Gin": "Gin sec premium distillé avec des baies de genièvre aromatiques.",
     "Citron Vert": "Citron vert frais pressé pour une acidité d'agrume nette.",

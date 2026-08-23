@@ -5,12 +5,10 @@
   "nav_gallery": "Gallery",
   "nav_events": "Events",
   "nav_contact": "Contact",
-
   "hero_eyebrow": "Floor 15 · Illume Hotel · Taipei",
   "hero_subtitle": "Crafted cocktails & panoramic skyline",
   "hero_cta_menu": "View Menu",
   "hero_cta_find": "Find Us",
-
   "about_label": "Panoramic skybar · Taipei 101 view",
   "about_title": "Craft cocktail bar<br>above the <em>city</em>",
   "about_p1": "Opera is located at the top of the Illume Hotel in the heart of Taipei. Perched on the 15th floor, it commands a one-of-a-kind panoramic view overlooking Taipei Arena and the iconic 101 tower.",
@@ -23,23 +21,23 @@
   "info_tue_thu_v": "6:00 PM – 1:00 AM",
   "info_fri_sat": "Fri – Sat",
   "info_fri_sat_v": "6:00 PM – 3:00 AM",
-
   "bartender_label": "Behind the bar",
   "bartender_title": "The <em>Maestro</em>",
   "bartender_bio": "Previously owner-operator at R&D (Asia Top 50 Bar), Yann is a cocktail maestro, obsessed with flavors and always on the lookout for the next delightful beverage.",
   "bartender_role": "Head Bartender · Asia Top 50",
-
   "menu_label": "House-made syrups & infusions · Taipei",
   "menu_title": "The <em>Menu</em>",
   "menu_intro": "Every cocktail on our menu is built from the ground up. We craft all our syrups in-house and prepare each infusion ourselves — steeping spirits with fresh fruits, botanicals, flowers and spices to draw out flavors you won't find in any bottle off a shelf. From a watermelon syrup made the morning of service to an oolong-infused whiskey left to rest for days, every ingredient is intentional, every detail considered.",
   "tab_signatures": "Signature Cocktails",
   "tab_food": "Finger Food",
+  "tab_ontap": "On Tap",
+  "ontap_sub_cocktails": "Cocktails 9.5% alc. 250 NTD$",
+  "ontap_sub_mocktails": "MOCKTAILS 0% alc. 200 NTD$",
+  "ontap_sub_beer": "Beer",
   "tab_classics": "Classics",
   "tab_bottles": "Bottles",
-
   "gallery_label": "The atmosphere",
   "gallery_title": "The <em>Space</em>",
-
   "res_label": "Book a table · Skybar Taipei",
   "res_title": "Table <em>Reservations</em>",
   "res_capacity_1": "Up to 8 guests",
@@ -48,7 +46,6 @@
   "res_min_spend": "minimum spend",
   "res_note": "Table or entire section available for booking. Prices are minimum spend — all drinks and food included.",
   "res_cta_text": "Ready to book your table? Reach out to us directly — we'll confirm your reservation within 24 hours.",
-
   "trusted_label": "Social proof",
   "trusted_title": "Trusted by <em>Companies</em>",
   "trusted_intro": "Opera has been regularly hosting corporate events, transforming the space to match each client's needs and branding — from intimate gatherings of 20 to full buyouts of 300 guests.",
@@ -69,7 +66,6 @@
   "trusted_s4": "8 HD TVs throughout the venue",
   "trusted_s5": "A venue with its own identity & atmosphere",
   "trusted_s6": "We speak French, English & Chinese",
-
   "events_label": "Corporate hire · 20–300 guests · Taipei",
   "events_title": "Private Event & Corporate <em>Venue</em>",
   "events_intro": "Let's craft your company event together. Contact us to share your needs and we'll provide a detailed quotation tailored to your vision.",
@@ -110,7 +106,6 @@
   "fac6": "Ambient lighting",
   "fac7": "Service elevator & storage",
   "events_cta_btn": "Contact our Events Team",
-
   "contact_label": "Find us",
   "contact_title": "Get in <em>Touch</em>",
   "contact_addr_lbl": "Address",
@@ -118,9 +113,7 @@
   "contact_email_lbl": "Email",
   "contact_follow": "Follow",
   "contact_maps_btn": "Open in Google Maps",
-
   "footer_copy": "© 2025 Opéra Taipei. All rights reserved.",
-
   "menu_tags": {
     "refreshing": "Refreshing",
     "fruity": "Fruity",
@@ -140,14 +133,12 @@
     "filling": "Filling",
     "classic": "Classic"
   },
-
   "menu_radar": {
     "sweetness": "Sweetness",
     "acidity": "Acidity / Sourness",
     "strength": "Spirit Strength",
     "bitterness": "Bitterness"
   },
-
   "menu_items": {
     "watermelon-gt": {
       "name": "Watermelon Gin & Tonic",
@@ -238,6 +229,37 @@
       "name": "Cured Salmon on Sour Cream Toast",
       "description": "House-cured Atlantic salmon slices served over toasted sourdough bread spread with dill sour cream.",
       "ingredients": "Sourdough Toast, Cured Salmon, Dill Sour Cream"
+    },
+    "apple-osmanthus": {
+      "name": "APPLE OSMANTHUS"
+    },
+    "raspberry-rooibos": {
+      "name": "RASPBERRY ROOIBOS"
+    },
+    "passion-fruit-oolong": {
+      "name": "PASSION FRUIT OOLONG"
+    },
+    "tepache": {
+      "name": "TEPACHE",
+      "ingredients": "Pineapple, Ginger, Jalapeno"
+    },
+    "bissap": {
+      "name": "BISSAP",
+      "ingredients": "Hibiscus & Mint"
+    },
+    "citrus-jade": {
+      "name": "CITRUS JADE",
+      "ingredients": "Grapefruit, Green tea"
+    },
+    "oolong-sparkling": {
+      "name": "OOLONG SPARKLING",
+      "ingredients": "Blend of five Oolong teas"
+    },
+    "red-point-lager": {
+      "name": "RED POINT LAGER 4.8% alc. 200NTD$"
+    },
+    "red-point-taipa": {
+      "name": "RED POINT TaiPA 5.8% alc. 250 NTD$"
     },
     "dirty-martini": {
       "name": "Dirty Martini",
@@ -430,7 +452,6 @@
       "ingredients": "Black Forest Craft Gin Bottle"
     }
   },
-
   "ingredients_dictionary": {
     "Gin": "Premium London Dry Gin distilled with botanical juniper berries.",
     "Lime": "Freshly squeezed green limes for clean citrus acidity.",

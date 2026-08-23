@@ -30,6 +30,10 @@
   "menu_intro": "私たちのメニューにあるカクテルは、すべて一から手作りしています。シロップはすべて自家製で、スピリッツのインフュージョン（浸漬）も自社で行っています。新鮮なフルーツ、ボタニカル、花、スパイスなどをスピリッツに漬け込み、市販のボトルにはない奥深い風味を引き出します。朝絞りのスイカシロップから、数日間寝かせたウーロン茶インフュージョンウイスキーまで、すべての素材に意図があり、細部にまでこだわりが詰まっています。",
   "tab_signatures": "シグネチャー・カクテル",
   "tab_food": "フード",
+  "tab_ontap": "タップ・生ビール",
+  "ontap_sub_cocktails": "タップカクテル 9.5% alc. 250 NTD$",
+  "ontap_sub_mocktails": "ノンアルコール 0% alc. 200 NTD$",
+  "ontap_sub_beer": "ビール",
   "tab_classics": "クラシック・カクテル",
   "tab_bottles": "ボトル",
   "gallery_label": "店内の雰囲気",
@@ -225,6 +229,37 @@
       "name": "サーモンマリネのサワートースト",
       "description": "自家製でハーブマリネしたアトランティックサーモンのスライスを、ディル風味のサワークリームを塗った香ばしいサワードゥブレンドトーストにのせて。",
       "ingredients": "サワードゥトースト, サーモンマリネ, ディルサワークリーム"
+    },
+    "apple-osmanthus": {
+      "name": "アップル・オスマンサス"
+    },
+    "raspberry-rooibos": {
+      "name": "ラズベリー・ルイボス"
+    },
+    "passion-fruit-oolong": {
+      "name": "パッションフルーツ・ウーロン"
+    },
+    "tepache": {
+      "name": "テパチェ",
+      "ingredients": "パイナップル, 生姜, ハラペーニョ"
+    },
+    "bissap": {
+      "name": "ビサップ",
+      "ingredients": "ハイビスカス, ミント"
+    },
+    "citrus-jade": {
+      "name": "シトラス・ジェイド",
+      "ingredients": "グレープフルーツ, 緑茶"
+    },
+    "oolong-sparkling": {
+      "name": "ウーロン・スパークリング",
+      "ingredients": "5種の烏龍茶ブレンド"
+    },
+    "red-point-lager": {
+      "name": "レッドポイント ラガー 4.8% alc. 200 NTD$"
+    },
+    "red-point-taipa": {
+      "name": "レッドポイント 台PA 5.8% alc. 250 NTD$"
     },
     "dirty-martini": {
       "name": "ダーティ・マティーニ",

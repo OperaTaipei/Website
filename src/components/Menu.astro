@@ -14,6 +14,7 @@ const { t, lang } = Astro.props;
 // Group menu items by category
 const signatures = menuData.filter(item => item.category === 'signatures');
 const food = menuData.filter(item => item.category === 'food');
+const ontap = menuData.filter(item => item.category === 'ontap');
 const classics = menuData.filter(item => item.category === 'classics');
 const bottles = menuData.filter(item => item.category === 'bottles');
 
@@ -35,6 +36,7 @@ const drinkTags = ['refreshing', 'spirit-forward', 'sour', 'smoky', 'spicy', 'sw
     <div class="menu-tabs" role="tablist">
       <button class="menu-tab active" data-tab="signatures" role="tab">{t.tab_signatures}</button>
       <button class="menu-tab"        data-tab="food"       role="tab">{t.tab_food}</button>
+      <button class="menu-tab"        data-tab="ontap"      role="tab">{t.tab_ontap}</button>
       <button class="menu-tab"        data-tab="classics"   role="tab">{t.tab_classics}</button>
       <button class="menu-tab"        data-tab="bottles"    role="tab">{t.tab_bottles}</button>
     </div>
@@ -123,6 +125,54 @@ const drinkTags = ['refreshing', 'spirit-forward', 'sour', 'smoky', 'spicy', 'sw
               <div class="menu-item-name">{itemText.name}</div>
               <div class="menu-item-name-chinese">{lang === 'zh' ? '' : zh.menu_items[item.id]?.name}</div>
               <div class="menu-item-price">{item.price} NTD</div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+
+    <!-- ON TAP -->
+    <div class="menu-panel" id="tab-ontap">
+      <!-- Cocktails subcategory -->
+      <div class="price-tier-badge">{t.ontap_sub_cocktails}</div>
+      <div class="menu-grid">
+        {ontap.filter(item => item.subcategory === 'cocktails').map(item => {
+          const itemText = t.menu_items[item.id] || {};
+          return (
+            <div class="menu-item">
+              <div class="menu-item-name">{itemText.name}</div>
+              <div class="menu-item-name-chinese">{lang === 'zh' ? '' : zh.menu_items[item.id]?.name}</div>
+              {itemText.ingredients && <div class="menu-item-ingredients">{itemText.ingredients}</div>}
+            </div>
+          );
+        })}
+      </div>
+
+      <!-- Mocktails subcategory -->
+      <div class="price-tier-badge price-tier-badge--spaced">{t.ontap_sub_mocktails}</div>
+      <div class="menu-grid">
+        {ontap.filter(item => item.subcategory === 'mocktails').map(item => {
+          const itemText = t.menu_items[item.id] || {};
+          return (
+            <div class="menu-item">
+              <div class="menu-item-name">{itemText.name}</div>
+              <div class="menu-item-name-chinese">{lang === 'zh' ? '' : zh.menu_items[item.id]?.name}</div>
+              {itemText.ingredients && <div class="menu-item-ingredients">{itemText.ingredients}</div>}
+            </div>
+          );
+        })}
+      </div>
+
+      <!-- Beer subcategory -->
+      <div class="price-tier-badge price-tier-badge--spaced">{t.ontap_sub_beer}</div>
+      <div class="menu-grid">
+        {ontap.filter(item => item.subcategory === 'beer').map(item => {
+          const itemText = t.menu_items[item.id] || {};
+          return (
+            <div class="menu-item">
+              <div class="menu-item-name">{itemText.name}</div>
+              <div class="menu-item-name-chinese">{lang === 'zh' ? '' : zh.menu_items[item.id]?.name}</div>
+              {itemText.ingredients && <div class="menu-item-ingredients">{itemText.ingredients}</div>}
             </div>
           );
         })}

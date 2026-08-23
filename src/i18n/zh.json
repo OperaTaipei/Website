@@ -5,12 +5,10 @@
   "nav_gallery": "相片集",
   "nav_events": "活動場地",
   "nav_contact": "聯絡我們",
-
   "hero_eyebrow": "15樓 · 慕軒飯店 · 台北",
   "hero_subtitle": "精緻調酒 · 全景天際線",
   "hero_cta_menu": "查看菜單",
   "hero_cta_find": "找到我們",
-
   "about_label": "全景天空酒吧 · 台北101景觀",
   "about_title": "城市<em>上空</em>的精釀調酒吧",
   "about_p1": "Opera位於台北市中心慕軒飯店頂層。坐落於15樓，擁有無與倫比的全景視野，俯瞰台北小巨蛋與標誌性的101大樓。",
@@ -23,23 +21,23 @@
   "info_tue_thu_v": "下午6:00 – 凌晨1:00",
   "info_fri_sat": "週五 – 週六",
   "info_fri_sat_v": "下午6:00 – 凌晨3:00",
-
   "bartender_label": "吧台背後",
   "bartender_title": "<em>首席</em>調酒師",
   "bartender_bio": "Yann 曾是 R&D（亞洲前50名酒吧）的老闆兼調酒師，是一位對風味充滿熱情、不斷追尋下一杯令人驚艷飲品的調酒大師。",
   "bartender_role": "首席調酒師 · 亞洲前50名",
-
   "menu_label": "自製糖漿與浸漬酒 · 台北",
   "menu_title": "<em>菜單</em>",
   "menu_intro": "我們菜單上的每一款調酒都是從零開始精心打造。所有糖漿均自製，每一種浸漬酒都親手調配——將烈酒與新鮮水果、植物、花卉和香料一同浸泡，萃取出任何瓶裝酒都無法呈現的風味。從當天早晨現做的西瓜糖漿，到靜置數日的烏龍威士忌，每一種食材都經過深思熟慮，每一個細節都不容忽視。",
   "tab_signatures": "招牌調酒",
   "tab_food": "輕食",
+  "tab_ontap": "汲飲系列",
+  "ontap_sub_cocktails": "雞尾酒 9.5% alc. 250NTD$",
+  "ontap_sub_mocktails": "無酒精 0% alc. 200 NTD$",
+  "ontap_sub_beer": "啤酒",
   "tab_classics": "經典調酒",
   "tab_bottles": "瓶裝酒",
-
   "gallery_label": "場地氛圍",
   "gallery_title": "<em>空間</em>展示",
-
   "res_label": "訂位 · 台北天空酒吧",
   "res_title": "桌位<em>預訂</em>",
   "res_capacity_1": "最多8位",
@@ -48,7 +46,6 @@
   "res_min_spend": "最低消費",
   "res_note": "可預訂單桌或整個區域。價格為最低消費——包含所有飲品及餐點。",
   "res_cta_text": "準備好預訂桌位了嗎？直接聯絡我們，我們將在24小時內確認您的預訂。",
-
   "trusted_label": "合作見證",
   "trusted_title": "<em>企業</em>信賴之選",
   "trusted_intro": "Opera 定期舉辦企業活動，依照每位客戶的需求與品牌形象靈活調整場地——從20人的小型聚會到300人的全場包場。",
@@ -69,7 +66,6 @@
   "trusted_s4": "全場8台高清電視",
   "trusted_s5": "擁有獨特氛圍與個性的場地",
   "trusted_s6": "我們說法語、英語和中文",
-
   "events_label": "企業包場 · 20–300位 · 台北",
   "events_title": "私人活動 & 企業<em>場地租借</em>",
   "events_intro": "讓我們一起打造您的企業活動。歡迎聯絡我們分享您的需求，我們將提供量身訂製的詳細報價。",
@@ -110,7 +106,6 @@
   "fac6": "氛圍燈光",
   "fac7": "服務專梯 & 儲藏室",
   "events_cta_btn": "聯絡我們的活動團隊",
-
   "contact_label": "找到我們",
   "contact_title": "與我們<em>聯繫</em>",
   "contact_addr_lbl": "地址",
@@ -118,9 +113,7 @@
   "contact_email_lbl": "電子郵件",
   "contact_follow": "追蹤我們",
   "contact_maps_btn": "在Google地圖中開啟",
-
   "footer_copy": "© 2025 Opéra Taipei。版權所有。",
-
   "menu_tags": {
     "refreshing": "清爽型",
     "fruity": "水果風味",
@@ -140,14 +133,12 @@
     "filling": "飽足感",
     "classic": "經典複刻"
   },
-
   "menu_radar": {
     "sweetness": "甜度",
     "acidity": "酸度",
     "strength": "酒感",
     "bitterness": "苦度"
   },
-
   "menu_items": {
     "watermelon-gt": {
       "name": "西瓜琴湯尼",
@@ -238,6 +229,37 @@
       "name": "醃製鮭魚麵包塔佐酸奶油",
       "description": "店內自醃大西洋鮭魚切片，鋪於烘烤過的酸種麵包上，並塗抹蒔蘿酸奶油。",
       "ingredients": "酸種麵包, 醃製鮭魚, 蒔蘿酸奶油"
+    },
+    "apple-osmanthus": {
+      "name": "蘋果桂花"
+    },
+    "raspberry-rooibos": {
+      "name": "覆盆莓國寶茶"
+    },
+    "passion-fruit-oolong": {
+      "name": "百香果烏龍"
+    },
+    "tepache": {
+      "name": "特帕切",
+      "ingredients": "鳳梨、老薑、墨西哥辣椒"
+    },
+    "bissap": {
+      "name": "洛神花薄荷",
+      "ingredients": "洛神花、薄荷"
+    },
+    "citrus-jade": {
+      "name": "葡萄柚綠茶",
+      "ingredients": "葡萄柚、綠茶"
+    },
+    "oolong-sparkling": {
+      "name": "烏龍氣泡飲",
+      "ingredients": "綜合烏龍"
+    },
+    "red-point-lager": {
+      "name": "紅點鮮釀拉格 4.8% alc. 200 NTD$"
+    },
+    "red-point-taipa": {
+      "name": "紅點台PA 5.8% alc. 250 NTD$"
     },
     "dirty-martini": {
       "name": "髒馬丁尼",
@@ -430,7 +452,6 @@
       "ingredients": "黑森林工藝琴酒整瓶"
     }
   },
-
   "ingredients_dictionary": {
     "琴酒": "優質倫敦乾琴酒，萃取杜松子等多種植物精華。",
     "萊姆汁": "現榨新鮮綠萊姆，提供純淨明亮的柑橘酸感。",
