@@ -1,0 +1,1377 @@
+---
+export const prerender = false;
+
+import * as dbHelpers from '../../lib/db';
+
+const db = Astro.locals.runtime?.env?.DB;
+if (!db) {
+  return new Response("Cloudflare D1 Database binding is missing. Check your wrangler configuration.", { status: 500 });
+}
+
+// 1. Fetch initial lists
+const menuItems = await dbHelpers.getMenuItems(db);
+const categories = await dbHelpers.getCategories(db);
+const ingredients = await dbHelpers.getIngredients(db);
+const flavorTags = await dbHelpers.getFlavorTags(db);
+const media = await dbHelpers.getMedia(db);
+
+// Helper to check Cloudflare Access headers if available
+const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email') || 'Local Dev Admin';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Opera Taipei - Menu Backend Admin</title>
+  <style>
+    :root {
+      --bg-dark: #121214;
+      --bg-card: #1e1e24;
+      --primary: #c5a880;
+      --primary-hover: #b4966e;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --border: #2d2d34;
+      --danger: #ef4444;
+      --success: #10b981;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text);
+      padding: 2rem;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1rem;
+    }
+    h1 {
+      color: var(--primary);
+      font-weight: 600;
+    }
+    .user-tag {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      background: var(--border);
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 2rem;
+    }
+    .sidebar {
+      background: var(--bg-card);
+      border-radius: 8px;
+      padding: 1.5rem;
+      border: 1px solid var(--border);
+      height: fit-content;
+    }
+    .sidebar-nav button {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 0.75rem 1rem;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .sidebar-nav button.active {
+      background: var(--primary);
+      color: var(--bg-dark);
+      font-weight: bold;
+    }
+    .content-area {
+      background: var(--bg-card);
+      border-radius: 8px;
+      padding: 2rem;
+      border: 1px solid var(--border);
+    }
+    .btn {
+      background: var(--primary);
+      color: var(--bg-dark);
+      border: none;
+      padding: 0.5rem 1rem;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: background 0.2s;
+    }
+    .btn:hover {
+      background: var(--primary-hover);
+    }
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+    .btn-danger:hover {
+      background: #dc2626;
+    }
+    .btn-secondary {
+      background: #475569;
+      color: white;
+    }
+    .btn-secondary:hover {
+      background: #334155;
+    }
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .action-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+    }
+    th, td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    th {
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    tr:hover {
+      background: rgba(255,255,255,0.02);
+    }
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      background: var(--border);
+      color: var(--text-muted);
+      margin-right: 0.25rem;
+      margin-bottom: 0.25rem;
+    }
+    .badge-success {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+      border: 1px solid var(--success);
+    }
+    .badge-danger {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+      border: 1px solid var(--danger);
+    }
+    
+    /* Toggle switch CSS */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+    }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #475569;
+      transition: .4s;
+      border-radius: 24px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: var(--success);
+    }
+    input:checked + .slider:before {
+      transform: translateX(20px);
+    }
+
+    /* Modal dialog overrides */
+    .dialog {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      padding: 2rem;
+      margin: auto;
+      max-width: 600px;
+      width: 90%;
+    }
+    .dialog::backdrop {
+      background: rgba(0,0,0,0.8);
+    }
+    .dialog-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.5rem;
+    }
+    .dialog h3 {
+      color: var(--primary);
+    }
+    .dialog-close {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 1.5rem;
+    }
+    
+    /* Forms */
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    .form-control {
+      width: 100%;
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.75rem;
+      border-radius: 4px;
+      font-size: 0.95rem;
+    }
+    .form-control:focus {
+      outline: 1px solid var(--primary);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .form-group-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    /* Multi-language Tabs */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1rem;
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      font-weight: 500;
+    }
+    .tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+    .tab-content {
+      display: none;
+      background: rgba(0,0,0,0.15);
+      padding: 1rem;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      margin-bottom: 1rem;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .copy-helper-btn {
+      float: right;
+      font-size: 0.75rem;
+      background: #334155;
+      color: #cbd5e1;
+      border: none;
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
+      cursor: pointer;
+      margin-bottom: 0.5rem;
+    }
+    .copy-helper-btn:hover {
+      background: #475569;
+    }
+
+    /* Selection List Checkbox */
+    .select-checkbox {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    /* Print panel overlay */
+    .print-panel {
+      background: #1e293b;
+      padding: 1.5rem;
+      border-radius: 8px;
+      border: 1px solid #334155;
+      margin-top: 1.5rem;
+    }
+
+    /* Toast and Loading spinner */
+    #alert-banner {
+      display: none;
+      padding: 1rem;
+      border-radius: 4px;
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+    }
+    #alert-banner.success {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--success);
+      border: 1px solid var(--success);
+    }
+    #alert-banner.error {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--danger);
+      border: 1px solid var(--danger);
+    }
+
+    /* Mouse Loading cursor spinner style overlay */
+    #loading-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .spinner {
+      border: 4px solid rgba(255,255,255,0.1);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border-left-color: var(--primary);
+      animation: spin 1s linear infinite;
+      margin-bottom: 1rem;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div>
+      <h1>Opera Taipei Backend</h1>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.25rem;">Relational Database & Menu Management</p>
+    </div>
+    <span class="user-tag">User: {userEmail}</span>
+  </header>
+
+  <!-- Alert Banner -->
+  <div id="alert-banner"></div>
+
+  <!-- Loading Overlay -->
+  <div id="loading-overlay">
+    <div style="text-align: center;">
+      <div class="spinner"></div>
+      <p>Saving Changes...</p>
+    </div>
+  </div>
+
+  <div class="grid">
+    <!-- Sidebar navigation -->
+    <div class="sidebar">
+      <div class="sidebar-nav">
+        <button onclick="switchTab('items')" id="nav-items" class="active">Menu Items</button>
+        <button onclick="switchTab('categories')" id="nav-categories">Categories</button>
+        <button onclick="switchTab('ingredients')" id="nav-ingredients">Ingredients</button>
+        <button onclick="switchTab('tags')" id="nav-tags">Flavor Tags</button>
+      </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="content-area">
+      
+      <!-- Section: MENU ITEMS -->
+      <section id="section-items">
+        <div class="action-bar">
+          <h2>Menu Items</h2>
+          <div style="display: flex; gap: 0.5rem;">
+            <button class="btn btn-secondary" onclick="toggleSelectionAll(true)">Select All</button>
+            <button class="btn btn-secondary" onclick="toggleSelectionAll(false)">Deselect All</button>
+            <button class="btn" onclick="openItemDialog()">+ Add Menu Item</button>
+          </div>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 40px;">Select</th>
+              <th>Name (EN)</th>
+              <th>Category</th>
+              <th>Price (NTD$)</th>
+              <th>Ingredients</th>
+              <th>Tags</th>
+              <th>Visible</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {menuItems.map(item => (
+              <tr data-id={item.id}>
+                <td>
+                  <input type="checkbox" class="select-checkbox item-selector" data-item-id={item.id} data-category={item.category_name} />
+                </td>
+                <td style="font-weight: 500;">{item.name}</td>
+                <td><span class="badge">{item.category_name}</span></td>
+                <td>{item.price}</td>
+                <td>
+                  {item.ingredients.map(ing => (
+                    <span class="badge">{ing}</span>
+                  ))}
+                </td>
+                <td>
+                  {item.tags.map(tag => (
+                    <span class="badge">{tag}</span>
+                  ))}
+                </td>
+                <td>
+                  <label class="switch">
+                    <input type="checkbox" checked={item.is_available} onchange={`toggleAvailability(${item.id}, this.checked)`} />
+                    <span class="slider"></span>
+                  </label>
+                </td>
+                <td>
+                  <button class="btn btn-secondary btn-sm" onclick={`editItem(${JSON.stringify(item)})`}>Edit</button>
+                  <button class="btn btn-danger btn-sm" onclick={`deleteItem(${item.id})`}>Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <!-- Printing & Export Panel -->
+        <div class="print-panel">
+          <h3 style="color: var(--primary); margin-bottom: 0.75rem;">Print Menu & Export Panel</h3>
+          <div style="display: flex; gap: 1.5rem; align-items: center; margin-bottom: 1rem; flex-wrap: wrap;">
+            <div>
+              <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 0.25rem;">Target Language</label>
+              <select id="print-lang" class="form-control" style="width: 150px; padding: 0.4rem;">
+                <option value="en">English (EN)</option>
+                <option value="fr">French (FR)</option>
+                <option value="ja">Japanese (JA)</option>
+                <option value="zh">Chinese (ZH)</option>
+              </select>
+            </div>
+            <div>
+              <label style="display: flex; align-items: center; gap: 0.25rem; font-size: 0.85rem; margin-top: 1.25rem;">
+                <input type="checkbox" id="print-show-desc" checked /> Include Descriptions
+              </label>
+            </div>
+            <div>
+              <label style="display: flex; align-items: center; gap: 0.25rem; font-size: 0.85rem; margin-top: 1.25rem;">
+                <input type="checkbox" id="print-show-price" checked /> Include Prices
+              </label>
+            </div>
+            <div>
+              <label style="display: flex; align-items: center; gap: 0.25rem; font-size: 0.85rem; margin-top: 1.25rem;">
+                <input type="checkbox" id="print-show-ing" checked /> Include Ingredients
+              </label>
+            </div>
+          </div>
+          <div style="display: flex; gap: 0.5rem;">
+            <button class="btn" onclick="generatePrintedLayout()">Print Menu (PDF)</button>
+            <button class="btn btn-secondary" onclick="exportToMarkdown()">Copy Plain Text (Markdown)</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: CATEGORIES -->
+      <section id="section-categories" style="display: none;">
+        <div class="action-bar">
+          <h2>Categories</h2>
+          <button class="btn" onclick="openCategoryDialog()">+ Add Category</button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Code Name</th>
+              <th>Display Name (EN)</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {categories.map(cat => (
+              <tr>
+                <td>{cat.id}</td>
+                <td><code>{cat.code_name}</code></td>
+                <td>{cat.name}</td>
+                <td>
+                  <button class="btn btn-secondary btn-sm" onclick={`editCategory(${cat.id}, '${cat.code_name}')`}>Edit</button>
+                  <button class="btn btn-danger btn-sm" onclick={`deleteCategory(${cat.id})`}>Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Section: INGREDIENTS -->
+      <section id="section-ingredients" style="display: none;">
+        <div class="action-bar">
+          <h2>Ingredients</h2>
+          <button class="btn" onclick="openIngredientDialog()">+ Add Ingredient</button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Code Name</th>
+              <th>Display Name (EN)</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {ingredients.map(ing => (
+              <tr>
+                <td>{ing.id}</td>
+                <td><code>{ing.code_name}</code></td>
+                <td>{ing.name}</td>
+                <td>
+                  <button class="btn btn-secondary btn-sm" onclick={`editIngredient(${ing.id}, '${ing.code_name}')`}>Edit</button>
+                  <button class="btn btn-danger btn-sm" onclick={`deleteIngredient(${ing.id})`}>Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Section: FLAVOR TAGS -->
+      <section id="section-tags" style="display: none;">
+        <div class="action-bar">
+          <h2>Flavor Tags</h2>
+          <button class="btn" onclick="openTagDialog()">+ Add Flavor Tag</button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Code Name</th>
+              <th>Display Name (EN)</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {flavorTags.map(tag => (
+              <tr>
+                <td>{tag.id}</td>
+                <td><code>{tag.code_name}</code></td>
+                <td>{tag.name}</td>
+                <td>
+                  <button class="btn btn-secondary btn-sm" onclick={`editTag(${tag.id}, '${tag.code_name}')`}>Edit</button>
+                  <button class="btn btn-danger btn-sm" onclick={`deleteTag(${tag.id})`}>Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- DIALOG: MENU ITEM FORM -->
+  <dialog id="dialog-item" class="dialog">
+    <div class="dialog-header">
+      <h3 id="dialog-item-title">Add Menu Item</h3>
+      <button class="dialog-close" onclick="closeDialog('dialog-item')">&times;</button>
+    </div>
+    <form id="form-item" onsubmit="submitItem(event)">
+      <input type="hidden" name="id" id="item-id" />
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>English Display Name (Primary)</label>
+          <input type="text" id="item-en-name" name="translations.en.name" class="form-control" required oninput="handleSlugAutoGeneration(this.value)" />
+        </div>
+        <div class="form-group">
+          <label>Code Name / Slug (Auto-generated)</label>
+          <input type="text" id="item-code-name" name="code_name" class="form-control" required />
+        </div>
+      </div>
+
+      <!-- Localization Tabs inside dialog -->
+      <div style="margin-top: 1rem;">
+        <label style="color: var(--text-muted); font-size: 0.85rem; display: block; margin-bottom: 0.5rem;">Localizations</label>
+        <div class="tabs">
+          <button type="button" class="tab-btn active" onclick="switchLanguageTab('en')">EN</button>
+          <button type="button" class="tab-btn" onclick="switchLanguageTab('fr')">FR</button>
+          <button type="button" class="tab-btn" onclick="switchLanguageTab('ja')">JA</button>
+          <button type="button" class="tab-btn" onclick="switchLanguageTab('zh')">ZH</button>
+        </div>
+        
+        <!-- Locale EN Tab -->
+        <div id="locale-tab-en" class="tab-content active">
+          <div class="form-group">
+            <label>Description (EN)</label>
+            <textarea id="item-en-desc" name="translations.en.description" class="form-control" rows="2"></textarea>
+          </div>
+        </div>
+
+        <!-- Locale FR Tab -->
+        <div id="locale-tab-fr" class="tab-content">
+          <button type="button" class="copy-helper-btn" onclick="copyFromEnglish('fr')">Copy EN Content</button>
+          <div class="form-group">
+            <label>Name (FR)</label>
+            <input type="text" id="item-fr-name" name="translations.fr.name" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label>Description (FR)</label>
+            <textarea id="item-fr-desc" name="translations.fr.description" class="form-control" rows="2"></textarea>
+          </div>
+        </div>
+
+        <!-- Locale JA Tab -->
+        <div id="locale-tab-ja" class="tab-content">
+          <button type="button" class="copy-helper-btn" onclick="copyFromEnglish('ja')">Copy EN Content</button>
+          <div class="form-group">
+            <label>Name (JA)</label>
+            <input type="text" id="item-ja-name" name="translations.ja.name" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label>Description (JA)</label>
+            <textarea id="item-ja-desc" name="translations.ja.description" class="form-control" rows="2"></textarea>
+          </div>
+        </div>
+
+        <!-- Locale ZH Tab -->
+        <div id="locale-tab-zh" class="tab-content">
+          <button type="button" class="copy-helper-btn" onclick="copyFromEnglish('zh')">Copy EN Content</button>
+          <div class="form-group">
+            <label>Name (ZH)</label>
+            <input type="text" id="item-zh-name" name="translations.zh.name" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label>Description (ZH)</label>
+            <textarea id="item-zh-desc" name="translations.zh.description" class="form-control" rows="2"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Category</label>
+          <select id="item-category" name="category_id" class="form-control" required>
+            {categories.map(c => (
+              <option value={c.id}>{c.name}</option>
+            ))}
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Price (NTD$)</label>
+          <input type="number" id="item-price" name="price" class="form-control" required />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Attached Picture Path</label>
+          <select id="item-media" name="media_id" class="form-control">
+            <option value="">No Media Attached</option>
+            {media.map(m => (
+              <option value={m.id}>{m.url}</option>
+            ))}
+          </select>
+        </div>
+        <div class="form-group-checkbox">
+          <input type="checkbox" id="item-available" name="is_available" checked style="width: 20px; height: 20px;" />
+          <label for="item-available" style="margin-bottom: 0;">Visible on website menu</label>
+        </div>
+      </div>
+
+      <div class="form-row" style="margin-top: 1rem;">
+        <div class="form-group" style="max-height: 150px; overflow-y: auto; border: 1px solid var(--border); padding: 0.5rem; border-radius: 4px;">
+          <label style="font-weight: bold; margin-bottom: 0.5rem;">Ingredients</label>
+          {ingredients.map(ing => (
+            <div style="display: flex; align-items: center; gap: 0.25rem; font-size: 0.85rem; margin-bottom: 0.25rem;">
+              <input type="checkbox" name="ingredients" value={ing.id} class="ing-checkbox" id={`ing-c-${ing.id}`} />
+              <label for={`ing-c-${ing.id}`} style="margin-bottom: 0; cursor: pointer;">{ing.name}</label>
+            </div>
+          ))}
+        </div>
+        <div class="form-group" style="max-height: 150px; overflow-y: auto; border: 1px solid var(--border); padding: 0.5rem; border-radius: 4px;">
+          <label style="font-weight: bold; margin-bottom: 0.5rem;">Flavor Tags</label>
+          {flavorTags.map(t => (
+            <div style="display: flex; align-items: center; gap: 0.25rem; font-size: 0.85rem; margin-bottom: 0.25rem;">
+              <input type="checkbox" name="tags" value={t.id} class="tag-checkbox" id={`tag-c-${t.id}`} />
+              <label for={`tag-c-${t.id}`} style="margin-bottom: 0; cursor: pointer;">{t.name}</label>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.5rem;">
+        <button type="button" class="btn btn-secondary" onclick="closeDialog('dialog-item')">Cancel</button>
+        <button type="submit" class="btn">Save Menu Item</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- DIALOG: CATEGORY FORM -->
+  <dialog id="dialog-category" class="dialog">
+    <div class="dialog-header">
+      <h3 id="dialog-category-title">Add Category</h3>
+      <button class="dialog-close" onclick="closeDialog('dialog-category')">&times;</button>
+    </div>
+    <form id="form-category" onsubmit="submitCategory(event)">
+      <input type="hidden" name="id" id="category-id" />
+      <div class="form-group">
+        <label>Code Name (e.g. `signatures`)</label>
+        <input type="text" id="category-code" name="code_name" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label>English Display Name</label>
+        <input type="text" id="category-en" name="translations.en.name" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label>French Display Name</label>
+        <input type="text" id="category-fr" name="translations.fr.name" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label>Japanese Display Name</label>
+        <input type="text" id="category-ja" name="translations.ja.name" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label>Chinese Display Name</label>
+        <input type="text" id="category-zh" name="translations.zh.name" class="form-control" />
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.5rem;">
+        <button type="button" class="btn btn-secondary" onclick="closeDialog('dialog-category')">Cancel</button>
+        <button type="submit" class="btn">Save Category</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- DIALOG: INGREDIENT FORM -->
+  <dialog id="dialog-ingredient" class="dialog">
+    <div class="dialog-header">
+      <h3 id="dialog-ingredient-title">Add Ingredient</h3>
+      <button class="dialog-close" onclick="closeDialog('dialog-ingredient')">&times;</button>
+    </div>
+    <form id="form-ingredient" onsubmit="submitIngredient(event)">
+      <input type="hidden" name="id" id="ingredient-id" />
+      <div class="form-group">
+        <label>Code Name (e.g. `watermelon-syrup`)</label>
+        <input type="text" id="ingredient-code" name="code_name" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label>English Display Name</label>
+        <input type="text" id="ingredient-en" name="translations.en.name" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label>French Display Name</label>
+        <input type="text" id="ingredient-fr" name="translations.fr.name" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label>Japanese Display Name</label>
+        <input type="text" id="ingredient-ja" name="translations.ja.name" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label>Chinese Display Name</label>
+        <input type="text" id="ingredient-zh" name="translations.zh.name" class="form-control" />
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.5rem;">
+        <button type="button" class="btn btn-secondary" onclick="closeDialog('dialog-ingredient')">Cancel</button>
+        <button type="submit" class="btn">Save Ingredient</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- DIALOG: FLAVOR TAG FORM -->
+  <dialog id="dialog-tag" class="dialog">
+    <div class="dialog-header">
+      <h3 id="dialog-tag-title">Add Flavor Tag</h3>
+      <button class="dialog-close" onclick="closeDialog('dialog-tag')">&times;</button>
+    </div>
+    <form id="form-tag" onsubmit="submitTag(event)">
+      <input type="hidden" name="id" id="tag-id" />
+      <div class="form-group">
+        <label>Code Name (e.g. `fruity`)</label>
+        <input type="text" id="tag-code" name="code_name" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label>English Display Name</label>
+        <input type="text" id="tag-en" name="translations.en.name" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label>French Display Name</label>
+        <input type="text" id="tag-fr" name="translations.fr.name" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label>Japanese Display Name</label>
+        <input type="text" id="tag-ja" name="translations.ja.name" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label>Chinese Display Name</label>
+        <input type="text" id="tag-zh" name="translations.zh.name" class="form-control" />
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.5rem;">
+        <button type="button" class="btn btn-secondary" onclick="closeDialog('dialog-tag')">Cancel</button>
+        <button type="submit" class="btn">Save Tag</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script is:inline>
+    // Client-side interactions & Actions execution wrapper
+    const activeSection = 'items';
+    const activeLanguageTab = 'en';
+    
+    function switchTab(sectionId) {
+      ['items', 'categories', 'ingredients', 'tags'].forEach(id => {
+        document.getElementById(`section-${id}`).style.display = id === sectionId ? 'block' : 'none';
+        document.getElementById(`nav-${id}`).className = id === sectionId ? 'active' : '';
+      });
+    }
+
+    function switchLanguageTab(locale) {
+      ['en', 'fr', 'ja', 'zh'].forEach(loc => {
+        const el = document.getElementById(`locale-tab-${loc}`);
+        if (el) el.className = loc === locale ? 'tab-content active' : 'tab-content';
+      });
+      // Toggle button active highlights
+      const buttons = document.querySelectorAll('#dialog-item .tab-btn');
+      buttons.forEach(btn => {
+        if (btn.innerText.toLowerCase() === locale) btn.classList.add('active');
+        else btn.classList.remove('active');
+      });
+    }
+
+    function copyFromEnglish(targetLocale) {
+      const enName = document.getElementById('item-en-name').value;
+      const enDesc = document.getElementById('item-en-desc').value;
+      
+      const nameInput = document.getElementById(`item-${targetLocale}-name`);
+      const descInput = document.getElementById(`item-${targetLocale}-desc`);
+      
+      if (nameInput) nameInput.value = enName;
+      if (descInput) descInput.value = enDesc;
+    }
+
+    function handleSlugAutoGeneration(nameValue) {
+      const slugInput = document.getElementById('item-code-name');
+      const slug = nameValue
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '') // remove symbols
+        .trim()
+        .replace(/\s+/g, '-');        // replace space with hyphens
+      slugInput.value = slug;
+    }
+
+    function showAlert(type, message) {
+      const banner = document.getElementById('alert-banner');
+      banner.innerText = message;
+      banner.className = type;
+      banner.style.display = 'block';
+      setTimeout(() => {
+        banner.style.display = 'none';
+      }, 7000);
+    }
+
+    function showLoading(visible) {
+      document.getElementById('loading-overlay').style.display = visible ? 'flex' : 'none';
+      document.body.style.cursor = visible ? 'wait' : 'default';
+      // Disable buttons
+      const buttons = document.querySelectorAll('button, input[type=submit]');
+      buttons.forEach(btn => btn.disabled = visible);
+    }
+
+    function closeDialog(id) {
+      document.getElementById(id).close();
+    }
+
+    // ----------------------------------------------------
+    // ACTIONS RUNNERS
+    // ----------------------------------------------------
+    async function callAction(actionName, payload) {
+      showLoading(true);
+      try {
+        const res = await fetch(`/_actions/${actionName}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await res.json();
+        showLoading(false);
+        if (result.success) {
+          showAlert('success', result.message || 'Operation successful!');
+          setTimeout(() => window.location.reload(), 1000);
+        } else {
+          showAlert('error', result.error || 'An error occurred.');
+        }
+      } catch (err) {
+        showLoading(false);
+        showAlert('error', 'Network failure or server error.');
+      }
+    }
+
+    // Toggle menu visibility
+    async function toggleAvailability(id, isChecked) {
+      await callAction('toggleMenuItemAvailability', { id, is_available: isChecked });
+    }
+
+    // Delete item
+    async function deleteItem(id) {
+      if (confirm('Are you sure you want to delete this menu item?')) {
+        await callAction('deleteMenuItem', { id });
+      }
+    }
+
+    // Submit MenuItem Form
+    async function submitItem(event) {
+      event.preventDefault();
+      const form = document.getElementById('form-item');
+      const formData = new FormData(form);
+
+      // Collect multiple checkbox elements
+      const ingCheckboxes = document.querySelectorAll('.ing-checkbox:checked');
+      const tagCheckboxes = document.querySelectorAll('.tag-checkbox:checked');
+      const ingredients = Array.from(ingCheckboxes).map(c => Number(c.value));
+      const tags = Array.from(tagCheckboxes).map(c => Number(c.value));
+
+      const payload = {
+        id: formData.get('id') ? Number(formData.get('id')) : undefined,
+        code_name: formData.get('code_name'),
+        category_id: Number(formData.get('category_id')),
+        media_id: formData.get('media_id') ? Number(formData.get('media_id')) : null,
+        price: Number(formData.get('price')),
+        is_available: document.getElementById('item-available').checked,
+        ingredients,
+        tags,
+        translations: {
+          en: { name: formData.get('translations.en.name'), description: formData.get('translations.en.description') },
+          fr: { name: formData.get('translations.fr.name'), description: formData.get('translations.fr.description') },
+          ja: { name: formData.get('translations.ja.name'), description: formData.get('translations.ja.description') },
+          zh: { name: formData.get('translations.zh.name'), description: formData.get('translations.zh.description') }
+        }
+      };
+
+      await callAction('saveMenuItem', payload);
+      closeDialog('dialog-item');
+    }
+
+    // Open item create dialog
+    function openItemDialog() {
+      document.getElementById('dialog-item-title').innerText = 'Add Menu Item';
+      document.getElementById('form-item').reset();
+      document.getElementById('item-id').value = '';
+      
+      // Clear checked lists
+      document.querySelectorAll('.ing-checkbox').forEach(c => c.checked = false);
+      document.querySelectorAll('.tag-checkbox').forEach(c => c.checked = false);
+      
+      switchLanguageTab('en');
+      document.getElementById('dialog-item').showModal();
+    }
+
+    // Edit item (populates modal fields including translations fetch)
+    async function editItem(item) {
+      openItemDialog();
+      document.getElementById('dialog-item-title').innerText = 'Edit Menu Item';
+      
+      // Fetch translations dynamically
+      showLoading(true);
+      try {
+        const res = await fetch(`/_actions/saveMenuItem`); // Fetch fallback context
+        // Instead of endpoint we query translations table details directly or via fetch
+        // Since we can pass translations within data directly, let's load translations from a custom route
+        // Wait, for this demo/exercise we can easily fetch localized translations from database. Let's do a quick fetch
+        const transRes = await fetch(`/opera-admin/api/translations?entity_type=menu_item&id=${item.id}`);
+        const translations = await transRes.json();
+        
+        document.getElementById('item-id').value = item.id;
+        document.getElementById('item-code-name').value = item.code_name;
+        document.getElementById('item-category').value = item.category_id;
+        document.getElementById('item-media').value = item.media_id || '';
+        document.getElementById('item-price').value = item.price;
+        document.getElementById('item-available').checked = item.is_available;
+
+        // Set translations
+        ['en', 'fr', 'ja', 'zh'].forEach(loc => {
+          const trans = translations[loc] || { name: '', description: '' };
+          document.getElementById(`item-${loc}-name`).value = trans.name || (loc === 'en' ? item.name : '');
+          document.getElementById(`item-${loc}-desc`).value = trans.description || (loc === 'en' ? item.description : '');
+        });
+
+        // Set checkboxes
+        // Fetch specific selected IDs (using elements in row)
+        const row = document.querySelector(`tr[data-id="${item.id}"]`);
+        // We will select checking items by matching ingredients names or we can fetch ingredient relations.
+        // For simplicity, we query backend for item associations
+        const assocRes = await fetch(`/opera-admin/api/associations?id=${item.id}`);
+        const assoc = await assocRes.json();
+        
+        assoc.ingredients.forEach(id => {
+          const checkbox = document.getElementById(`ing-c-${id}`);
+          if (checkbox) checkbox.checked = true;
+        });
+        assoc.tags.forEach(id => {
+          const checkbox = document.getElementById(`tag-c-${id}`);
+          if (checkbox) checkbox.checked = true;
+        });
+
+        showLoading(false);
+        document.getElementById('dialog-item').showModal();
+      } catch (err) {
+        showLoading(false);
+        showAlert('error', 'Failed to load item translation details.');
+      }
+    }
+
+    // ----------------------------------------------------
+    // CATEGORIES CRUD
+    // ----------------------------------------------------
+    function openCategoryDialog() {
+      document.getElementById('dialog-category-title').innerText = 'Add Category';
+      document.getElementById('form-category').reset();
+      document.getElementById('category-id').value = '';
+      document.getElementById('dialog-category').showModal();
+    }
+
+    async function editCategory(id, codeName) {
+      openCategoryDialog();
+      document.getElementById('dialog-category-title').innerText = 'Edit Category';
+      document.getElementById('category-id').value = id;
+      document.getElementById('category-code').value = codeName;
+
+      showLoading(true);
+      try {
+        const transRes = await fetch(`/opera-admin/api/translations?entity_type=category&id=${id}`);
+        const translations = await transRes.json();
+        ['en', 'fr', 'ja', 'zh'].forEach(loc => {
+          const t = translations[loc] || { name: '' };
+          document.getElementById(`category-${loc}`).value = t.name || '';
+        });
+      } finally {
+        showLoading(false);
+      }
+    }
+
+    async function submitCategory(event) {
+      event.preventDefault();
+      const form = document.getElementById('form-category');
+      const formData = new FormData(form);
+
+      const payload = {
+        id: formData.get('id') ? Number(formData.get('id')) : undefined,
+        code_name: formData.get('code_name'),
+        translations: {
+          en: { name: formData.get('translations.en.name') },
+          fr: { name: formData.get('translations.fr.name') },
+          ja: { name: formData.get('translations.ja.name') },
+          zh: { name: formData.get('translations.zh.name') }
+        }
+      };
+      await callAction('saveCategory', payload);
+      closeDialog('dialog-category');
+    }
+
+    async function deleteCategory(id) {
+      if (confirm('Are you sure you want to delete this category?')) {
+        await callAction('deleteCategory', { id });
+      }
+    }
+
+    // ----------------------------------------------------
+    // INGREDIENTS CRUD
+    // ----------------------------------------------------
+    function openIngredientDialog() {
+      document.getElementById('dialog-ingredient-title').innerText = 'Add Ingredient';
+      document.getElementById('form-ingredient').reset();
+      document.getElementById('ingredient-id').value = '';
+      document.getElementById('dialog-ingredient').showModal();
+    }
+
+    async function editIngredient(id, codeName) {
+      openIngredientDialog();
+      document.getElementById('dialog-ingredient-title').innerText = 'Edit Ingredient';
+      document.getElementById('ingredient-id').value = id;
+      document.getElementById('ingredient-code').value = codeName;
+
+      showLoading(true);
+      try {
+        const transRes = await fetch(`/opera-admin/api/translations?entity_type=ingredient&id=${id}`);
+        const translations = await transRes.json();
+        ['en', 'fr', 'ja', 'zh'].forEach(loc => {
+          const t = translations[loc] || { name: '' };
+          document.getElementById(`ingredient-${loc}`).value = t.name || '';
+        });
+      } finally {
+        showLoading(false);
+      }
+    }
+
+    async function submitIngredient(event) {
+      event.preventDefault();
+      const form = document.getElementById('form-ingredient');
+      const formData = new FormData(form);
+
+      const payload = {
+        id: formData.get('id') ? Number(formData.get('id')) : undefined,
+        code_name: formData.get('code_name'),
+        translations: {
+          en: { name: formData.get('translations.en.name') },
+          fr: { name: formData.get('translations.fr.name') },
+          ja: { name: formData.get('translations.ja.name') },
+          zh: { name: formData.get('translations.zh.name') }
+        }
+      };
+      await callAction('saveIngredient', payload);
+      closeDialog('dialog-ingredient');
+    }
+
+    async function deleteIngredient(id) {
+      if (confirm('Are you sure you want to delete this ingredient?')) {
+        await callAction('deleteIngredient', { id });
+      }
+    }
+
+    // ----------------------------------------------------
+    // FLAVOR TAGS CRUD
+    // ----------------------------------------------------
+    function openTagDialog() {
+      document.getElementById('dialog-tag-title').innerText = 'Add Flavor Tag';
+      document.getElementById('form-tag').reset();
+      document.getElementById('tag-id').value = '';
+      document.getElementById('dialog-tag').showModal();
+    }
+
+    async function editTag(id, codeName) {
+      openTagDialog();
+      document.getElementById('dialog-tag-title').innerText = 'Edit Flavor Tag';
+      document.getElementById('tag-id').value = id;
+      document.getElementById('tag-code').value = codeName;
+
+      showLoading(true);
+      try {
+        const transRes = await fetch(`/opera-admin/api/translations?entity_type=tag&id=${id}`);
+        const translations = await transRes.json();
+        ['en', 'fr', 'ja', 'zh'].forEach(loc => {
+          const t = translations[loc] || { name: '' };
+          document.getElementById(`tag-${loc}`).value = t.name || '';
+        });
+      } finally {
+        showLoading(false);
+      }
+    }
+
+    async function submitTag(event) {
+      event.preventDefault();
+      const form = document.getElementById('form-tag');
+      const formData = new FormData(form);
+
+      const payload = {
+        id: formData.get('id') ? Number(formData.get('id')) : undefined,
+        code_name: formData.get('code_name'),
+        translations: {
+          en: { name: formData.get('translations.en.name') },
+          fr: { name: formData.get('translations.fr.name') },
+          ja: { name: formData.get('translations.ja.name') },
+          zh: { name: formData.get('translations.zh.name') }
+        }
+      };
+      await callAction('saveFlavorTag', payload);
+      closeDialog('dialog-tag');
+    }
+
+    async function deleteTag(id) {
+      if (confirm('Are you sure you want to delete this flavor tag?')) {
+        await callAction('deleteFlavorTag', { id });
+      }
+    }
+
+    // ----------------------------------------------------
+    // SELECTION & PRINT LAYOUTS
+    // ----------------------------------------------------
+    function toggleSelectionAll(checked) {
+      document.querySelectorAll('.item-selector').forEach(cb => cb.checked = checked);
+    }
+
+    async function getSelectedData() {
+      const selectedBoxes = document.querySelectorAll('.item-selector:checked');
+      if (selectedBoxes.length === 0) {
+        alert('Please select at least one menu item.');
+        return null;
+      }
+      
+      const ids = Array.from(selectedBoxes).map(cb => Number(cb.dataset.itemId));
+      const targetLocale = document.getElementById('print-lang').value;
+      
+      // Fetch details including specific translations
+      showLoading(true);
+      try {
+        const res = await fetch(`/opera-admin/api/print-data?ids=${ids.join(',')}&locale=${targetLocale}`);
+        const data = await res.json();
+        return data;
+      } catch (err) {
+        alert('Failed to load menu details for export.');
+        return null;
+      } finally {
+        showLoading(false);
+      }
+    }
+
+    async function exportToMarkdown() {
+      const data = await getSelectedData();
+      if (!data) return;
+
+      const includeDesc = document.getElementById('print-show-desc').checked;
+      const includePrice = document.getElementById('print-show-price').checked;
+      const includeIng = document.getElementById('print-show-ing').checked;
+
+      let markdown = `# OPERA TAIPEI MENU\n\n`;
+      
+      // Group by category name
+      const categoriesGrouped = {};
+      data.forEach(item => {
+        if (!categoriesGrouped[item.category_name]) categoriesGrouped[item.category_name] = [];
+        categoriesGrouped[item.category_name].push(item);
+      });
+
+      Object.keys(categoriesGrouped).forEach(cat => {
+        markdown += `## ${cat.toUpperCase()}\n\n`;
+        categoriesGrouped[cat].forEach(item => {
+          let line = `* **${item.name}**`;
+          if (includePrice) line += ` - NTD$ ${item.price}`;
+          markdown += line + `\n`;
+          if (includeIng && item.ingredients && item.ingredients.length > 0) {
+            markdown += `  _Ingredients: ${item.ingredients.join(', ')}_\n`;
+          }
+          if (includeDesc && item.description) {
+            markdown += `  ${item.description}\n`;
+          }
+          markdown += `\n`;
+        });
+      });
+
+      await navigator.clipboard.writeText(markdown);
+      alert('Markdown menu format copied to clipboard!');
+    }
+
+    async function generatePrintedLayout() {
+      const data = await getSelectedData();
+      if (!data) return;
+
+      const includeDesc = document.getElementById('print-show-desc').checked;
+      const includePrice = document.getElementById('print-show-price').checked;
+      const includeIng = document.getElementById('print-show-ing').checked;
+
+      // Create a print layout window
+      const printWindow = window.open('', '_blank');
+      
+      let html = `
+        <html>
+        <head>
+          <title>Opera Taipei printed menu</title>
+          <style>
+            body { font-family: "Georgia", serif; padding: 3rem; color: #111; max-width: 800px; margin: auto; }
+            h1 { text-align: center; text-transform: uppercase; letter-spacing: 0.1em; border-bottom: 2px solid #222; padding-bottom: 0.5rem; margin-bottom: 2rem; }
+            .category-section { margin-bottom: 2.5rem; page-break-inside: avoid; }
+            .category-title { border-bottom: 1px solid #444; font-size: 1.5rem; text-transform: uppercase; margin-bottom: 1rem; padding-bottom: 0.25rem; letter-spacing: 0.05em; }
+            .menu-item { display: flex; flex-direction: column; margin-bottom: 1.25rem; }
+            .item-header { display: flex; justify-content: space-between; font-weight: bold; font-size: 1.1rem; }
+            .item-desc { font-style: italic; color: #444; font-size: 0.95rem; margin-top: 0.25rem; }
+            .item-ings { font-size: 0.85rem; color: #555; text-transform: uppercase; margin-top: 0.15rem; }
+            @media print {
+              body { padding: 1.5rem; }
+              button { display: none; }
+            }
+          </style>
+        </head>
+        <body>
+          <h1>OPERA TAIPEI</h1>
+      `;
+
+      // Group by category
+      const categoriesGrouped = {};
+      data.forEach(item => {
+        if (!categoriesGrouped[item.category_name]) categoriesGrouped[item.category_name] = [];
+        categoriesGrouped[item.category_name].push(item);
+      });
+
+      Object.keys(categoriesGrouped).forEach(cat => {
+        html += `<div class="category-section">`;
+        html += `<h2 class="category-title">${cat}</h2>`;
+        categoriesGrouped[cat].forEach(item => {
+          html += `<div class="menu-item">`;
+          html += `<div class="item-header"><span>${item.name}</span>`;
+          if (includePrice) html += `<span>$${item.price}</span>`;
+          html += `</div>`;
+          if (includeIng && item.ingredients && item.ingredients.length > 0) {
+            html += `<div class="item-ings">${item.ingredients.join(' / ')}</div>`;
+          }
+          if (includeDesc && item.description) {
+            html += `<div class="item-desc">${item.description}</div>`;
+          }
+          html += `</div>`;
+        });
+        html += `</div>`;
+      });
+
+      html += `
+        <script>
+          window.onload = function() {
+            window.print();
+          }
+        <\/script>
+        </body>
+        </html>
+      `;
+
+      printWindow.document.write(html);
+      printWindow.document.close();
+    }
+  </script>
+</body>
+</html>

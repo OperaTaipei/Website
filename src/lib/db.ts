@@ -1,0 +1,431 @@
+import type { D1Database } from '@cloudflare/workers-types';
+
+export interface Category {
+  id: number;
+  code_name: string;
+  name: string; // English default name
+}
+
+export interface Ingredient {
+  id: number;
+  code_name: string;
+  name: string;
+}
+
+export interface FlavorTag {
+  id: number;
+  code_name: string;
+  name: string;
+}
+
+export interface Media {
+  id: number;
+  url: string;
+  alt_text?: string;
+}
+
+export interface MenuItem {
+  id: number;
+  code_name: string;
+  category_id: number;
+  category_name: string;
+  media_id: number | null;
+  media_url: string | null;
+  price: number;
+  is_available: boolean;
+  name: string; // English translation name
+  description: string | null;
+  ingredients: string[]; // List of ingredient names
+  tags: string[]; // List of tag names
+}
+
+export interface TranslationsInput {
+  en: { name: string; description?: string };
+  fr: { name: string; description?: string };
+  ja: { name: string; description?: string };
+  zh: { name: string; description?: string };
+}
+
+// ----------------------------------------------------
+// READ Operations
+// ----------------------------------------------------
+
+export async function getCategories(db: D1Database): Promise<Category[]> {
+  const query = `
+    SELECT c.id, c.code_name, COALESCE(t.name, c.code_name) as name
+    FROM categories c
+    LEFT JOIN translations t ON t.entity_type = 'category' AND t.entity_id = c.id AND t.locale = 'en'
+  `;
+  const { results } = await db.prepare(query).all();
+  return results as unknown as Category[];
+}
+
+export async function getIngredients(db: D1Database): Promise<Ingredient[]> {
+  const query = `
+    SELECT i.id, i.code_name, COALESCE(t.name, i.code_name) as name
+    FROM ingredients i
+    LEFT JOIN translations t ON t.entity_type = 'ingredient' AND t.entity_id = i.id AND t.locale = 'en'
+    ORDER BY name ASC
+  `;
+  const { results } = await db.prepare(query).all();
+  return results as unknown as Ingredient[];
+}
+
+export async function getFlavorTags(db: D1Database): Promise<FlavorTag[]> {
+  const query = `
+    SELECT f.id, f.code_name, COALESCE(t.name, f.code_name) as name
+    FROM flavor_tags f
+    LEFT JOIN translations t ON t.entity_type = 'tag' AND t.entity_id = f.id AND t.locale = 'en'
+    ORDER BY name ASC
+  `;
+  const { results } = await db.prepare(query).all();
+  return results as unknown as FlavorTag[];
+}
+
+export async function getMedia(db: D1Database): Promise<Media[]> {
+  const { results } = await db.prepare(`SELECT id, url, alt_text FROM media`).all();
+  return results as unknown as Media[];
+}
+
+export async function getMenuItems(db: D1Database): Promise<MenuItem[]> {
+  const itemsQuery = `
+    SELECT m.id, m.code_name, m.category_id, m.media_id, m.price, m.is_available,
+           COALESCE(cat_t.name, c.code_name) as category_name,
+           med.url as media_url,
+           COALESCE(t.name, m.code_name) as name,
+           t.description as description
+    FROM menu_items m
+    INNER JOIN categories c ON c.id = m.category_id
+    LEFT JOIN translations cat_t ON cat_t.entity_type = 'category' AND cat_t.entity_id = c.id AND cat_t.locale = 'en'
+    LEFT JOIN media med ON med.id = m.media_id
+    LEFT JOIN translations t ON t.entity_type = 'menu_item' AND t.entity_id = m.id AND t.locale = 'en'
+    ORDER BY category_name ASC, name ASC
+  `;
+  
+  const { results: items } = await db.prepare(itemsQuery).all();
+
+  // Fetch ingredients relation
+  const ingQuery = `
+    SELECT mii.menu_item_id, COALESCE(t.name, i.code_name) as name
+    FROM menu_item_ingredients mii
+    INNER JOIN ingredients i ON i.id = mii.ingredient_id
+    LEFT JOIN translations t ON t.entity_type = 'ingredient' AND t.entity_id = i.id AND t.locale = 'en'
+  `;
+  const { results: ings } = await db.prepare(ingQuery).all();
+
+  // Fetch tags relation
+  const tagQuery = `
+    SELECT mit.menu_item_id, COALESCE(t.name, f.code_name) as name
+    FROM menu_item_tags mit
+    INNER JOIN flavor_tags f ON f.id = mit.tag_id
+    LEFT JOIN translations t ON t.entity_type = 'tag' AND t.entity_id = f.id AND t.locale = 'en'
+  `;
+  const { results: tags } = await db.prepare(tagQuery).all();
+
+  // Group relations by menu_item_id
+  const ingsMap: Record<number, string[]> = {};
+  ings.forEach((r: any) => {
+    if (!ingsMap[r.menu_item_id]) ingsMap[r.menu_item_id] = [];
+    ingsMap[r.menu_item_id].push(r.name);
+  });
+
+  const tagsMap: Record<number, string[]> = {};
+  tags.forEach((r: any) => {
+    if (!tagsMap[r.menu_item_id]) tagsMap[r.menu_item_id] = [];
+    tagsMap[r.menu_item_id].push(r.name);
+  });
+
+  return items.map((item: any) => ({
+    id: item.id,
+    code_name: item.code_name,
+    category_id: item.category_id,
+    category_name: item.category_name,
+    media_id: item.media_id,
+    media_url: item.media_url,
+    price: item.price,
+    is_available: Boolean(item.is_available),
+    name: item.name,
+    description: item.description,
+    ingredients: ingsMap[item.id] || [],
+    tags: tagsMap[item.id] || []
+  }));
+}
+
+export async function getTranslationsForEntity(
+  db: D1Database,
+  entityType: 'menu_item' | 'category' | 'ingredient' | 'tag',
+  entityId: number
+): Promise<Record<string, { name: string; description?: string }>> {
+  const { results } = await db
+    .prepare(`SELECT locale, name, description FROM translations WHERE entity_type = ? AND entity_id = ?`)
+    .bind(entityType, entityId)
+    .all();
+
+  const trans: Record<string, { name: string; description?: string }> = {
+    en: { name: '' },
+    fr: { name: '' },
+    ja: { name: '' },
+    zh: { name: '' }
+  };
+
+  results.forEach((row: any) => {
+    trans[row.locale] = {
+      name: row.name,
+      description: row.description || undefined
+    };
+  });
+
+  return trans;
+}
+
+// ----------------------------------------------------
+// WRITE Operations (with transactional behavior for translations)
+// ----------------------------------------------------
+
+async function saveTranslations(
+  db: D1Database,
+  entityType: 'menu_item' | 'category' | 'ingredient' | 'tag',
+  entityId: number,
+  translations: TranslationsInput
+) {
+  const locales: ('en' | 'fr' | 'ja' | 'zh')[] = ['en', 'fr', 'ja', 'zh'];
+  const statements = [];
+
+  for (const locale of locales) {
+    const data = translations[locale];
+    if (data && data.name) {
+      statements.push(
+        db.prepare(`
+          INSERT INTO translations (locale, entity_type, entity_id, name, description)
+          VALUES (?, ?, ?, ?, ?)
+          ON CONFLICT(locale, entity_type, entity_id) DO UPDATE SET
+            name = excluded.name,
+            description = excluded.description
+        `).bind(locale, entityType, entityId, data.name, data.description || null)
+      );
+    }
+  }
+
+  if (statements.length > 0) {
+    await db.batch(statements);
+  }
+}
+
+export async function createMenuItem(
+  db: D1Database,
+  data: {
+    code_name: string;
+    category_id: number;
+    media_id: number | null;
+    price: number;
+    is_available: boolean;
+    ingredients: number[]; // IDs
+    tags: number[]; // IDs
+    translations: TranslationsInput;
+  }
+): Promise<number> {
+  // 1. Insert Menu Item
+  const res = await db
+    .prepare(`
+      INSERT INTO menu_items (code_name, category_id, media_id, price, is_available)
+      VALUES (?, ?, ?, ?, ?)
+    `)
+    .bind(data.code_name, data.category_id, data.media_id, data.price, data.is_available ? 1 : 0)
+    .run();
+
+  const insertId = res.meta.last_row_id;
+
+  // 2. Insert Join Tables
+  const batchStatements = [];
+  if (data.ingredients.length > 0) {
+    data.ingredients.forEach(ingId => {
+      batchStatements.push(
+        db.prepare(`INSERT INTO menu_item_ingredients (menu_item_id, ingredient_id) VALUES (?, ?)`).bind(insertId, ingId)
+      );
+    });
+  }
+  if (data.tags.length > 0) {
+    data.tags.forEach(tagId => {
+      batchStatements.push(
+        db.prepare(`INSERT INTO menu_item_tags (menu_item_id, tag_id) VALUES (?, ?)`).bind(insertId, tagId)
+      );
+    });
+  }
+  if (batchStatements.length > 0) {
+    await db.batch(batchStatements);
+  }
+
+  // 3. Save Translations
+  await saveTranslations(db, 'menu_item', insertId, data.translations);
+
+  return insertId;
+}
+
+export async function updateMenuItem(
+  db: D1Database,
+  id: number,
+  data: {
+    code_name: string;
+    category_id: number;
+    media_id: number | null;
+    price: number;
+    is_available: boolean;
+    ingredients: number[]; // IDs
+    tags: number[]; // IDs
+    translations: TranslationsInput;
+  }
+) {
+  // 1. Update Core
+  await db
+    .prepare(`
+      UPDATE menu_items
+      SET code_name = ?, category_id = ?, media_id = ?, price = ?, is_available = ?
+      WHERE id = ?
+    `)
+    .bind(data.code_name, data.category_id, data.media_id, data.price, data.is_available ? 1 : 0, id)
+    .run();
+
+  // 2. Update Relations (Clear and insert)
+  await db.batch([
+    db.prepare(`DELETE FROM menu_item_ingredients WHERE menu_item_id = ?`).bind(id),
+    db.prepare(`DELETE FROM menu_item_tags WHERE menu_item_id = ?`).bind(id)
+  ]);
+
+  const batchStatements = [];
+  if (data.ingredients.length > 0) {
+    data.ingredients.forEach(ingId => {
+      batchStatements.push(
+        db.prepare(`INSERT INTO menu_item_ingredients (menu_item_id, ingredient_id) VALUES (?, ?)`).bind(id, ingId)
+      );
+    });
+  }
+  if (data.tags.length > 0) {
+    data.tags.forEach(tagId => {
+      batchStatements.push(
+        db.prepare(`INSERT INTO menu_item_tags (menu_item_id, tag_id) VALUES (?, ?)`).bind(id, tagId)
+      );
+    });
+  }
+  if (batchStatements.length > 0) {
+    await db.batch(batchStatements);
+  }
+
+  // 3. Save Translations
+  await saveTranslations(db, 'menu_item', id, data.translations);
+}
+
+// ----------------------------------------------------
+// GENERIC CRUD Helpers for Categories, Ingredients, Tags
+// ----------------------------------------------------
+
+export async function createCategory(db: D1Database, codeName: string, translations: TranslationsInput): Promise<number> {
+  const res = await db.prepare(`INSERT INTO categories (code_name) VALUES (?)`).bind(codeName).run();
+  const insertId = res.meta.last_row_id;
+  await saveTranslations(db, 'category', insertId, translations);
+  return insertId;
+}
+
+export async function updateCategory(db: D1Database, id: number, codeName: string, translations: TranslationsInput) {
+  await db.prepare(`UPDATE categories SET code_name = ? WHERE id = ?`).bind(codeName, id).run();
+  await saveTranslations(db, 'category', id, translations);
+}
+
+export async function createIngredient(db: D1Database, codeName: string, translations: TranslationsInput): Promise<number> {
+  const res = await db.prepare(`INSERT INTO ingredients (code_name) VALUES (?)`).bind(codeName).run();
+  const insertId = res.meta.last_row_id;
+  await saveTranslations(db, 'ingredient', insertId, translations);
+  return insertId;
+}
+
+export async function updateIngredient(db: D1Database, id: number, codeName: string, translations: TranslationsInput) {
+  await db.prepare(`UPDATE ingredients SET code_name = ? WHERE id = ?`).bind(codeName, id).run();
+  await saveTranslations(db, 'ingredient', id, translations);
+}
+
+export async function createFlavorTag(db: D1Database, codeName: string, translations: TranslationsInput): Promise<number> {
+  const res = await db.prepare(`INSERT INTO flavor_tags (code_name) VALUES (?)`).bind(codeName).run();
+  const insertId = res.meta.last_row_id;
+  await saveTranslations(db, 'tag', insertId, translations);
+  return insertId;
+}
+
+export async function updateFlavorTag(db: D1Database, id: number, codeName: string, translations: TranslationsInput) {
+  await db.prepare(`UPDATE flavor_tags SET code_name = ? WHERE id = ?`).bind(codeName, id).run();
+  await saveTranslations(db, 'tag', id, translations);
+}
+
+// ----------------------------------------------------
+// DELETION & Safe Constraint Handling
+// ----------------------------------------------------
+
+export async function deleteMenuItem(db: D1Database, id: number) {
+  // Casacades translations and joins
+  await db.batch([
+    db.prepare(`DELETE FROM translations WHERE entity_type = 'menu_item' AND entity_id = ?`).bind(id),
+    db.prepare(`DELETE FROM menu_items WHERE id = ?`).bind(id)
+  ]);
+}
+
+export async function deleteCategory(db: D1Database, id: number) {
+  try {
+    // Check if referenced by menu items
+    const { results } = await db.prepare(`SELECT id, code_name FROM menu_items WHERE category_id = ? LIMIT 1`).bind(id).all();
+    if (results.length > 0) {
+      throw new Error(`Cannot delete this category because it is currently referenced by menu items.`);
+    }
+    await db.batch([
+      db.prepare(`DELETE FROM translations WHERE entity_type = 'category' AND entity_id = ?`).bind(id),
+      db.prepare(`DELETE FROM categories WHERE id = ?`).bind(id)
+    ]);
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
+
+export async function deleteIngredient(db: D1Database, id: number) {
+  try {
+    // Check if referenced by menu item ingredients
+    const { results } = await db.prepare(`
+      SELECT m.code_name 
+      FROM menu_item_ingredients mii
+      INNER JOIN menu_items m ON m.id = mii.menu_item_id
+      WHERE mii.ingredient_id = ? LIMIT 1
+    `).bind(id).all();
+    
+    if (results.length > 0) {
+      const itemName = results[0].code_name;
+      throw new Error(`Cannot delete this ingredient because it is currently referenced by menu item '${itemName}'.`);
+    }
+
+    await db.batch([
+      db.prepare(`DELETE FROM translations WHERE entity_type = 'ingredient' AND entity_id = ?`).bind(id),
+      db.prepare(`DELETE FROM ingredients WHERE id = ?`).bind(id)
+    ]);
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
+
+export async function deleteFlavorTag(db: D1Database, id: number) {
+  try {
+    // Check if referenced by menu item tags
+    const { results } = await db.prepare(`
+      SELECT m.code_name 
+      FROM menu_item_tags mit
+      INNER JOIN menu_items m ON m.id = mit.menu_item_id
+      WHERE mit.tag_id = ? LIMIT 1
+    `).bind(id).all();
+    
+    if (results.length > 0) {
+      const itemName = results[0].code_name;
+      throw new Error(`Cannot delete this tag because it is currently referenced by menu item '${itemName}'.`);
+    }
+
+    await db.batch([
+      db.prepare(`DELETE FROM translations WHERE entity_type = 'tag' AND entity_id = ?`).bind(id),
+      db.prepare(`DELETE FROM flavor_tags WHERE id = ?`).bind(id)
+    ]);
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}

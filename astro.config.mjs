@@ -1,9 +1,15 @@
 import { defineConfig } from 'astro/config';
+import cloudflare from '@astrojs/cloudflare';
 
 // https://astro.build/config
 export default defineConfig({
+  output: 'hybrid',
+  adapter: cloudflare({
+    imageService: 'passthrough'
+  }),
   outDir: './dist',
   publicDir: './public',
   srcDir: './src',
   compressHTML: true
 });
+
