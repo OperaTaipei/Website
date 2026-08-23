@@ -24,7 +24,7 @@ export const GET: APIRoute = async ({ request, locals }) => {
     
     // Fetch core items with category name translated into targeted language
     const itemsQuery = `
-      SELECT m.id, m.price,
+      SELECT m.id, m.category_id, m.price,
              COALESCE(cat_t.name, c.code_name) as category_name,
              COALESCE(t.name, m.code_name) as name,
              t.description as description
@@ -54,13 +54,31 @@ export const GET: APIRoute = async ({ request, locals }) => {
       ingsMap[r.menu_item_id].push(r.name);
     });
 
+    // Fetch tags translated to target language
+    const tagsQuery = `
+      SELECT mit.menu_item_id, COALESCE(t.name, ft.code_name) as name
+      FROM menu_item_tags mit
+      INNER JOIN flavor_tags ft ON ft.id = mit.tag_id
+      LEFT JOIN translations t ON t.entity_type = 'tag' AND t.entity_id = ft.id AND t.locale = ?
+      WHERE mit.menu_item_id IN (${placeholders})
+    `;
+    const { results: tags } = await db.prepare(tagsQuery).bind(locale, ...ids).all();
+
+    const tagsMap: Record<number, string[]> = {};
+    tags.forEach((r: any) => {
+      if (!tagsMap[r.menu_item_id]) tagsMap[r.menu_item_id] = [];
+      tagsMap[r.menu_item_id].push(r.name);
+    });
+
     const responseData = items.map((item: any) => ({
       id: item.id,
+      category_id: item.category_id,
       name: item.name,
       price: item.price,
       category_name: item.category_name,
       description: item.description,
-      ingredients: ingsMap[item.id] || []
+      ingredients: ingsMap[item.id] || [],
+      tags: tagsMap[item.id] || []
     }));
 
     return new Response(JSON.stringify(responseData), {
