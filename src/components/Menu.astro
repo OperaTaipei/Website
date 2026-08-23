@@ -173,6 +173,7 @@ const drinkTags = ['refreshing', 'spirit-forward', 'sour', 'smoky', 'spicy', 'sw
               <div class="menu-item-name">{itemText.name}</div>
               <div class="menu-item-name-chinese">{lang === 'zh' ? '' : zh.menu_items[item.id]?.name}</div>
               {itemText.ingredients && <div class="menu-item-ingredients">{itemText.ingredients}</div>}
+              <div class="menu-item-price">{item.price} NTD$</div>
             </div>
           );
         })}
@@ -209,6 +210,31 @@ const drinkTags = ['refreshing', 'spirit-forward', 'sour', 'smoky', 'spicy', 'sw
       <div class="price-tier-badge price-tier-badge--spaced">400 NTD$</div>
       <div class="menu-grid">
         {classics.filter(item => item.price === 400).map(item => {
+          const itemText = t.menu_items[item.id] || {};
+          return (
+            <div 
+              class="menu-item clickable-menu-item" 
+              data-id={item.id}
+              data-tags={JSON.stringify(item.tags)}
+              role="button"
+              aria-label={`View details for ${itemText.name}`}
+            >
+              <div class="menu-item-name">{itemText.name}</div>
+              <div class="menu-item-name-chinese">{lang === 'zh' ? '' : zh.menu_items[item.id]?.name}</div>
+              <div class="menu-item-ingredients">{itemText.ingredients}</div>
+              <div class="item-meta-row">
+                {item.tags.map(tag => (
+                  <span class="item-tag-badge">{t.menu_tags[tag] || tag}</span>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div class="price-tier-badge price-tier-badge--spaced">700 NTD$</div>
+      <div class="menu-grid">
+        {classics.filter(item => item.price === 700).map(item => {
           const itemText = t.menu_items[item.id] || {};
           return (
             <div 
