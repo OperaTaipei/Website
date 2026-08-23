@@ -14,7 +14,7 @@ const { t } = Astro.props;
     <div class="section-divider"></div>
 
     <div class="gallery-action-container">
-      <button id="open-vibe-btn" class="btn-gold">{t.gallery_experience_vibe}</button>
+      <button id="open-vibe-btn" class="btn-gold"><span>{t.gallery_experience_vibe}</span></button>
     </div>
 
     <div class="gallery-grid">
@@ -212,6 +212,8 @@ const { t } = Astro.props;
   .gallery-action-container button {
     font-family: 'Montserrat', sans-serif;
     font-weight: 500;
+    background: none;
+    cursor: pointer;
   }
 
   /* Vibe Modal Styles */
