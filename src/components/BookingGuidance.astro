@@ -60,7 +60,6 @@ const { t } = Astro.props;
         <!-- Direct Actions -->
         <div class="booking-action-channels">
           <a href="https://www.instagram.com/operataipei/" target="_blank" rel="noopener noreferrer" class="channel-btn ig-btn">
-            <span class="btn-icon">📸</span>
             <span class="btn-text-wrap">
               <strong>Instagram DM</strong>
               <small>Fastest confirmation</small>
@@ -68,7 +67,6 @@ const { t } = Astro.props;
           </a>
 
           <a href="mailto:contact@opera-taipei.com?subject=Table Reservation Request - Opéra Taipei&body=Hi Opéra Team,%0D%0A%0D%0AI would like to request a table reservation with the following details:%0D%0A%0D%0A- Name:%0D%0A- Phone Number:%0D%0A- Date & Time:%0D%0A- Number of Guests:%0D%0A- Table / Area Preference:%0D%0A%0D%0AThank you!" class="channel-btn mail-btn">
-            <span class="btn-icon">✉️</span>
             <span class="btn-text-wrap">
               <strong>Email Request</strong>
               <small>Pre-filled draft template</small>
@@ -131,11 +129,12 @@ const { t } = Astro.props;
     max-width: 260px;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 15px;
     padding: 14px 20px;
     border-radius: 8px;
     text-decoration: none;
-    text-align: left;
+    text-align: center;
     transition: transform 0.25s, background-color 0.25s, border-color 0.25s;
   }
   
@@ -166,6 +165,7 @@ const { t } = Astro.props;
   .btn-text-wrap {
     display: flex;
     flex-direction: column;
+    align-items: center;
   }
   .btn-text-wrap strong {
     font-size: 0.9rem;
@@ -193,9 +193,11 @@ const { t } = Astro.props;
     font-size: 0.65rem;
     font-weight: 600;
     text-transform: uppercase;
-    padding: 2px 8px;
+    padding: 4px 12px;
     border-radius: 4px;
     letter-spacing: 0.05em;
+    flex-shrink: 0;
+    white-space: nowrap;
   }
   .booking-info-reminder p {
     font-size: 0.78rem;
