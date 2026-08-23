@@ -154,11 +154,6 @@
       "description": "A light and breezy summer tonic made with daily fresh cold-pressed watermelon juice, craft gin, and dry tonic water, garnished with frozen watermelon cubes.",
       "ingredients": "Gin, Lime, Watermelon Syrup, Watermelon Ice Cubes, Tonic"
     },
-    "earl-grey-negroni": {
-      "name": "Earl Grey Negroni",
-      "description": "A refined twist on the bittersweet classic, using gin slow-steeped with select organic Earl Grey tea leaves, sweet vermouth, and Campari.",
-      "ingredients": "Earl Grey Infused Gin, Sweet Vermouth, Campari"
-    },
     "earl-grey-sour": {
       "name": "Earl Grey Sour",
       "description": "Bright and aromatic citrus sour balancing Earl Grey infused gin with tangy fresh lemon, wildflower honey, and fresh apple juice.",
@@ -169,20 +164,10 @@
       "description": "A bold, slow-sipping craft cocktail highlighting premium American bourbon whiskey cold-steeped with high-mountain Alishan oolong tea leaves.",
       "ingredients": "Oolong Infused Whiskey"
     },
-    "szechuan-mule": {
-      "name": "Szechuan Mule",
-      "description": "Spicy, carbonated kick made with grain vodka, fresh lime, crushed ginger root, and our house-made green Szechuan peppercorn liqueur that leaves a subtle citrus numbing finish.",
-      "ingredients": "Vodka, Lime, Ginger, Homemade Green Szechuan Peppercorn Liqueur"
-    },
     "passion-fruit-daiquiri": {
       "name": "Passion Fruit Daiquiri",
       "description": "Tropical tartness combining white Caribbean rum, lime, fresh local passion fruit pulp, and crushed Magao (wild mountain pepper) seeds.",
       "ingredients": "Rum, Lime, Passion Fruit, Magao"
-    },
-    "calamansi-white-pepper-margarita": {
-      "name": "Calamansi White Pepper Margarita",
-      "description": "Crisp and punchy tequila classic elevated with freshly squeezed local calamansi lime juice and a dash of ground white peppercorn.",
-      "ingredients": "Tequila, Lime, Calamansi, White Peppercorn"
     },
     "guava-cooler": {
       "name": "Guava Cooler",
@@ -219,15 +204,10 @@
       "description": "Elegant local hybrid featuring apple eau de vie, lemon, and sweet candied Taiwanese bird pear (Niaoli).",
       "ingredients": "Apple Eau de Vie, Lemon, Candied Asian Pear"
     },
-    "melon-matcha": {
-      "name": "Melon Matcha",
-      "description": "Beautiful layered sour linking gin, sweet melonade, acid-rectified Lillet, stone-ground green matcha tea, and egg whites for a velvety texture.",
-      "ingredients": "Gin, Melonade, Acid Rectified Lillet, Matcha Tea, Egg Whites"
-    },
-    "almond-buck": {
-      "name": "Almond Buck",
-      "description": "Comforting highball mixing American bourbon, premium Amaretto Adriatico Bianco (white almond liqueur), fresh lemon, and spicy house ginger syrup.",
-      "ingredients": "Bourbon, Amaretto Adriatico Bianco, Lemon, Ginger Syrup"
+    "smoke-zest-pepper": {
+      "name": "Smoke Zest & Pepper",
+      "description": "A bold, smoke-forward creation featuring artisanal Amaras Verde Mezcal, balanced by fresh lime acidity and the bright, spicy kick of calamansi and white pepper.",
+      "ingredients": "Amaras Verde Mezcal, Lime, Calamansis White Pepper"
     },
     "salsa-nachos": {
       "name": "House Salsa & Nachos",
@@ -259,11 +239,6 @@
       "description": "House-cured Atlantic salmon slices served over toasted sourdough bread spread with dill sour cream.",
       "ingredients": "Sourdough Toast, Cured Salmon, Dill Sour Cream"
     },
-    "old-fashioned": {
-      "name": "Old Fashioned",
-      "description": "The quintessential whiskey classic: American bourbon, brown sugar, and aromatic Angostura bitters.",
-      "ingredients": "Bourbon, Brown Sugar, Bitters"
-    },
     "dirty-martini": {
       "name": "Dirty Martini",
       "description": "A savory, dry favorite shaking gin with dry vermouth, green olive brine, and garnished with olives.",
@@ -294,30 +269,40 @@
       "description": "Tropical paradise of light rum, lime juice, pineapple juice, and rich sweet coconut cream blended until smooth.",
       "ingredients": "Rum, Lime, Pineapple, Cream of Coconut"
     },
-    "manhattan": {
-      "name": "Manhattan",
-      "description": "Elegant and spirit-forward classic combining American rye/bourbon whiskey, sweet Italian vermouth, Angostura bitters, and a brandied cherry.",
-      "ingredients": "Bourbon, Sweet Vermouth, Cherry, Bitters"
+    "moscow-mule": {
+      "name": "Moscow Mule",
+      "description": "A crisp and refreshing highball blending clean vodka, zesty fresh lime juice, and spicy ginger beer.",
+      "ingredients": "Vodka, Lime, Ginger Beer"
     },
     "penicillin": {
       "name": "Penicillin",
       "description": "Soothing blend of blended Scotch whiskey, fresh lemon, ginger-honey syrup, finished with a float of peated smoky Islay malt.",
       "ingredients": "Scotch, Lemon, Ginger, Honey, Smoky Islay"
     },
-    "new-york-sour": {
-      "name": "New York Sour",
-      "description": "Visually stunning sour: bourbon whiskey, lemon juice, simple syrup, topped with a float of ruby port wine.",
-      "ingredients": "Bourbon, Lemon, Golden Simple, Bitters, Ruby Port"
-    },
     "pisco-sour": {
       "name": "Pisco Sour",
       "description": "The Peruvian classic shaking pisco brandy with fresh lime juice, simple syrup, egg whites, and finished with aromatic Amargo Chuncho bitters.",
       "ingredients": "Pisco, Lemon, Simple, Amargo Chuncho, Egg Whites"
     },
-    "caipirinha": {
-      "name": "Caipirinha",
-      "description": "Brazil's national cocktail: muddled fresh lime wedges and raw brown sugar shaken with cachaça sugarcane spirit.",
-      "ingredients": "Cachaca, Lime, Brown Sugar, Bitters"
+    "sazerac": {
+      "name": "Sazerac",
+      "description": "An iconic New Orleans classic blending rich rye whiskey with sweet simple syrup, aromatic Peychaud's bitters, and a mysterious rinse of absinthe.",
+      "ingredients": "James E Pepper Rye, Simple, Peychaud Bitters, Absinthe"
+    },
+    "sidecar": {
+      "name": "Sidecar",
+      "description": "A sophisticated, sour-leaning classic featuring premium Cognac, citrusy Cointreau orange liqueur, and fresh lemon juice.",
+      "ingredients": "Merlet Cognac VSOP, Lemon, Cointreau"
+    },
+    "vieux-carre": {
+      "name": "Vieux Carre",
+      "description": "A complex, spirit-forward tribute to New Orleans, combining rye whiskey, smooth VSOP Cognac, sweet vermouth, Bénédictine herbal liqueur, and bitters.",
+      "ingredients": "Rye, Merlet VSOP Cognac, Sweet Vermouth, Benedictine, Bitters"
+    },
+    "death-in-afternoon": {
+      "name": "Death in the Afternoon",
+      "description": "A potent, effervescent creation invented by Ernest Hemingway, mixing white absinthe with crisp Champagne.",
+      "ingredients": "Maison Fontaine Absinthe Blanche, Champagne"
     },
     "house-spirit": {
       "name": "House Spirit",
@@ -493,6 +478,18 @@
     "Egg Whites": "Fresh pasteurized egg whites adding a silky foam head.",
     "Bourbon": "Premium American charred-oak bourbon whiskey.",
     "Amaretto Adriatico Bianco": "Premium Italian white almond liqueur.",
-    "Ginger Syrup": "Fresh ginger juice simmered with organic sugar."
+    "Ginger Syrup": "Fresh ginger juice simmered with organic sugar.",
+    "Amaras Verde Mezcal": "Artisanal organic espadín mezcal from Oaxaca, notes of smoke and sweet herbs.",
+    "Calamansis White Pepper": "A complex infusion of local calamansi citrus and crushed white peppercorns.",
+    "James E Pepper Rye": "Premium straight rye whiskey with bold spicy notes and a hint of vanilla.",
+    "Peychaud Bitters": "Aromatic, anise-flavored bitters created in New Orleans.",
+    "Rye": "Spicy straight rye whiskey.",
+    "Merlet VSOP Cognac": "Double-distilled premium French VSOP Cognac aged in oak.",
+    "Merlet Cognac VSOP": "Double-distilled premium French VSOP Cognac aged in oak.",
+    "Benedictine": "A historic herbal liqueur from Normandy, infused with 27 plants and spices.",
+    "Ginger Beer": "Spicy, sparkling ginger beverage.",
+    "Cointreau": "Premium French orange liqueur made with sweet and bitter orange peels.",
+    "Maison Fontaine Absinthe Blanche": "Ultra-premium white absinthe distilled in Pontarlier, France.",
+    "Champagne": "Crisp and elegant French sparkling wine."
   }
 }

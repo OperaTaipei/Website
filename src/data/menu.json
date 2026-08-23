@@ -7,13 +7,6 @@
     "radar": { "sweetness": 3, "acidity": 2, "strength": 2, "bitterness": 2 }
   },
   {
-    "id": "earl-grey-negroni",
-    "category": "signatures",
-    "price": 350,
-    "tags": ["spirit-forward", "bittersweet"],
-    "radar": { "sweetness": 2, "acidity": 1, "strength": 4, "bitterness": 4 }
-  },
-  {
     "id": "earl-grey-sour",
     "category": "signatures",
     "price": 350,
@@ -28,25 +21,11 @@
     "radar": { "sweetness": 2, "acidity": 1, "strength": 5, "bitterness": 3 }
   },
   {
-    "id": "szechuan-mule",
-    "category": "signatures",
-    "price": 350,
-    "tags": ["spicy", "refreshing"],
-    "radar": { "sweetness": 2, "acidity": 3, "strength": 3, "bitterness": 2 }
-  },
-  {
     "id": "passion-fruit-daiquiri",
     "category": "signatures",
     "price": 350,
     "tags": ["sour", "fruity"],
     "radar": { "sweetness": 3, "acidity": 4, "strength": 3, "bitterness": 1 }
-  },
-  {
-    "id": "calamansi-white-pepper-margarita",
-    "category": "signatures",
-    "price": 350,
-    "tags": ["sour", "spicy"],
-    "radar": { "sweetness": 2, "acidity": 4, "strength": 3, "bitterness": 2 }
   },
   {
     "id": "guava-cooler",
@@ -98,18 +77,11 @@
     "radar": { "sweetness": 3, "acidity": 2, "strength": 4, "bitterness": 1 }
   },
   {
-    "id": "melon-matcha",
+    "id": "smoke-zest-pepper",
     "category": "signatures",
     "price": 400,
-    "tags": ["herbal", "creamy"],
-    "radar": { "sweetness": 3, "acidity": 2, "strength": 3, "bitterness": 2 }
-  },
-  {
-    "id": "almond-buck",
-    "category": "signatures",
-    "price": 400,
-    "tags": ["sweet", "nutty"],
-    "radar": { "sweetness": 4, "acidity": 2, "strength": 3, "bitterness": 1 }
+    "tags": ["spicy", "smoky"],
+    "radar": { "sweetness": 2, "acidity": 4, "strength": 4, "bitterness": 2 }
   },
   {
     "id": "salsa-nachos",
@@ -154,13 +126,6 @@
     "tags": ["savory", "seafood"]
   },
   {
-    "id": "old-fashioned",
-    "category": "classics",
-    "price": 350,
-    "tags": ["spirit-forward", "classic"],
-    "radar": { "sweetness": 2, "acidity": 1, "strength": 4, "bitterness": 2 }
-  },
-  {
     "id": "dirty-martini",
     "category": "classics",
     "price": 350,
@@ -203,11 +168,11 @@
     "radar": { "sweetness": 4, "acidity": 2, "strength": 3, "bitterness": 1 }
   },
   {
-    "id": "manhattan",
+    "id": "moscow-mule",
     "category": "classics",
-    "price": 400,
-    "tags": ["spirit-forward", "classic"],
-    "radar": { "sweetness": 2, "acidity": 1, "strength": 4, "bitterness": 3 }
+    "price": 350,
+    "tags": ["refreshing", "classic"],
+    "radar": { "sweetness": 2, "acidity": 3, "strength": 2, "bitterness": 1 }
   },
   {
     "id": "penicillin",
@@ -217,13 +182,6 @@
     "radar": { "sweetness": 3, "acidity": 3, "strength": 3, "bitterness": 2 }
   },
   {
-    "id": "new-york-sour",
-    "category": "classics",
-    "price": 400,
-    "tags": ["sour", "fruity"],
-    "radar": { "sweetness": 3, "acidity": 4, "strength": 3, "bitterness": 2 }
-  },
-  {
     "id": "pisco-sour",
     "category": "classics",
     "price": 400,
@@ -231,11 +189,32 @@
     "radar": { "sweetness": 3, "acidity": 4, "strength": 3, "bitterness": 1 }
   },
   {
-    "id": "caipirinha",
+    "id": "sazerac",
     "category": "classics",
     "price": 400,
-    "tags": ["refreshing", "sour"],
-    "radar": { "sweetness": 3, "acidity": 4, "strength": 3, "bitterness": 1 }
+    "tags": ["spirit-forward", "classic"],
+    "radar": { "sweetness": 2, "acidity": 1, "strength": 5, "bitterness": 3 }
+  },
+  {
+    "id": "sidecar",
+    "category": "classics",
+    "price": 400,
+    "tags": ["sour", "classic"],
+    "radar": { "sweetness": 2, "acidity": 4, "strength": 3, "bitterness": 1 }
+  },
+  {
+    "id": "vieux-carre",
+    "category": "classics",
+    "price": 450,
+    "tags": ["spirit-forward", "classic"],
+    "radar": { "sweetness": 2, "acidity": 1, "strength": 5, "bitterness": 3 }
+  },
+  {
+    "id": "death-in-afternoon",
+    "category": "classics",
+    "price": 700,
+    "tags": ["spirit-forward", "classic"],
+    "radar": { "sweetness": 1, "acidity": 3, "strength": 4, "bitterness": 3 }
   },
   {
     "id": "house-spirit",

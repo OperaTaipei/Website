@@ -154,11 +154,6 @@
       "description": "Un gin tonic d'été frais et léger fait avec du jus de pastèque frais pressé quotidiennement, du gin artisanal, du tonic dry, et garni de cubes de pastèque congelés.",
       "ingredients": "Gin, Citron Vert, Sirop de Pastèque, Glaçons de Pastèque, Tonic"
     },
-    "earl-grey-negroni": {
-      "name": "Earl Grey Negroni",
-      "description": "Une version raffinée du classique amer-doux, utilisant du gin lentement infusé avec des feuilles de thé Earl Grey bio, du vermouth rouge doux et du Campari.",
-      "ingredients": "Gin Infusé à l'Earl Grey, Vermouth Doux, Campari"
-    },
     "earl-grey-sour": {
       "name": "Earl Grey Sour",
       "description": "Un cocktail acidulé et floral équilibrant le gin infusé à l'Earl Grey avec du citron jaune frais, du miel sauvage et du jus de pomme fraîchement pressé.",
@@ -169,20 +164,10 @@
       "description": "Un cocktail corsé à savourer lentement, mettant en valeur un bourbon américain vieilli infusé à froid avec des feuilles de thé oolong des montagnes d'Alishan.",
       "ingredients": "Whisky Infusé à l'Oolong"
     },
-    "szechuan-mule": {
-      "name": "Szechuan Mule",
-      "description": "Une note épicée et gazeuse faite de vodka de grain, citron vert, gingembre frais pressé et notre liqueur de poivre vert du Sichuan maison qui laisse une finale engourdissante et citronnée.",
-      "ingredients": "Vodka, Citron Vert, Gingembre, Liqueur de Poivre de Sichuan Maison"
-    },
     "passion-fruit-daiquiri": {
       "name": "Passion Fruit Daiquiri",
       "description": "Une acidité tropicale alliant rhum blanc des Caraïbes, citron vert, pulpe de fruit de la passion locale et graines de poivre Magao de montagne broyées.",
       "ingredients": "Rhum, Citron Vert, Fruit de la Passion, Poivre Magao"
-    },
-    "calamansi-white-pepper-margarita": {
-      "name": "Calamansi White Pepper Margarita",
-      "description": "Une variante épicée de la margarita combinant de la tequila, du citron vert, du jus de calamansi frais et une pincée de poivre blanc moulu sur le rebord du verre.",
-      "ingredients": "Tequila, Citron Vert, Calamansi, Poivre Blanc"
     },
     "guava-cooler": {
       "name": "Guava Cooler",
@@ -219,15 +204,10 @@
       "description": "Cocktail élégant mariant de l'eau-de-vie de pomme, du citron, et des petites poires taïwanaises caramélisées maison (Niaoli).",
       "ingredients": "Eau de Vie de Pomme, Citron, Poire Confite"
     },
-    "melon-matcha": {
-      "name": "Melon Matcha",
-      "description": "Un magnifique cocktail crémeux mêlant du gin, de la liqueur de melon, du Lillet rectifié à l'acide, du thé matcha vert japonais et du blanc d'œuf pour une texture soyeuse.",
-      "ingredients": "Gin, Liqueur de Melon, Lillet Rectifié, Thé Matcha, Blanc d'Œuf"
-    },
-    "almond-buck": {
-      "name": "Almond Buck",
-      "description": "Un highball réconfortant associant du bourbon américain, de la liqueur d'amande Amaretto Adriatico Bianco, du citron frais, et notre sirop de gingembre épicé maison.",
-      "ingredients": "Bourbon, Amaretto Adriatico Bianco, Citron, Sirop de Gingembre"
+    "smoke-zest-pepper": {
+      "name": "Smoke Zest & Pepper",
+      "description": "Une création audacieuse et fumée mettant en valeur le mezcal artisanal Amaras Verde, équilibrée par l'acidité du citron vert frais et la touche vive et épicée du calamansi et du poivre blanc.",
+      "ingredients": "Mezcal Amaras Verde, Citron Vert, Calamansi au Poivre Blanc"
     },
     "salsa-nachos": {
       "name": "House Salsa & Nachos",
@@ -259,11 +239,6 @@
       "description": "Tranches de saumon atlantique mariné maison servies sur du pain au levain grillé avec de la crème sure à l'aneth.",
       "ingredients": "Pain Grillé, Saumon Mariné, Crème Sure à l'Aneth"
     },
-    "old-fashioned": {
-      "name": "Old Fashioned",
-      "description": "Le classique indémodable du whisky : bourbon américain, sucre roux, et bitters aromatiques Angostura.",
-      "ingredients": "Bourbon, Sucre Roux, Bitters"
-    },
     "dirty-martini": {
       "name": "Dirty Martini",
       "description": "Un grand classique sec et salé associant du gin, du vermouth dry et de la saumure d'olive verte.",
@@ -294,30 +269,40 @@
       "description": "Un délice tropical mariant rhum léger, jus de citron vert, jus de menthe ou de fruits frais, et crème de noix de coco sucrée.",
       "ingredients": "Rhum, Citron Vert, Jus d'Ananas, Crème de Coco"
     },
-    "manhattan": {
-      "name": "Manhattan",
-      "description": "Élégant et robuste classique mêlant whisky américain, vermouth doux italien, bitters Angostura et une cerise confite au brandy.",
-      "ingredients": "Bourbon, Vermouth Doux, Cerise, Bitters"
+    "moscow-mule": {
+      "name": "Moscow Mule",
+      "description": "Un highball rafraîchissant combinant de la vodka pure, du jus de citron vert frais et de la bière de gingembre épicée.",
+      "ingredients": "Vodka, Citron Vert, Bière de Gingembre"
     },
     "penicillin": {
       "name": "Penicillin",
       "description": "Mélange apaisant de Scotch whisky, citron frais, sirop de miel et de gingembre, couronné de Scotch d'Islay tourbé et fumé.",
       "ingredients": "Scotch, Citron, Gingembre, Miel, Islay Fumé"
     },
-    "new-york-sour": {
-      "name": "New York Sour",
-      "description": "Un magnifique sour visuel : bourbon, jus de citron jaune, sirop simple, surmonté d'un filet de vin de Porto rouge rubis.",
-      "ingredients": "Bourbon, Citron, Sirop Simple, Bitters, Porto Rouge"
-    },
     "pisco-sour": {
       "name": "Pisco Sour",
       "description": "Le classique péruvien mariant l'eau-de-vie de pisco avec du citron vert frais, du sirop simple, du blanc d'œuf et quelques gouttes de bitters aromatiques Amargo Chuncho.",
       "ingredients": "Pisco, Citron, Sirop Simple, Bitters Péruviens, Blanc d'Œuf"
     },
-    "caipirinha": {
-      "name": "Caipirinha",
-      "description": "Le cocktail national du Brésil : quartiers de citron vert frais et sucre roux pilés puis secoués avec de la cachaça.",
-      "ingredients": "Cachaça, Citron Vert, Sucre Roux, Bitters"
+    "sazerac": {
+      "name": "Sazerac",
+      "description": "Un classique légendaire de la Nouvelle-Orléans mêlant le caractère épicé du whiskey de seigle avec du sirop de sucre, des bitters Peychaud et un rinçage à l'absinthe.",
+      "ingredients": "James E Pepper Rye, Sirop Simple, Bitters Peychaud, Absinthe"
+    },
+    "sidecar": {
+      "name": "Sidecar",
+      "description": "Un cocktail acidulé classique et sophistiqué associant du Cognac VSOP Merlet avec du Cointreau et du jus de citron jaune frais.",
+      "ingredients": "Cognac Merlet VSOP, Citron Jaune, Cointreau"
+    },
+    "vieux-carre": {
+      "name": "Vieux Carré",
+      "description": "Un hommage riche et complexe à la Nouvelle-Orléans, mariant whiskey de seigle, Cognac VSOP Merlet, vermouth rouge doux, Bénédictine et bitters.",
+      "ingredients": "Whiskey de Seigle, Cognac VSOP Merlet, Vermouth Doux, Bénédictine, Bitters"
+    },
+    "death-in-afternoon": {
+      "name": "Death in the Afternoon",
+      "description": "Une création puissante inventée par Ernest Hemingway, alliant la fraîcheur herbacée de l'absinthe blanche avec du Champagne brut.",
+      "ingredients": "Absinthe Blanche Maison Fontaine, Champagne"
     },
     "house-spirit": {
       "name": "Bouteille Alcool Maison",
@@ -493,6 +478,18 @@
     "Blanc d'Œuf": "Blanc d'œuf pasteurisé pour une texture mousseuse et aérienne.",
     "Bourbon": "Whisky de maïs américain élevé en fûts de chêne neufs brûlés.",
     "Amaretto Adriatico Bianco": "Liqueur d'amande blanche italienne premium.",
-    "Sirop de Gingembre": "Jus de gingembre frais mijoté avec du sucre."
+    "Sirop de Gingembre": "Jus de gingembre frais mijoté avec du sucre.",
+    "Mezcal Amaras Verde": "Mezcal biologique artisanal d'Oaxaca, aux notes fumées et d'herbes douces.",
+    "Calamansi au Poivre Blanc": "Une infusion complexe de calamansi local et de grains de poivre blanc écrasés.",
+    "James E Pepper Rye": "Whiskey de seigle américain premium aux notes épicées et de vanille.",
+    "Bitters Peychaud": "Bitters aromatiques à la Nouvelle-Orléans avec des notes dominantes d'anis.",
+    "Whiskey de Seigle": "Whiskey de seigle (rye) américain épicé et robuste.",
+    "Cognac VSOP Merlet": "Cognac VSOP français premium doublement distillé et vieilli en chêne.",
+    "Cognac Merlet VSOP": "Cognac VSOP français premium doublement distillé et vieilli en chêne.",
+    "Bénédictine": "Liqueur d'herbes historique normande infusée avec 27 plantes et épices.",
+    "Bière de Gingembre": "Boisson pétillante et épicée au gingembre.",
+    "Cointreau": "Liqueur d'orange française premium à base d'écorces d'oranges douces et amères.",
+    "Absinthe Blanche Maison Fontaine": "Absinthe blanche ultra-premium distillée à Pontarlier en France.",
+    "Champagne": "Vin effervescent français élégant et prestigieux."
   }
 }
