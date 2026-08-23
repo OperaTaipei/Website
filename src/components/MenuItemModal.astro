@@ -64,7 +64,7 @@ const { t, lang } = Astro.props;
   // Open Modal logic
   document.querySelectorAll('.clickable-menu-item').forEach(item => {
     item.addEventListener('click', () => {
-      const itemId = (item as HTMLElement).dataset.id;
+      const itemId = item.dataset.id;
       const data = menuItems.find(m => m.id === itemId);
       if (!data) return;
 
@@ -206,7 +206,7 @@ const { t, lang } = Astro.props;
   });
 
   // Tooltip Logic
-  function showTooltip(targetElement: HTMLElement, text: string) {
+  function showTooltip(targetElement, text) {
     if (!tooltip) return;
 
     tooltip.textContent = text;
