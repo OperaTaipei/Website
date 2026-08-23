@@ -1,0 +1,210 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import Bartenders from '../components/Bartenders.astro';
+import Menu from '../components/Menu.astro';
+import BookingGuidance from '../components/BookingGuidance.astro';
+import Events from '../components/Events.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+
+import en from '../i18n/en.json';
+import zh from '../i18n/zh.json';
+import fr from '../i18n/fr.json';
+import ja from '../i18n/ja.json';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: undefined } }, // English (/)
+    { params: { lang: 'zh' } },      // Chinese (/zh/)
+    { params: { lang: 'fr' } },      // French (/fr/)
+    { params: { lang: 'ja' } }       // Japanese (/ja/)
+  ];
+}
+
+const { lang = 'en' } = Astro.params;
+
+const translationsMap: Record<string, any> = { en, zh, fr, ja };
+const t = translationsMap[lang] || en;
+
+const title = lang === 'zh' 
+  ? "Opéra Taipei | 台北天空酒吧・101景觀・包場活動場地 – 慕軒飯店15樓精緻調酒"
+  : lang === 'fr'
+    ? "Opéra Taipei | Skybar panoramique & Lieu d'événements privés"
+    : lang === 'ja'
+      ? "Opéra Taipei | パノラマスカイバー＆プライベートイベント会場"
+      : "Opéra Taipei | Panoramic Skybar & Private Event Venue – Cocktails with Taipei 101 View";
+
+const description = lang === 'zh'
+  ? "Opéra 台北天空酒吧，位於慕軒飯店15樓，擁有台北101全景視野，自製糖漿與浸漬調酒。提供企業包場、尾牙、婚禮、產品發布會場地租借，可容納20至300人。"
+  : lang === 'fr'
+    ? "Opéra est le skybar panoramique de Taipei sur le toit de l'hôtel Illume. Vues imprenables sur Taipei 101. Événements privés et location pour 20-300 invités."
+    : lang === 'ja'
+      ? "台北アリーナと台北101の景色を望む、イルームホテル15階にあるパノラマクラフトカクテルスカイバー。20名から300名までの企業イベント貸切対応。"
+      : "Opéra is Taipei's panoramic craft cocktail skybar on Floor 15 of the Illume Hotel. Stunning Taipei 101 views, house-made syrups & infusions. Private events & corporate hire for 20–300 guests.";
+
+const canonical = lang === 'en' 
+  ? "https://opera-taipei.com/" 
+  : `https://opera-taipei.com/${lang}/`;
+
+const alternates = [
+  { href: "https://opera-taipei.com/", hreflang: "en" },
+  { href: "https://opera-taipei.com/zh/", hreflang: "zh-Hant" },
+  { href: "https://opera-taipei.com/fr/", hreflang: "fr" },
+  { href: "https://opera-taipei.com/ja/", hreflang: "ja" }
+];
+
+// Dual structured JSON-LD schemas depending on lang
+const barSchema = {
+  "@context": "https://schema.org",
+  "@type": "BarOrPub",
+  "name": "Opéra Taipei",
+  "alternateName": ["Opera Taipei", "台北天空酒吧"],
+  "inLanguage": lang === 'zh' ? 'zh-Hant' : lang,
+  "description": t.about_p1,
+  "url": canonical,
+  "telephone": "+886955658147",
+  "email": "contact@opera-taipei.com",
+  "image": "https://opera-taipei.com/wp-content/uploads/2024/04/nz93950-enhanced-nr.jpg",
+  "priceRange": "$$",
+  "servesCuisine": "Cocktails, Finger Food",
+  "menu": `${canonical}#menu`,
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": lang === 'zh' ? "敦化北路100號15樓" : "No. 100, DunHua North Road, 15F",
+    "addressLocality": "Songshan District",
+    "addressRegion": "Taipei",
+    "postalCode": "105",
+    "addressCountry": "TW"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 25.052895,
+    "longitude": 121.548319
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Tuesday", "Thursday"],
+      "opens": "18:00",
+      "closes": "01:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Friday", "Saturday"],
+      "opens": "18:00",
+      "closes": "03:00"
+    }
+  ],
+  "sameAs": [
+    "https://www.instagram.com/operataipei/",
+    "https://www.facebook.com/profile.php?id=100094965340485"
+  ],
+  "hasMap": "https://www.google.com/maps/place/Op%C3%A9ra/@25.0527536,121.5481449,21z"
+};
+
+const venueSchema = {
+  "@context": "https://schema.org",
+  "@type": "EventVenue",
+  "name": lang === 'zh' ? "Opéra Taipei – 私人活動與企業場地租借" : "Opéra Taipei – Private Event & Corporate Hire Venue",
+  "inLanguage": lang === 'zh' ? 'zh-Hant' : lang,
+  "description": t.trusted_intro,
+  "url": `${canonical}#events`,
+  "email": "contact@opera-taipei.com",
+  "image": "https://opera-taipei.com/wp-content/uploads/2024/04/nz93950-enhanced-nr.jpg",
+  "maximumAttendeeCapacity": 300,
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": lang === 'zh' ? "敦化北路100號15樓" : "No. 100, DunHua North Road, 15F",
+    "addressLocality": "Songshan District",
+    "addressRegion": "Taipei",
+    "postalCode": "105",
+    "addressCountry": "TW"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 25.052895,
+    "longitude": 121.548319
+  },
+  "containedInPlace": {
+    "@type": "Hotel",
+    "name": lang === 'zh' ? "台北慕軒飯店" : "Illume Hotel Taipei"
+  }
+};
+---
+
+<Layout 
+  title={title} 
+  description={description} 
+  lang={lang} 
+  canonical={canonical} 
+  alternates={alternates}
+>
+  <!-- Schema injection -->
+  <script type="application/ld+json" set:html={JSON.stringify(barSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(venueSchema)} />
+
+  <Navbar t={t} lang={lang} />
+  
+  <main>
+    <Hero t={t} />
+    <About t={t} />
+    <Bartenders t={t} />
+    <Menu t={t} lang={lang} />
+    <BookingGuidance t={t} />
+    <Events t={t} />
+    <Contact t={t} />
+  </main>
+
+  <Footer t={t} />
+
+  <!-- IntersectionObserver and dynamic animations logic -->
+  <script>
+    // Shrink navbar on scroll
+    const navbar = document.getElementById('navbar');
+    const SCROLL_THRESHOLD = 80;
+    if (navbar) {
+      window.addEventListener('scroll', () => {
+        navbar.classList.toggle('scrolled', window.scrollY > SCROLL_THRESHOLD);
+      });
+    }
+
+    // Scroll fade-in animations
+    const fadeInElements = document.querySelectorAll('.fade-in');
+    function revealElement(element: Element) {
+      element.classList.add('visible');
+    }
+
+    if (fadeInElements.length > 0) {
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              revealElement(entry.target);
+              observer.unobserve(entry.target);
+            }
+          });
+        }, {
+          threshold: 0.05,
+          rootMargin: '0px 0px -20px 0px'
+        });
+
+        fadeInElements.forEach(el => observer.observe(el));
+
+        // Fallback for elements already in viewport
+        setTimeout(() => {
+          fadeInElements.forEach(el => {
+            const rect = el.getBoundingClientRect();
+            if (rect.top < window.innerHeight) {
+              revealElement(el);
+            }
+          });
+        }, 100);
+      } else {
+        fadeInElements.forEach(revealElement);
+      }
+    }
+  </script>
+</Layout>

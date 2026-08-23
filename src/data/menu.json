@@ -1,0 +1,390 @@
+[
+  {
+    "id": "watermelon-gt",
+    "category": "signatures",
+    "price": 350,
+    "tags": ["refreshing", "fruity"],
+    "radar": { "sweetness": 3, "acidity": 2, "strength": 2, "bitterness": 2 }
+  },
+  {
+    "id": "earl-grey-negroni",
+    "category": "signatures",
+    "price": 350,
+    "tags": ["spirit-forward", "bittersweet"],
+    "radar": { "sweetness": 2, "acidity": 1, "strength": 4, "bitterness": 4 }
+  },
+  {
+    "id": "earl-grey-sour",
+    "category": "signatures",
+    "price": 350,
+    "tags": ["sour", "fruity"],
+    "radar": { "sweetness": 3, "acidity": 4, "strength": 2, "bitterness": 1 }
+  },
+  {
+    "id": "oolong-old-fashioned",
+    "category": "signatures",
+    "price": 350,
+    "tags": ["spirit-forward", "smoky"],
+    "radar": { "sweetness": 2, "acidity": 1, "strength": 5, "bitterness": 3 }
+  },
+  {
+    "id": "szechuan-mule",
+    "category": "signatures",
+    "price": 350,
+    "tags": ["spicy", "refreshing"],
+    "radar": { "sweetness": 2, "acidity": 3, "strength": 3, "bitterness": 2 }
+  },
+  {
+    "id": "passion-fruit-daiquiri",
+    "category": "signatures",
+    "price": 350,
+    "tags": ["sour", "fruity"],
+    "radar": { "sweetness": 3, "acidity": 4, "strength": 3, "bitterness": 1 }
+  },
+  {
+    "id": "calamansi-white-pepper-margarita",
+    "category": "signatures",
+    "price": 350,
+    "tags": ["sour", "spicy"],
+    "radar": { "sweetness": 2, "acidity": 4, "strength": 3, "bitterness": 2 }
+  },
+  {
+    "id": "guava-cooler",
+    "category": "signatures",
+    "price": 350,
+    "tags": ["refreshing", "fruity"],
+    "radar": { "sweetness": 4, "acidity": 2, "strength": 2, "bitterness": 1 }
+  },
+  {
+    "id": "sour-plum-whiskey-sour",
+    "category": "signatures",
+    "price": 350,
+    "tags": ["sour", "smoky"],
+    "radar": { "sweetness": 3, "acidity": 4, "strength": 3, "bitterness": 2 }
+  },
+  {
+    "id": "chocolate-negroni",
+    "category": "signatures",
+    "price": 400,
+    "tags": ["spirit-forward", "bittersweet"],
+    "radar": { "sweetness": 3, "acidity": 1, "strength": 4, "bitterness": 3 }
+  },
+  {
+    "id": "umabee",
+    "category": "signatures",
+    "price": 400,
+    "tags": ["sweet", "refreshing"],
+    "radar": { "sweetness": 4, "acidity": 2, "strength": 3, "bitterness": 1 }
+  },
+  {
+    "id": "absinthe-emerald",
+    "category": "signatures",
+    "price": 400,
+    "tags": ["spirit-forward", "herbal"],
+    "radar": { "sweetness": 2, "acidity": 3, "strength": 5, "bitterness": 3 }
+  },
+  {
+    "id": "el-diablo-verde",
+    "category": "signatures",
+    "price": 400,
+    "tags": ["spicy", "smoky"],
+    "radar": { "sweetness": 2, "acidity": 3, "strength": 4, "bitterness": 2 }
+  },
+  {
+    "id": "niaoli-calvados",
+    "category": "signatures",
+    "price": 400,
+    "tags": ["fruity", "spirit-forward"],
+    "radar": { "sweetness": 3, "acidity": 2, "strength": 4, "bitterness": 1 }
+  },
+  {
+    "id": "melon-matcha",
+    "category": "signatures",
+    "price": 400,
+    "tags": ["herbal", "creamy"],
+    "radar": { "sweetness": 3, "acidity": 2, "strength": 3, "bitterness": 2 }
+  },
+  {
+    "id": "almond-buck",
+    "category": "signatures",
+    "price": 400,
+    "tags": ["sweet", "nutty"],
+    "radar": { "sweetness": 4, "acidity": 2, "strength": 3, "bitterness": 1 }
+  },
+  {
+    "id": "salsa-nachos",
+    "category": "food",
+    "price": 250,
+    "image": "/images/fingerfood_salsanachos.jpg",
+    "tags": ["sharing", "spicy"]
+  },
+  {
+    "id": "roasted-nuts",
+    "category": "food",
+    "price": 250,
+    "image": "/images/fingerfood_mixnuts.jpg",
+    "tags": ["nuts", "sweet"]
+  },
+  {
+    "id": "duck-prosciutto",
+    "category": "food",
+    "price": 350,
+    "image": "/images/pxl_20250212_102007677.jpg",
+    "tags": ["savory"]
+  },
+  {
+    "id": "nachos-platter",
+    "category": "food",
+    "price": 500,
+    "image": "/images/nachos.jpg",
+    "tags": ["sharing", "savory"]
+  },
+  {
+    "id": "chicken-wrap",
+    "category": "food",
+    "price": 250,
+    "image": "/images/roasted_chicken_wrap.jpg",
+    "tags": ["savory", "filling"]
+  },
+  {
+    "id": "salmon-toast",
+    "category": "food",
+    "price": 350,
+    "image": "/images/cured_salmon_toast.jpg",
+    "tags": ["savory", "seafood"]
+  },
+  {
+    "id": "old-fashioned",
+    "category": "classics",
+    "price": 350,
+    "tags": ["spirit-forward", "classic"],
+    "radar": { "sweetness": 2, "acidity": 1, "strength": 4, "bitterness": 2 }
+  },
+  {
+    "id": "dirty-martini",
+    "category": "classics",
+    "price": 350,
+    "tags": ["savory", "classic"],
+    "radar": { "sweetness": 1, "acidity": 2, "strength": 5, "bitterness": 2 }
+  },
+  {
+    "id": "espresso-martini",
+    "category": "classics",
+    "price": 350,
+    "tags": ["classic", "sweet"],
+    "radar": { "sweetness": 3, "acidity": 1, "strength": 4, "bitterness": 2 }
+  },
+  {
+    "id": "paloma",
+    "category": "classics",
+    "price": 350,
+    "tags": ["refreshing", "bittersweet"],
+    "radar": { "sweetness": 2, "acidity": 3, "strength": 3, "bitterness": 3 }
+  },
+  {
+    "id": "clover-club",
+    "category": "classics",
+    "price": 350,
+    "tags": ["sour", "classic"],
+    "radar": { "sweetness": 3, "acidity": 3, "strength": 3, "bitterness": 1 }
+  },
+  {
+    "id": "bloody-mary",
+    "category": "classics",
+    "price": 350,
+    "tags": ["savory", "spicy"],
+    "radar": { "sweetness": 1, "acidity": 3, "strength": 3, "bitterness": 2 }
+  },
+  {
+    "id": "pina-colada",
+    "category": "classics",
+    "price": 350,
+    "tags": ["sweet", "fruity"],
+    "radar": { "sweetness": 4, "acidity": 2, "strength": 3, "bitterness": 1 }
+  },
+  {
+    "id": "manhattan",
+    "category": "classics",
+    "price": 400,
+    "tags": ["spirit-forward", "classic"],
+    "radar": { "sweetness": 2, "acidity": 1, "strength": 4, "bitterness": 3 }
+  },
+  {
+    "id": "penicillin",
+    "category": "classics",
+    "price": 400,
+    "tags": ["sour", "smoky"],
+    "radar": { "sweetness": 3, "acidity": 3, "strength": 3, "bitterness": 2 }
+  },
+  {
+    "id": "new-york-sour",
+    "category": "classics",
+    "price": 400,
+    "tags": ["sour", "fruity"],
+    "radar": { "sweetness": 3, "acidity": 4, "strength": 3, "bitterness": 2 }
+  },
+  {
+    "id": "pisco-sour",
+    "category": "classics",
+    "price": 400,
+    "tags": ["sour", "classic"],
+    "radar": { "sweetness": 3, "acidity": 4, "strength": 3, "bitterness": 1 }
+  },
+  {
+    "id": "caipirinha",
+    "category": "classics",
+    "price": 400,
+    "tags": ["refreshing", "sour"],
+    "radar": { "sweetness": 3, "acidity": 4, "strength": 3, "bitterness": 1 }
+  },
+  {
+    "id": "house-spirit",
+    "category": "bottles",
+    "price": 3000,
+    "tags": []
+  },
+  {
+    "id": "house-wine",
+    "category": "bottles",
+    "price": 1300,
+    "tags": []
+  },
+  {
+    "id": "chateau-edmus",
+    "category": "bottles",
+    "price": 2900,
+    "tags": []
+  },
+  {
+    "id": "les-bellissands",
+    "category": "bottles",
+    "price": 5500,
+    "tags": []
+  },
+  {
+    "id": "pouilly-fuisse",
+    "category": "bottles",
+    "price": 3400,
+    "tags": []
+  },
+  {
+    "id": "marquis-brut",
+    "category": "bottles",
+    "price": 4000,
+    "tags": []
+  },
+  {
+    "id": "marquis-brut-3",
+    "category": "bottles",
+    "price": 10000,
+    "tags": []
+  },
+  {
+    "id": "pommery-brut",
+    "category": "bottles",
+    "price": 5000,
+    "tags": []
+  },
+  {
+    "id": "pommery-brut-3",
+    "category": "bottles",
+    "price": 12000,
+    "tags": []
+  },
+  {
+    "id": "highland-park-12",
+    "category": "bottles",
+    "price": 5000,
+    "tags": []
+  },
+  {
+    "id": "singleton-12",
+    "category": "bottles",
+    "price": 5000,
+    "tags": []
+  },
+  {
+    "id": "talisker-10",
+    "category": "bottles",
+    "price": 5000,
+    "tags": []
+  },
+  {
+    "id": "lagavulin-8",
+    "category": "bottles",
+    "price": 6000,
+    "tags": []
+  },
+  {
+    "id": "jw-xr21",
+    "category": "bottles",
+    "price": 9000,
+    "tags": []
+  },
+  {
+    "id": "balvenie-12",
+    "category": "bottles",
+    "price": 6000,
+    "tags": []
+  },
+  {
+    "id": "balvenie-21",
+    "category": "bottles",
+    "price": 16000,
+    "tags": []
+  },
+  {
+    "id": "macallan-15",
+    "category": "bottles",
+    "price": 12000,
+    "tags": []
+  },
+  {
+    "id": "merlet-vsop",
+    "category": "bottles",
+    "price": 6000,
+    "tags": []
+  },
+  {
+    "id": "don-julio-repo",
+    "category": "bottles",
+    "price": 7000,
+    "tags": []
+  },
+  {
+    "id": "don-julio-anejo",
+    "category": "bottles",
+    "price": 8000,
+    "tags": []
+  },
+  {
+    "id": "don-julio-1942",
+    "category": "bottles",
+    "price": 12000,
+    "tags": []
+  },
+  {
+    "id": "clase-azul",
+    "category": "bottles",
+    "price": 16000,
+    "tags": []
+  },
+  {
+    "id": "grey-goose",
+    "category": "bottles",
+    "price": 5000,
+    "tags": []
+  },
+  {
+    "id": "roku-gin",
+    "category": "bottles",
+    "price": 4000,
+    "tags": []
+  },
+  {
+    "id": "monkey-47",
+    "category": "bottles",
+    "price": 5000,
+    "tags": []
+  }
+]

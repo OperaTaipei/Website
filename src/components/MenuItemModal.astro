@@ -1,0 +1,508 @@
+---
+import menuData from '../data/menu.json';
+
+interface Props {
+  t: any;
+  lang: string;
+}
+
+const { t, lang } = Astro.props;
+---
+
+<div class="menu-modal-backdrop" id="menu-item-modal" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="menu-modal-content">
+    <button class="menu-modal-close" id="modal-close" aria-label="Close details">&times;</button>
+    
+    <div class="menu-modal-body">
+      <!-- Media Section -->
+      <div class="menu-modal-media" id="modal-media-container">
+        <img class="menu-modal-img" id="modal-img" src="" alt="" onerror="this.style.display='none';">
+      </div>
+
+      <!-- Details Section -->
+      <div class="menu-modal-details">
+        <div class="menu-modal-tags" id="modal-tags"></div>
+        <h3 class="menu-modal-title" id="modal-title"></h3>
+        <p class="menu-modal-price" id="modal-price"></p>
+        <p class="menu-modal-description" id="modal-desc"></p>
+        
+        <!-- Ingredients Pills (with Tooltip) -->
+        <div class="menu-modal-ingredients-section" id="modal-ingredients-section">
+          <div class="ingredients-label">{lang === 'zh' ? '調配成分 (點擊看說明)：' : 'Ingredients (click for details):'}</div>
+          <div class="menu-modal-ingredients-pills" id="modal-ingredients-pills"></div>
+        </div>
+
+        <!-- Radar Ratings (SVG Sliders) -->
+        <div class="menu-modal-radar-section" id="modal-radar-section">
+          <h4 class="flavor-profile-title">{lang === 'zh' ? '風味指標' : 'Flavor Profile'}</h4>
+          <div class="radar-sliders" id="modal-sliders-container"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Ingredient Tooltip Popover -->
+<div class="ingredient-tooltip-popover" id="ingredient-tooltip" aria-hidden="true"></div>
+
+<!-- Inject dictionary directly to client-side JS -->
+<script define:vars={{ menuItems: menuData, translations: t, lang }}>
+  const modal = document.getElementById('menu-item-modal');
+  const modalClose = document.getElementById('modal-close');
+  const modalImg = document.getElementById('modal-img');
+  const modalMedia = document.getElementById('modal-media-container');
+  const modalTitle = document.getElementById('modal-title');
+  const modalPrice = document.getElementById('modal-price');
+  const modalDesc = document.getElementById('modal-desc');
+  const modalTags = document.getElementById('modal-tags');
+  const modalIngredientsSection = document.getElementById('modal-ingredients-section');
+  const modalIngredientsPills = document.getElementById('modal-ingredients-pills');
+  const modalRadarSection = document.getElementById('modal-radar-section');
+  const modalSlidersContainer = document.getElementById('modal-sliders-container');
+  const tooltip = document.getElementById('ingredient-tooltip');
+
+  // Open Modal logic
+  document.querySelectorAll('.clickable-menu-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const itemId = (item as HTMLElement).dataset.id;
+      const data = menuItems.find(m => m.id === itemId);
+      if (!data) return;
+
+      const itemText = translations.menu_items[itemId] || {};
+
+      // Set Title, Price, Description
+      if (modalTitle) modalTitle.textContent = itemText.name;
+      if (modalPrice) modalPrice.textContent = `${data.price} NTD$`;
+      if (modalDesc) modalDesc.textContent = itemText.description;
+
+      // Set Image
+      if (modalImg) {
+        if (data.image) {
+          modalImg.src = data.image;
+          modalImg.alt = itemText.name;
+          if (modalMedia) modalMedia.style.display = 'block';
+        } else {
+          modalImg.src = '';
+          if (modalMedia) modalMedia.style.display = 'none';
+        }
+      }
+
+      // Set Tags
+      if (modalTags) {
+        modalTags.innerHTML = '';
+        if (data.tags) {
+          data.tags.forEach(tag => {
+            const badge = document.createElement('span');
+            badge.className = 'modal-tag-badge';
+            badge.textContent = translations.menu_tags[tag] || tag;
+            modalTags.appendChild(badge);
+          });
+        }
+      }
+
+      // Set Ingredients Pills
+      if (modalIngredientsPills && modalIngredientsSection) {
+        modalIngredientsPills.innerHTML = '';
+        if (itemText.ingredients) {
+          modalIngredientsSection.style.display = 'block';
+          const ingredientsList = itemText.ingredients.split(',').map(s => s.trim());
+          ingredientsList.forEach(ing => {
+            const pill = document.createElement('button');
+            pill.className = 'ingredient-pill';
+            pill.textContent = ing;
+
+            // Check if ingredient has a description in our dictionary
+            const desc = translations.ingredients_dictionary[ing];
+            if (desc) {
+              pill.classList.add('has-definition');
+              
+              // Mobile/Desktop Click handler for tooltips
+              pill.addEventListener('click', (e) => {
+                e.stopPropagation();
+                showTooltip(pill, desc);
+              });
+            }
+
+            modalIngredientsPills.appendChild(pill);
+          });
+        } else {
+          modalIngredientsSection.style.display = 'none';
+        }
+      }
+
+      // Set SVG Radar Ratings
+      if (modalSlidersContainer && modalRadarSection) {
+        modalSlidersContainer.innerHTML = '';
+        if (data.radar) {
+          modalRadarSection.style.display = 'block';
+          
+          Object.entries(data.radar).forEach(([key, val]) => {
+            const row = document.createElement('div');
+            row.className = 'radar-row';
+
+            const label = document.createElement('span');
+            label.className = 'radar-label';
+            label.textContent = translations.menu_radar[key] || key;
+
+            // Build rating bar (using divs for clean scaling on mobile)
+            const barContainer = document.createElement('div');
+            barContainer.className = 'rating-bar-container';
+
+            const fill = document.createElement('div');
+            fill.className = 'rating-bar-fill';
+            fill.style.width = '0%'; // Start at 0 for entrance animation
+
+            barContainer.appendChild(fill);
+
+            const score = document.createElement('span');
+            score.className = 'rating-score';
+            score.textContent = `${val}/5`;
+
+            row.appendChild(label);
+            row.appendChild(barContainer);
+            row.appendChild(score);
+
+            modalSlidersContainer.appendChild(row);
+
+            // Animate width expansion
+            setTimeout(() => {
+              fill.style.width = `${(val / 5) * 100}%`;
+            }, 100);
+          });
+        } else {
+          modalRadarSection.style.display = 'none';
+        }
+      }
+
+      // Open Modal with clean animations
+      if (modal) {
+        modal.classList.add('open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden'; // Lock background scroll
+      }
+    });
+  });
+
+  // Close Modal logic
+  function closeModal() {
+    if (modal) {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      hideTooltip();
+    }
+  }
+
+  if (modalClose) modalClose.addEventListener('click', closeModal);
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+  }
+
+  // Escape key closes modal
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  // Tooltip Logic
+  function showTooltip(targetElement: HTMLElement, text: string) {
+    if (!tooltip) return;
+
+    tooltip.textContent = text;
+    tooltip.classList.add('visible');
+    tooltip.setAttribute('aria-hidden', 'false');
+
+    // Position popover relative to target element
+    const rect = targetElement.getBoundingClientRect();
+    const tooltipRect = tooltip.getBoundingClientRect();
+    
+    // Position slightly above the pill
+    let top = rect.top - tooltipRect.height - 8 + window.scrollY;
+    let left = rect.left + rect.width / 2 - tooltipRect.width / 2;
+
+    // Boundary check for viewport edges
+    if (left < 10) left = 10;
+    if (left + tooltipRect.width > window.innerWidth - 10) {
+      left = window.innerWidth - tooltipRect.width - 10;
+    }
+    if (rect.top - tooltipRect.height < 10) {
+      // Place below pill if no space above
+      top = rect.bottom + 8 + window.scrollY;
+    }
+
+    tooltip.style.top = `${top}px`;
+    tooltip.style.left = `${left}px`;
+  }
+
+  function hideTooltip() {
+    if (tooltip) {
+      tooltip.classList.remove('visible');
+      tooltip.setAttribute('aria-hidden', 'true');
+    }
+  }
+
+  // Dismiss tooltip on backdrop clicks
+  document.addEventListener('click', () => {
+    hideTooltip();
+  });
+</script>
+
+<style>
+  /* Local styles for Bottom Sheet / Modals and Tooltips */
+  .menu-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .menu-modal-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  .menu-modal-content {
+    background: #0e0d0c;
+    border: 1px solid rgba(201, 168, 76, 0.15);
+    width: 90%;
+    max-width: 680px;
+    border-radius: 12px;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+    transform: scale(0.95) translateY(15px);
+    transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .menu-modal-backdrop.open .menu-modal-content {
+    transform: scale(1) translateY(0);
+  }
+
+  .menu-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: rgba(245, 240, 232, 0.5);
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 10;
+    transition: color 0.2s;
+  }
+  .menu-modal-close:hover {
+    color: #c9a84c;
+  }
+
+  .menu-modal-body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .menu-modal-media {
+    width: 100%;
+    height: 260px;
+    overflow: hidden;
+    position: relative;
+  }
+  .menu-modal-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .menu-modal-details {
+    padding: 30px;
+  }
+
+  .menu-modal-tags {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .modal-tag-badge {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background: rgba(201, 168, 76, 0.1);
+    color: #e2c47a;
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid rgba(201, 168, 76, 0.2);
+  }
+
+  .menu-modal-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    color: #f5f0e8;
+    margin-bottom: 4px;
+  }
+  .menu-modal-price {
+    font-size: 0.9rem;
+    color: #c9a84c;
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+  .menu-modal-description {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: rgba(245, 240, 232, 0.7);
+    margin-bottom: 25px;
+  }
+
+  /* Ingredients pills */
+  .menu-modal-ingredients-section {
+    border-top: 1px solid rgba(180, 150, 90, 0.08);
+    padding-top: 20px;
+    margin-bottom: 25px;
+  }
+  .ingredients-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(245, 240, 232, 0.4);
+    margin-bottom: 12px;
+  }
+  .menu-modal-ingredients-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .ingredient-pill {
+    background: #141210;
+    border: 1px solid rgba(245, 240, 232, 0.06);
+    color: rgba(245, 240, 232, 0.8);
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    border-radius: 20px;
+    cursor: default;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .ingredient-pill.has-definition {
+    cursor: pointer;
+    border-bottom: 1px dashed rgba(201, 168, 76, 0.5);
+  }
+  .ingredient-pill.has-definition:hover {
+    background: rgba(201, 168, 76, 0.05);
+    border-color: rgba(201, 168, 76, 0.4);
+  }
+
+  /* Flavor Sliders */
+  .menu-modal-radar-section {
+    border-top: 1px solid rgba(180, 150, 90, 0.08);
+    padding-top: 20px;
+  }
+  .flavor-profile-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(245, 240, 232, 0.4);
+    margin-bottom: 15px;
+  }
+  .radar-sliders {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .radar-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .radar-label {
+    font-size: 0.8rem;
+    color: rgba(245, 240, 232, 0.8);
+    width: 140px;
+    flex-shrink: 0;
+  }
+  .rating-bar-container {
+    flex-grow: 1;
+    background: rgba(245, 240, 232, 0.05);
+    height: 4px;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .rating-bar-fill {
+    background: #c9a84c;
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .rating-score {
+    font-size: 0.75rem;
+    color: #c9a84c;
+    width: 30px;
+    text-align: right;
+    font-weight: 500;
+  }
+
+  /* Tooltip Popover */
+  .ingredient-tooltip-popover {
+    position: absolute;
+    z-index: 1100;
+    background: #1a1714;
+    border: 1px solid #c9a84c;
+    color: #f5f0e8;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    max-width: 260px;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(5px);
+    transition: opacity 0.2s, transform 0.2s;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  }
+  .ingredient-tooltip-popover.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Responsive / Mobile bottom sheet */
+  @media (max-width: 768px) {
+    .menu-modal-backdrop {
+      align-items: flex-end; /* Pin to bottom */
+    }
+    
+    .menu-modal-content {
+      width: 100%;
+      border-radius: 16px 16px 0 0;
+      border-bottom: none;
+      max-height: 85vh;
+      transform: translateY(100%);
+      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .menu-modal-backdrop.open .menu-modal-content {
+      transform: translateY(0);
+    }
+
+    .menu-modal-close {
+      top: 10px;
+      right: 15px;
+    }
+
+    .menu-modal-media {
+      height: 180px;
+    }
+
+    .menu-modal-details {
+      padding: 20px;
+    }
+
+    .radar-row {
+      gap: 10px;
+    }
+    .radar-label {
+      width: 100px;
+      font-size: 0.75rem;
+    }
+  }
+</style>

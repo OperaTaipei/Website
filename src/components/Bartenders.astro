@@ -1,0 +1,26 @@
+---
+interface Props {
+  t: any;
+}
+
+const { t } = Astro.props;
+---
+
+<section id="bartenders" class="fade-in">
+  <div class="section-centered">
+    <p class="section-label section-label--centered">{t.bartender_label}</p>
+    <h2 class="section-title section-title--centered" set:html={t.bartender_title} />
+    <div class="section-divider section-divider--centered"></div>
+
+    <p class="bartender-bio">
+      {t.bartender_bio}
+    </p>
+
+    <div class="bartender-list">
+      <div class="bartender-card">
+        <div class="bartender-name">Yann</div>
+        <div class="bartender-role">{t.bartender_role}</div>
+      </div>
+    </div>
+  </div>
+</section>

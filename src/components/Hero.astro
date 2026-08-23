@@ -1,0 +1,27 @@
+---
+interface Props {
+  t: any;
+}
+
+const { t } = Astro.props;
+---
+
+<section id="hero">
+  <div class="hero-background"></div>
+  <div class="hero-circles"></div>
+
+  <p class="hero-eyebrow">{t.hero_eyebrow}</p>
+  <h1 class="hero-title" aria-label="Opéra Taipei — Panoramic Cocktail Skybar">
+    <em>Opéra</em><br>TAIPEI
+  </h1>
+  <p class="hero-subtitle">{t.hero_subtitle}</p>
+
+  <div class="hero-cta-group">
+    <a href="#menu" class="btn-gold">{t.hero_cta_menu}</a>
+    <a href="#contact" class="btn-ghost">{t.hero_cta_find}</a>
+  </div>
+
+  <div class="hero-scroll-indicator">
+    <div class="scroll-line"></div>
+  </div>
+</section>

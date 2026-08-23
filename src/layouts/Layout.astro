@@ -1,0 +1,66 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  lang: string;
+  canonical: string;
+  alternates: Array<{ href: string; hreflang: string }>;
+}
+
+const { title, description, lang, canonical, alternates } = Astro.props;
+
+// Map local codes to standard HTML lang tags
+const htmlLang = lang === 'zh' ? 'zh-Hant' : lang;
+
+// Determine locale strings for Open Graph
+const ogLocale = lang === 'zh' ? 'zh_TW' : lang === 'fr' ? 'fr_FR' : lang === 'ja' ? 'ja_JP' : 'en_US';
+---
+
+<!DOCTYPE html>
+<html lang={htmlLang}>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="Opéra Taipei" />
+  <meta name="geo.region" content="TW-TPE" />
+  <meta name="geo.placename" content="Taipei, Taiwan" />
+  <meta name="geo.position" content="25.052895;121.548319" />
+  <meta name="ICBM" content="25.052895, 121.548319" />
+
+  <link rel="canonical" href={canonical} />
+  {alternates.map(alt => (
+    <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />
+  ))}
+  <link rel="alternate" hreflang="x-default" href="https://opera-taipei.com/" />
+  
+  <link rel="llms" type="text/plain" href="/llms.txt" title="LLM reference file for Opéra Taipei" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content="https://opera-taipei.com/wp-content/uploads/2024/04/nz93950-enhanced-nr.jpg" />
+  <meta property="og:image:alt" content="Panoramic view from Opéra Taipei skybar with Taipei 101 in the background" />
+  <meta property="og:locale" content={ogLocale} />
+  <meta property="og:site_name" content="Opéra Taipei" />
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content="https://opera-taipei.com/wp-content/uploads/2024/04/nz93950-enhanced-nr.jpg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <slot />
+</body>
+</html>

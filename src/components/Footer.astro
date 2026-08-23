@@ -1,0 +1,16 @@
+---
+interface Props {
+  t: any;
+}
+
+const { t } = Astro.props;
+---
+
+<footer>
+  <a href="#hero" class="footer-logo-link" aria-label="Scroll to top">
+    <img src="/images/opera-logo.png" alt="Opéra Taipei Logo" class="footer-logo-img"
+         onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='block';">
+    <span class="footer-logo-text" style="display:none;">Opéra</span>
+  </a>
+  <p class="footer-copy">{t.footer_copy}</p>
+</footer>
