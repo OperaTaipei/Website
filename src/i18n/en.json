@@ -522,5 +522,6 @@
   "booking_tip": "Tip",
   "booking_reminder": "Please include your <strong>Name, Date/Time, Phone, and number of guests</strong> to speed up confirmation.",
   "booking_mail_subject": "Table Reservation Request - Opéra Taipei",
-  "booking_mail_body": "Hi Opéra Team,%0D%0A%0D%0AI would like to request a table reservation with the following details:%0D%0A%0D%0A- Name:%0D%0A- Phone Number:%0D%0A- Date & Time:%0D%0A- Number of Guests:%0D%0A- Table / Area Preference:%0D%0A%0D%0AThank you!"
+  "booking_mail_body": "Hi Opéra Team,%0D%0A%0D%0AI would like to request a table reservation with the following details:%0D%0A%0D%0A- Name:%0D%0A- Phone Number:%0D%0A- Date & Time:%0D%0A- Number of Guests:%0D%0A- Table / Area Preference:%0D%0A%0D%0AThank you!",
+  "gallery_experience_vibe": "Experience the vibe"
 }

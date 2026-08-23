@@ -522,5 +522,6 @@
   "booking_tip": "Conseil",
   "booking_reminder": "Veuillez indiquer votre <strong>Nom, Date/Heure, Téléphone et nombre d'invités</strong> pour accélérer la confirmation.",
   "booking_mail_subject": "Demande de réservation de table - Opéra Taipei",
-  "booking_mail_body": "Bonjour l'équipe Opéra,%0D%0A%0D%0AJe souhaite faire une demande de réservation de table avec les détails suivants :%0D%0A%0D%0A- Nom :%0D%0A- Numéro de téléphone :%0D%0A- Date & Heure :%0D%0A- Nombre d'invités :%0D%0A- Préférence de table / zone :%0D%0A%0D%0AMerci !"
+  "booking_mail_body": "Bonjour l'équipe Opéra,%0D%0A%0D%0AJe souhaite faire une demande de réservation de table avec les détails suivants :%0D%0A%0D%0A- Nom :%0D%0A- Numéro de téléphone :%0D%0A- Date & Heure :%0D%0A- Nombre d'invités :%0D%0A- Préférence de table / zone :%0D%0A%0D%0AMerci !",
+  "gallery_experience_vibe": "Découvrez l'ambiance"
 }

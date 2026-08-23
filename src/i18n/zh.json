@@ -522,5 +522,6 @@
   "booking_tip": "提醒",
   "booking_reminder": "請提供您的<strong>姓名、日期/時間、電話以及人數</strong>，以加速預訂確認流程。",
   "booking_mail_subject": "桌位預訂申請 - Opéra Taipei",
-  "booking_mail_body": "你好 Opéra 團隊，%0D%0A%0D%0A我想要申請預訂桌位，詳細資訊如下：%0D%0A%0D%0A- 姓名：%0D%0A- 電話號碼：%0D%0A- 日期與時間：%0D%0A- 賓客總人數：%0D%0A- 桌位 / 區域偏好：%0D%0A%0D%0A謝謝！"
+  "booking_mail_body": "你好 Opéra 團隊，%0D%0A%0D%0A我想要申請預訂桌位，詳細資訊如下：%0D%0A%0D%0A- 姓名：%0D%0A- 電話號碼：%0D%0A- 日期與時間：%0D%0A- 賓客總人數：%0D%0A- 桌位 / 區域偏好：%0D%0A%0D%0A謝謝！",
+  "gallery_experience_vibe": "體驗氛圍"
 }
