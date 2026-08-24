@@ -15,8 +15,12 @@ const ingredients = await dbHelpers.getIngredients(db);
 const flavorTags = await dbHelpers.getFlavorTags(db);
 const media = await dbHelpers.getMedia(db);
 
-// Sort categories and menu items alphabetically ascending by name
-categories.sort((a, b) => a.name.localeCompare(b.name));
+// Sort categories placing 'bottles' first, others alphabetically ascending by name
+categories.sort((a, b) => {
+  if (a.code_name === 'bottles') return -1;
+  if (b.code_name === 'bottles') return 1;
+  return a.name.localeCompare(b.name);
+});
 menuItems.sort((a, b) => a.name.localeCompare(b.name));
 
 // Helper to check Cloudflare Access headers if available
@@ -678,6 +682,7 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
 
         {categories.map((category, index) => {
           const items = menuItems.filter(item => item.category_id === category.id);
+          const isBottles = category.code_name === 'bottles';
           return (
             <div 
               class="category-items-table" 
@@ -686,28 +691,46 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
             >
               <table>
                 <thead>
-                  <tr>
-                    <th>Name (EN)</th>
-                    <th>Price (NTD$)</th>
-                    <th>Ingredients</th>
-                    <th>Tags</th>
-                    <th>Picture</th>
-                    <th>Visible</th>
-                    <th>Actions</th>
-                  </tr>
+                  {isBottles ? (
+                    <tr>
+                      <th>Name (EN)</th>
+                      <th>Price (NTD$)</th>
+                      <th>Type</th>
+                      <th>Volume</th>
+                      <th>Ingredients</th>
+                      <th>Tags</th>
+                      <th>Picture</th>
+                      <th>Visible</th>
+                      <th>Actions</th>
+                    </tr>
+                  ) : (
+                    <tr>
+                      <th>Name (EN)</th>
+                      <th>Price (NTD$)</th>
+                      <th>Ingredients</th>
+                      <th>Tags</th>
+                      <th>Picture</th>
+                      <th>Visible</th>
+                      <th>Actions</th>
+                    </tr>
+                  )}
                 </thead>
                 <tbody>
                   {items.map(item => (
                     <tr data-id={item.id}>
-                      <td style="font-weight: 500;">
-                        {item.name}
-                        {item.bottle_type && (
-                          <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: normal; margin-left: 0.5rem;">
-                            ({item.bottle_type}, {item.bottle_volume}L)
-                          </span>
-                        )}
-                      </td>
-                      <td>{item.price}</td>
+                      {isBottles ? (
+                        <>
+                          <td style="font-weight: 500;">{item.name}</td>
+                          <td>{item.price}</td>
+                          <td><span class="badge" style="background: rgba(197, 168, 128, 0.1); color: var(--primary);">{item.bottle_type || '-'}</span></td>
+                          <td>{item.bottle_volume !== undefined ? `${item.bottle_volume} L` : '-'}</td>
+                        </>
+                      ) : (
+                        <>
+                          <td style="font-weight: 500;">{item.name}</td>
+                          <td>{item.price}</td>
+                        </>
+                      )}
                       <td>
                         {item.ingredients.map(ing => (
                           <span class="badge">{ing}</span>
@@ -733,7 +756,7 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
                   ))}
                   {items.length === 0 && (
                     <tr>
-                      <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 2rem;">No items in this category.</td>
+                      <td colspan={isBottles ? 9 : 7} style="text-align: center; color: var(--text-muted); padding: 2rem;">No items in this category.</td>
                     </tr>
                   )}
                 </tbody>
