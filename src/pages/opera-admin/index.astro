@@ -1405,11 +1405,11 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
     </div>
   </dialog>
 
-  <script type="application/json" id="data-menu-items">{JSON.stringify(menuItems)}</script>
-  <script type="application/json" id="data-categories">{JSON.stringify(categories)}</script>
-  <script type="application/json" id="data-ingredients">{JSON.stringify(ingredients)}</script>
-  <script type="application/json" id="data-flavor-tags">{JSON.stringify(flavorTags)}</script>
-  <script type="application/json" id="data-bottle-types">{JSON.stringify(bottleTypes)}</script>
+  <script type="application/json" id="data-menu-items" set:html={JSON.stringify(menuItems)}></script>
+  <script type="application/json" id="data-categories" set:html={JSON.stringify(categories)}></script>
+  <script type="application/json" id="data-ingredients" set:html={JSON.stringify(ingredients)}></script>
+  <script type="application/json" id="data-flavor-tags" set:html={JSON.stringify(flavorTags)}></script>
+  <script type="application/json" id="data-bottle-types" set:html={JSON.stringify(bottleTypes)}></script>
 
   <script is:inline>
     window.allMenuItems = JSON.parse(document.getElementById('data-menu-items').textContent);
