@@ -30,7 +30,7 @@ export const server = {
       ingredients: z.array(z.number()),
       tags: z.array(z.number()),
       translations: translationsInputSchema,
-      bottle_type: z.enum(['Whiskey', 'Gin', 'Vodka', 'Tequila', 'Mescal', 'Spirit', 'Liqueur', 'Rum']).nullable().optional(),
+      bottle_type_id: z.number().nullable().optional(),
       bottle_volume: z.number().min(0).nullable().optional()
     }),
     handler: async (input, context) => {
@@ -49,7 +49,7 @@ export const server = {
           ingredients: input.ingredients,
           tags: input.tags,
           translations: input.translations as dbHelpers.TranslationsInput,
-          bottle_type: input.bottle_type || undefined,
+          bottle_type_id: input.bottle_type_id !== null && input.bottle_type_id !== undefined ? input.bottle_type_id : undefined,
           bottle_volume: input.bottle_volume !== null && input.bottle_volume !== undefined ? input.bottle_volume : undefined
         };
 
@@ -220,6 +220,48 @@ export const server = {
         return { success: true, message: 'Category deleted successfully.' };
       } catch (err: any) {
         return { success: false, error: err.message || 'Failed to delete category.' };
+      }
+    }
+  }),
+
+  // ----------------------------------------------------
+  // BOTTLE TYPES ACTIONS
+  // ----------------------------------------------------
+  saveBottleType: defineAction({
+    accept: 'json',
+    input: z.object({
+      id: z.number().optional(),
+      code_name: z.string().min(1, 'Code name is required'),
+      translations: translationsInputSchema
+    }),
+    handler: async (input, context) => {
+      const db = context.locals.runtime?.env?.DB;
+      if (!db) throw new Error('Database connection not available.');
+      try {
+        if (input.id) {
+          await dbHelpers.updateBottleType(db, input.id, input.code_name, input.translations as dbHelpers.TranslationsInput);
+          return { success: true, message: 'Bottle type updated successfully.' };
+        } else {
+          const newId = await dbHelpers.createBottleType(db, input.code_name, input.translations as dbHelpers.TranslationsInput);
+          return { success: true, message: 'Bottle type created successfully.', id: newId };
+        }
+      } catch (err: any) {
+        return { success: false, error: err.message || 'Failed to save bottle type.' };
+      }
+    }
+  }),
+
+  deleteBottleType: defineAction({
+    accept: 'json',
+    input: z.object({ id: z.number() }),
+    handler: async (input, context) => {
+      const db = context.locals.runtime?.env?.DB;
+      if (!db) throw new Error('Database connection not available.');
+      try {
+        await dbHelpers.deleteBottleType(db, input.id);
+        return { success: true, message: 'Bottle type deleted successfully.' };
+      } catch (err: any) {
+        return { success: false, error: err.message || 'Failed to delete bottle type.' };
       }
     }
   })

@@ -29,6 +29,7 @@ async function run() {
   const ingredients = new Set();
   const tags = new Set();
   const mediaUrls = new Set();
+  const bottleTypes = new Set();
 
   // Extract categories and tags from menuData
   menuData.forEach(item => {
@@ -38,6 +39,9 @@ async function run() {
     }
     if (item.image) {
       mediaUrls.add(item.image);
+    }
+    if (item.category === 'bottles' && item.bottle_type) {
+      bottleTypes.add(item.bottle_type);
     }
   });
 
@@ -104,12 +108,23 @@ async function run() {
   }
   sqlStatements.push('');
 
+  // 5b. Insert Bottle Types
+  const bottleTypeIds = {};
+  let btId = 1;
+  sqlStatements.push('-- Seeding bottle types');
+  for (const bt of bottleTypes) {
+    sqlStatements.push(`INSERT OR IGNORE INTO bottle_types (id, code_name) VALUES (${btId}, ${sqlEscape(bt)});`);
+    bottleTypeIds[bt] = btId;
+    btId++;
+  }
+  sqlStatements.push('');
+
   // 6. Insert Menu Items and local associations
   sqlStatements.push('-- Seeding menu items and connections');
   let itemId = 1;
   const menuItemKeyToId = {};
   
-    menuData.forEach(item => {
+  menuData.forEach(item => {
     const catId = categoryIds[item.category];
     const mediaId = item.image ? mediaIds[item.image] : 'NULL';
     const price = item.price;
@@ -118,7 +133,8 @@ async function run() {
 
     // Seeding bottles table if it has bottle properties
     if (item.category === 'bottles' && item.bottle_type && item.bottle_volume !== undefined) {
-      sqlStatements.push(`INSERT OR IGNORE INTO bottles (menu_item_id, type, volume) VALUES (${itemId}, ${sqlEscape(item.bottle_type)}, ${item.bottle_volume});`);
+      const typeId = bottleTypeIds[item.bottle_type];
+      sqlStatements.push(`INSERT OR IGNORE INTO bottles (menu_item_id, bottle_type_id, volume) VALUES (${itemId}, ${typeId}, ${item.bottle_volume});`);
     }
 
     // Join table tags
@@ -200,6 +216,14 @@ async function run() {
         sqlStatements.push(`INSERT OR IGNORE INTO translations (locale, entity_type, entity_id, name, description) VALUES (${sqlEscape(locale)}, 'menu_item', ${dbId}, ${sqlEscape(name)}, ${sqlEscape(desc)});`);
       }
     });
+  }
+
+  // Localized Bottle Types
+  for (const locale of locales) {
+    for (const bt of bottleTypes) {
+      const btDatabaseId = bottleTypeIds[bt];
+      sqlStatements.push(`INSERT OR IGNORE INTO translations (locale, entity_type, entity_id, name, description) VALUES (${sqlEscape(locale)}, 'bottle_type', ${btDatabaseId}, ${sqlEscape(bt)}, NULL);`);
+    }
   }
 
   // Ensure target folder exists

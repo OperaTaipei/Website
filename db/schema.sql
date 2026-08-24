@@ -37,12 +37,19 @@ CREATE TABLE IF NOT EXISTS menu_items (
     FOREIGN KEY (media_id) REFERENCES media(id) ON DELETE SET NULL
 );
 
--- 5b. Bottles table to store bottle-specific properties (Option B)
+-- 5b. Bottle Types table to dynamically manage allowed types
+CREATE TABLE IF NOT EXISTS bottle_types (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    code_name TEXT UNIQUE NOT NULL
+);
+
+-- 5c. Bottles table to store bottle-specific properties
 CREATE TABLE IF NOT EXISTS bottles (
     menu_item_id INTEGER PRIMARY KEY,
-    type TEXT NOT NULL CHECK(type IN ('Whiskey', 'Gin', 'Vodka', 'Tequila', 'Mescal', 'Spirit', 'Liqueur', 'Rum')),
+    bottle_type_id INTEGER NOT NULL,
     volume REAL NOT NULL, -- in Liters
-    FOREIGN KEY (menu_item_id) REFERENCES menu_items(id) ON DELETE CASCADE
+    FOREIGN KEY (menu_item_id) REFERENCES menu_items(id) ON DELETE CASCADE,
+    FOREIGN KEY (bottle_type_id) REFERENCES bottle_types(id) ON DELETE RESTRICT
 );
 
 -- 6. Menu Item Ingredients Join Table (with restrict checks to prevent deletion of ingredients if in use)
@@ -67,7 +74,7 @@ CREATE TABLE IF NOT EXISTS menu_item_tags (
 CREATE TABLE IF NOT EXISTS translations (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     locale TEXT NOT NULL CHECK(locale IN ('en', 'fr', 'ja', 'zh')),
-    entity_type TEXT NOT NULL CHECK(entity_type IN ('menu_item', 'category', 'ingredient', 'tag')),
+    entity_type TEXT NOT NULL CHECK(entity_type IN ('menu_item', 'category', 'ingredient', 'tag', 'bottle_type')),
     entity_id INTEGER NOT NULL,
     name TEXT NOT NULL,
     description TEXT,

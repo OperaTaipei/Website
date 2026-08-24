@@ -24,6 +24,12 @@ export interface Media {
   alt_text?: string;
 }
 
+export interface BottleType {
+  id: number;
+  code_name: string;
+  name: string;
+}
+
 export interface MenuItem {
   id: number;
   code_name: string;
@@ -38,6 +44,7 @@ export interface MenuItem {
   ingredients: string[]; // List of ingredient names
   tags: string[]; // List of tag names
   bottle_type?: string;
+  bottle_type_id?: number;
   bottle_volume?: number;
 }
 
@@ -96,7 +103,8 @@ export async function getMenuItems(db: D1Database): Promise<MenuItem[]> {
            med.url as media_url,
            COALESCE(t.name, m.code_name) as name,
            t.description as description,
-           b.type as bottle_type,
+           b.bottle_type_id,
+           COALESCE(bt_t.name, bt.code_name) as bottle_type,
            b.volume as bottle_volume
     FROM menu_items m
     INNER JOIN categories c ON c.id = m.category_id
@@ -104,6 +112,8 @@ export async function getMenuItems(db: D1Database): Promise<MenuItem[]> {
     LEFT JOIN media med ON med.id = m.media_id
     LEFT JOIN translations t ON t.entity_type = 'menu_item' AND t.entity_id = m.id AND t.locale = 'en'
     LEFT JOIN bottles b ON b.menu_item_id = m.id
+    LEFT JOIN bottle_types bt ON bt.id = b.bottle_type_id
+    LEFT JOIN translations bt_t ON bt_t.entity_type = 'bottle_type' AND bt_t.entity_id = bt.id AND bt_t.locale = 'en'
     ORDER BY category_name ASC, name ASC
   `;
   
@@ -154,13 +164,14 @@ export async function getMenuItems(db: D1Database): Promise<MenuItem[]> {
     ingredients: ingsMap[item.id] || [],
     tags: tagsMap[item.id] || [],
     bottle_type: item.bottle_type || undefined,
+    bottle_type_id: item.bottle_type_id !== null && item.bottle_type_id !== undefined ? item.bottle_type_id : undefined,
     bottle_volume: item.bottle_volume !== null && item.bottle_volume !== undefined ? item.bottle_volume : undefined
   }));
 }
 
 export async function getTranslationsForEntity(
   db: D1Database,
-  entityType: 'menu_item' | 'category' | 'ingredient' | 'tag',
+  entityType: 'menu_item' | 'category' | 'ingredient' | 'tag' | 'bottle_type',
   entityId: number
 ): Promise<Record<string, { name: string; description?: string }>> {
   const { results } = await db
@@ -229,7 +240,7 @@ export async function createMenuItem(
     ingredients: number[]; // IDs
     tags: number[]; // IDs
     translations: TranslationsInput;
-    bottle_type?: string;
+    bottle_type_id?: number;
     bottle_volume?: number;
   }
 ): Promise<number> {
@@ -245,10 +256,10 @@ export async function createMenuItem(
   const insertId = res.meta.last_row_id;
 
   // Insert bottle details if provided
-  if (data.bottle_type && data.bottle_volume !== undefined) {
+  if (data.bottle_type_id && data.bottle_volume !== undefined) {
     await db
-      .prepare(`INSERT INTO bottles (menu_item_id, type, volume) VALUES (?, ?, ?)`)
-      .bind(insertId, data.bottle_type, data.bottle_volume)
+      .prepare(`INSERT INTO bottles (menu_item_id, bottle_type_id, volume) VALUES (?, ?, ?)`)
+      .bind(insertId, data.bottle_type_id, data.bottle_volume)
       .run();
   }
 
@@ -290,7 +301,7 @@ export async function updateMenuItem(
     ingredients: number[]; // IDs
     tags: number[]; // IDs
     translations: TranslationsInput;
-    bottle_type?: string;
+    bottle_type_id?: number;
     bottle_volume?: number;
   }
 ) {
@@ -305,14 +316,14 @@ export async function updateMenuItem(
     .run();
 
   // Update or insert or delete bottle details
-  if (data.bottle_type && data.bottle_volume !== undefined) {
+  if (data.bottle_type_id && data.bottle_volume !== undefined) {
     await db.prepare(`
-      INSERT INTO bottles (menu_item_id, type, volume)
+      INSERT INTO bottles (menu_item_id, bottle_type_id, volume)
       VALUES (?, ?, ?)
       ON CONFLICT(menu_item_id) DO UPDATE SET
-        type = excluded.type,
+        bottle_type_id = excluded.bottle_type_id,
         volume = excluded.volume
-    `).bind(id, data.bottle_type, data.bottle_volume).run();
+    `).bind(id, data.bottle_type_id, data.bottle_volume).run();
   } else {
     await db.prepare(`DELETE FROM bottles WHERE menu_item_id = ?`).bind(id).run();
   }
@@ -456,6 +467,45 @@ export async function deleteFlavorTag(db: D1Database, id: number) {
     await db.batch([
       db.prepare(`DELETE FROM translations WHERE entity_type = 'tag' AND entity_id = ?`).bind(id),
       db.prepare(`DELETE FROM flavor_tags WHERE id = ?`).bind(id)
+    ]);
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
+
+export async function getBottleTypes(db: D1Database): Promise<BottleType[]> {
+  const query = `
+    SELECT b.id, b.code_name, COALESCE(t.name, b.code_name) as name
+    FROM bottle_types b
+    LEFT JOIN translations t ON t.entity_type = 'bottle_type' AND t.entity_id = b.id AND t.locale = 'en'
+    ORDER BY name ASC
+  `;
+  const { results } = await db.prepare(query).all();
+  return results as unknown as BottleType[];
+}
+
+export async function createBottleType(db: D1Database, codeName: string, translations: TranslationsInput): Promise<number> {
+  const res = await db.prepare(`INSERT INTO bottle_types (code_name) VALUES (?)`).bind(codeName).run();
+  const insertId = res.meta.last_row_id;
+  await saveTranslations(db, 'bottle_type', insertId, translations);
+  return insertId;
+}
+
+export async function updateBottleType(db: D1Database, id: number, codeName: string, translations: TranslationsInput): Promise<void> {
+  await db.prepare(`UPDATE bottle_types SET code_name = ? WHERE id = ?`).bind(codeName, id).run();
+  await saveTranslations(db, 'bottle_type', id, translations);
+}
+
+export async function deleteBottleType(db: D1Database, id: number): Promise<void> {
+  try {
+    // Check if referenced by bottles
+    const { results } = await db.prepare(`SELECT menu_item_id FROM bottles WHERE bottle_type_id = ? LIMIT 1`).bind(id).all();
+    if (results.length > 0) {
+      throw new Error(`Cannot delete this bottle type because it is currently referenced by bottles in the menu.`);
+    }
+    await db.batch([
+      db.prepare(`DELETE FROM translations WHERE entity_type = 'bottle_type' AND entity_id = ?`).bind(id),
+      db.prepare(`DELETE FROM bottle_types WHERE id = ?`).bind(id)
     ]);
   } catch (error: any) {
     throw new Error(error.message);
