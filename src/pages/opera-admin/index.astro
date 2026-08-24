@@ -242,6 +242,34 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
     th {
       color: var(--text-muted);
       font-weight: 600;
+      cursor: pointer;
+      position: relative;
+      user-select: none;
+    }
+
+    th::after {
+      content: ' ↕';
+      opacity: 0.3;
+      font-size: 0.8em;
+      margin-left: 5px;
+    }
+
+    th[aria-sort="ascending"]::after {
+      content: ' ▲';
+      opacity: 0.9;
+    }
+
+    th[aria-sort="descending"]::after {
+      content: ' ▼';
+      opacity: 0.9;
+    }
+
+    th[data-sortable="false"] {
+      cursor: default;
+    }
+
+    th[data-sortable="false"]::after {
+      display: none;
     }
 
     tr:hover {
@@ -740,7 +768,7 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
                       <th>Tags</th>
                       <th>Picture</th>
                       <th>Visible</th>
-                      <th>Actions</th>
+                      <th data-sortable="false">Actions</th>
                     </tr>
                   ) : (
                     <tr>
@@ -750,7 +778,7 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
                       <th>Tags</th>
                       <th>Picture</th>
                       <th>Visible</th>
-                      <th>Actions</th>
+                      <th data-sortable="false">Actions</th>
                     </tr>
                   )}
                 </thead>
@@ -817,7 +845,7 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
               <th>ID</th>
               <th>Code Name</th>
               <th>Display Name (EN)</th>
-              <th>Actions</th>
+              <th data-sortable="false">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -848,7 +876,7 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
               <th>ID</th>
               <th>Code Name</th>
               <th>Display Name (EN)</th>
-              <th>Actions</th>
+              <th data-sortable="false">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -879,7 +907,7 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
               <th>ID</th>
               <th>Code Name</th>
               <th>Display Name (EN)</th>
-              <th>Actions</th>
+              <th data-sortable="false">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -2447,6 +2475,88 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
         document.body.removeChild(link2);
       }, 500);
     }
+
+    // Reusable client-side table sorting logic
+    document.addEventListener('click', (event) => {
+      const header = event.target.closest('th');
+      if (!header) return;
+
+      const table = header.closest('table');
+      if (!table) return;
+
+      const tbody = table.querySelector('tbody');
+      if (!tbody) return;
+
+      // Skip non-sortable columns
+      if (header.dataset.sortable === 'false') return;
+
+      const index = Array.from(header.parentNode.children).indexOf(header);
+      const rows = Array.from(tbody.querySelectorAll('tr'));
+      if (rows.length <= 1) return;
+
+      // Skip the placeholder row if there's no data
+      const isPlaceholder = rows.length === 1 && rows[0].querySelector('td[colspan]');
+      if (isPlaceholder) return;
+
+      // Toggles sorted state: ascending -> descending -> ascending
+      const currentSort = header.getAttribute('aria-sort');
+      const isAscending = currentSort !== 'ascending';
+
+      // Extract sorting key from a table cell
+      const getCellValue = (tr, idx) => {
+        const cell = tr.children[idx];
+        if (!cell) return '';
+
+        // Checkbox
+        const checkbox = cell.querySelector('input[type="checkbox"]');
+        if (checkbox) {
+          return checkbox.checked ? 1 : 0;
+        }
+
+        // Custom sort value
+        if (cell.dataset.sortValue !== undefined) {
+          return cell.dataset.sortValue;
+        }
+
+        // Default text content
+        return cell.textContent.trim();
+      };
+
+      const sortedRows = rows.sort((a, b) => {
+        const valA = getCellValue(a, index);
+        const valB = getCellValue(b, index);
+
+        // Numeric sort if both can be floats
+        const cleanNum = (val) => {
+          if (typeof val === 'number') return val;
+          const cleaned = val.replace(/[^\d.-]/g, '');
+          return cleaned ? parseFloat(cleaned) : NaN;
+        };
+
+        const numA = cleanNum(valA);
+        const numB = cleanNum(valB);
+
+        if (!isNaN(numA) && !isNaN(numB)) {
+          return isAscending ? numA - numB : numB - numA;
+        }
+
+        // String sort
+        const strA = String(valA);
+        const strB = String(valB);
+        return isAscending
+          ? strA.localeCompare(strB, undefined, { numeric: true, sensitivity: 'base' })
+          : strB.localeCompare(strA, undefined, { numeric: true, sensitivity: 'base' });
+      });
+
+      // Clear any active sort markers in the current table headers
+      table.querySelectorAll('th').forEach(th => th.removeAttribute('aria-sort'));
+
+      // Mark the current header
+      header.setAttribute('aria-sort', isAscending ? 'ascending' : 'descending');
+
+      // Append sorted rows to body
+      tbody.append(...sortedRows);
+    });
   </script>
 </body>
 </html>
