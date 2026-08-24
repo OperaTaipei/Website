@@ -1492,6 +1492,11 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
   <script type="application/json" id="data-bottle-types" set:html={JSON.stringify(bottleTypes)}></script>
   <script type="application/json" id="data-media" set:html={JSON.stringify(media)}></script>
 
+  <script>
+    import { actions } from 'astro:actions';
+    window.actions = actions;
+  </script>
+
   <script is:inline>
     window.allMenuItems = JSON.parse(document.getElementById('data-menu-items').textContent);
     window.allCategories = JSON.parse(document.getElementById('data-categories').textContent);
@@ -1634,41 +1639,34 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
     async function callAction(actionName, payload) {
       showLoading(true);
       try {
-        const res = await fetch(`/_actions/${actionName}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        
-        let result;
-        try {
-          result = await res.json();
-        } catch (e) {
-          throw new Error(`Invalid response from server: HTTP ${res.status}`);
+        const actionFn = window.actions ? window.actions[actionName] : null;
+        if (!actionFn) {
+          throw new Error(`Action helper for "${actionName}" is not loaded.`);
         }
 
-        const actionResult = result.data || result;
+        const { data, error } = await actionFn(payload);
         showLoading(false);
 
-        if (res.ok && actionResult.success) {
-          showAlert('success', actionResult.message || 'Operation successful!');
+        if (!error && data && data.success) {
+          showAlert('success', data.message || 'Operation successful!');
           setTimeout(() => window.location.reload(), 1000);
         } else {
           let errorMsg = 'An error occurred.';
-          const errorObj = actionResult.error || result.error;
-          if (errorObj) {
-            if (typeof errorObj === 'string') {
-              errorMsg = errorObj;
-            } else if (errorObj.message) {
-              errorMsg = errorObj.message;
-            } else if (errorObj.fields) {
-              const fieldErrors = Object.entries(errorObj.fields)
+          if (error) {
+            if (typeof error === 'string') {
+              errorMsg = error;
+            } else if (error.message) {
+              errorMsg = error.message;
+            } else if (error.fields) {
+              const fieldErrors = Object.entries(error.fields)
                 .map(([field, msgs]) => `${field}: ${Array.isArray(msgs) ? msgs.join(', ') : msgs}`)
                 .join('; ');
               errorMsg = `Validation Error - ${fieldErrors}`;
-            } else if (errorObj.code) {
-              errorMsg = `Error code: ${errorObj.code}`;
+            } else if (error.code) {
+              errorMsg = `Error code: ${error.code}`;
             }
+          } else if (data && data.error) {
+            errorMsg = data.error;
           }
           showAlert('error', errorMsg);
         }
