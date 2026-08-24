@@ -1469,8 +1469,12 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
     <form id="form-media" onsubmit="submitMedia(event)">
       <input type="hidden" name="id" id="media-id" />
       <div class="form-group">
-        <label>Media URL / Path (e.g. `/images/menus/cocktail.jpg` or `https://...` )</label>
-        <input type="text" id="media-url" name="url" class="form-control" required placeholder="e.g. /images/menus/item.jpg" />
+        <label>Upload Media File (JPG, PNG. Max 150 KB)</label>
+        <input type="file" id="media-file" name="file" accept=".jpg,.jpeg,.png" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label>Media URL / Path</label>
+        <input type="text" id="media-url" name="url" class="form-control" readonly placeholder="Automatically populated on upload" />
       </div>
       <div class="form-group">
         <label>Alt Text / Name (Used to describe the image and identify it in dropdowns)</label>
@@ -2169,12 +2173,30 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
       const form = document.getElementById('form-media');
       const formData = new FormData(form);
 
-      const payload = {
-        id: formData.get('id') ? Number(formData.get('id')) : undefined,
-        url: formData.get('url'),
-        alt_text: formData.get('alt_text') || null
-      };
-      await callAction('saveMedia', payload);
+      const fileInput = document.getElementById('media-file');
+      const file = fileInput.files[0];
+      const isEdit = !!formData.get('id');
+
+      // Client-side validations
+      if (file) {
+        // Size validation: 150 KB = 153,600 bytes
+        if (file.size > 153600) {
+          alert('File size exceeds the 150 KB limit.');
+          return;
+        }
+
+        // Extension validation
+        const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+        if (!allowedExtensions.exec(file.name)) {
+          alert('Only JPG and PNG files are allowed.');
+          return;
+        }
+      } else if (!isEdit) {
+        alert('Please select an image file to upload.');
+        return;
+      }
+
+      await callAction('saveMedia', formData);
       closeDialog('dialog-media');
     }
 

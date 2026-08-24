@@ -270,21 +270,60 @@ export const server = {
   // MEDIA ACTIONS
   // ----------------------------------------------------
   saveMedia: defineAction({
-    accept: 'json',
+    accept: 'form',
     input: z.object({
-      id: z.number().optional(),
-      url: z.string().min(1, 'URL/Path is required'),
-      alt_text: z.string().nullable().optional()
+      id: z.string().optional(),
+      url: z.string().optional(),
+      alt_text: z.string().nullable().optional(),
+      file: z.any().optional()
     }),
     handler: async (input, context) => {
       const db = context.locals.runtime?.env?.DB;
+      const bucket = context.locals.runtime?.env?.MEDIA_BUCKET;
       if (!db) throw new Error('Database connection not available.');
+
       try {
-        if (input.id) {
-          await dbHelpers.updateMedia(db, input.id, input.url, input.alt_text);
+        let finalUrl = input.url || '';
+        const file = input.file as File | null;
+
+        if (file && file.size > 0) {
+          if (file.size > 153600) {
+            throw new Error('File size exceeds the 150 KB limit.');
+          }
+          const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+          if (!allowedTypes.includes(file.type)) {
+            throw new Error('Only JPG and PNG files are allowed.');
+          }
+
+          if (!bucket) {
+            throw new Error('R2 Bucket connection not available.');
+          }
+
+          // Generate a safe unique filename: <timestamp>_<sanitized_name>
+          const timestamp = Date.now();
+          const cleanName = file.name
+            .toLowerCase()
+            .replace(/[^a-z0-9.-]/g, '_');
+          const fileName = `${timestamp}_${cleanName}`;
+
+          // Upload to R2
+          const buffer = await file.arrayBuffer();
+          await bucket.put(fileName, buffer, {
+            httpMetadata: { contentType: file.type }
+          });
+
+          // Final URL pointing to custom domain
+          finalUrl = `https://media.opera-taipei.com/${fileName}`;
+        } else if (!input.id) {
+          throw new Error('Please select an image file to upload.');
+        }
+
+        const idNum = input.id ? Number(input.id) : undefined;
+        if (idNum) {
+          await dbHelpers.updateMedia(db, idNum, finalUrl, input.alt_text);
           return { success: true, message: 'Media updated successfully.' };
         } else {
-          const newId = await dbHelpers.createMedia(db, input.url, input.alt_text);
+          const newId = await dbHelpers.createMedia(db, finalUrl, input.alt_text);
           return { success: true, message: 'Media created successfully.', id: newId };
         }
       } catch (err: any) {

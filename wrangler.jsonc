@@ -18,6 +18,12 @@
       "database_name": "opera-db",
       "database_id": "ab85fa74-7ab5-40ec-8136-7d68c7d7d4ef"
     }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "MEDIA_BUCKET",
+      "bucket_name": "bucket_name"
+    }
   ]
 }
 
