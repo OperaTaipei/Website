@@ -1468,13 +1468,21 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
     </div>
     <form id="form-media" onsubmit="submitMedia(event)">
       <input type="hidden" name="id" id="media-id" />
-      <div class="form-group">
-        <label>Upload Media File (JPG, PNG. Max 150 KB)</label>
-        <input type="file" id="media-file" name="file" accept=".jpg,.jpeg,.png" class="form-control" />
+      <input type="hidden" name="url" id="media-url" />
+      
+      <div id="media-current-container" style="display: none; margin-bottom: 1.25rem;">
+        <span style="font-size: 0.9rem; color: var(--text-muted);">Current Image:</span>
+        <div style="margin-top: 0.5rem; max-width: 150px; border: 1px solid var(--border); border-radius: 4px; padding: 0.25rem; background: #1a1a1a;">
+          <img id="media-current-preview" src="" style="width: 100%; height: auto; display: block; object-fit: contain;" />
+        </div>
       </div>
+
       <div class="form-group">
-        <label>Media URL / Path</label>
-        <input type="text" id="media-url" name="url" class="form-control" readonly placeholder="Automatically populated on upload" />
+        <label>Select File</label>
+        <input type="file" id="media-file" name="file" accept=".jpg,.jpeg,.png" class="form-control" />
+        <small style="color: var(--text-muted); display: block; margin-top: 0.25rem;">
+          * Only PNG and JPG/JPEG files are allowed. Maximum size: 150 KB.
+        </small>
       </div>
       <div class="form-group">
         <label>Alt Text / Name (Used to describe the image and identify it in dropdowns)</label>
@@ -2155,15 +2163,27 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
     }
 
     function openMediaDialog(mediaJson) {
+      const currentContainer = document.getElementById('media-current-container');
+      const currentPreview = document.getElementById('media-current-preview');
+
       if (mediaJson) {
         document.getElementById('dialog-media-title').innerText = 'Edit Media';
         document.getElementById('media-id').value = mediaJson.id;
         document.getElementById('media-url').value = mediaJson.url;
         document.getElementById('media-alt').value = mediaJson.alt_text || '';
+
+        if (currentContainer && currentPreview) {
+          currentPreview.src = mediaJson.url;
+          currentContainer.style.display = 'block';
+        }
       } else {
         document.getElementById('dialog-media-title').innerText = 'Add Media';
         document.getElementById('form-media').reset();
         document.getElementById('media-id').value = '';
+        document.getElementById('media-url').value = '';
+
+        if (currentContainer) currentContainer.style.display = 'none';
+        if (currentPreview) currentPreview.src = '';
       }
       document.getElementById('dialog-media').showModal();
     }
