@@ -2526,11 +2526,17 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
         const valA = getCellValue(a, index);
         const valB = getCellValue(b, index);
 
-        // Numeric sort if both can be floats
+        // Numeric sort if both are purely numeric (optionally with currency symbols/units)
         const cleanNum = (val) => {
           if (typeof val === 'number') return val;
-          const cleaned = val.replace(/[^\d.-]/g, '');
-          return cleaned ? parseFloat(cleaned) : NaN;
+          const str = String(val).trim();
+          // Match numbers with optional currency symbols, commas, and common units
+          const match = str.match(/^\s*[$\-─+±~≈<>≥≤NTD¥€£]*\s*(\d+(?:[.,]\d+)?)\s*(?:L|ml|%)?\s*$/i);
+          if (match) {
+            const numStr = match[1].replace(/,/g, '');
+            return parseFloat(numStr);
+          }
+          return NaN;
         };
 
         const numA = cleanNum(valA);
