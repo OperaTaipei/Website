@@ -1640,16 +1640,38 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
-        if (!res.ok) {
-          throw new Error(`HTTP Error: ${res.status} ${res.statusText}`);
+        
+        let result;
+        try {
+          result = await res.json();
+        } catch (e) {
+          throw new Error(`Invalid response from server: HTTP ${res.status}`);
         }
-        const result = await res.json();
+
+        const actionResult = result.data || result;
         showLoading(false);
-        if (result.success) {
-          showAlert('success', result.message || 'Operation successful!');
+
+        if (res.ok && actionResult.success) {
+          showAlert('success', actionResult.message || 'Operation successful!');
           setTimeout(() => window.location.reload(), 1000);
         } else {
-          showAlert('error', result.error || 'An error occurred.');
+          let errorMsg = 'An error occurred.';
+          const errorObj = actionResult.error || result.error;
+          if (errorObj) {
+            if (typeof errorObj === 'string') {
+              errorMsg = errorObj;
+            } else if (errorObj.message) {
+              errorMsg = errorObj.message;
+            } else if (errorObj.fields) {
+              const fieldErrors = Object.entries(errorObj.fields)
+                .map(([field, msgs]) => `${field}: ${Array.isArray(msgs) ? msgs.join(', ') : msgs}`)
+                .join('; ');
+              errorMsg = `Validation Error - ${fieldErrors}`;
+            } else if (errorObj.code) {
+              errorMsg = `Error code: ${errorObj.code}`;
+            }
+          }
+          showAlert('error', errorMsg);
         }
       } catch (err) {
         showLoading(false);
