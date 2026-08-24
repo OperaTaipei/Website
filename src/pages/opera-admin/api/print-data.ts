@@ -27,15 +27,20 @@ export const GET: APIRoute = async ({ request, locals }) => {
       SELECT m.id, m.category_id, m.price,
              COALESCE(cat_t.name, c.code_name) as category_name,
              COALESCE(t.name, m.code_name) as name,
-             t.description as description
+             t.description as description,
+             COALESCE(bt_t.name, bt.code_name) as bottle_type,
+             b.volume as bottle_volume
       FROM menu_items m
       INNER JOIN categories c ON c.id = m.category_id
       LEFT JOIN translations cat_t ON cat_t.entity_type = 'category' AND cat_t.entity_id = c.id AND cat_t.locale = ?
       LEFT JOIN translations t ON t.entity_type = 'menu_item' AND t.entity_id = m.id AND t.locale = ?
+      LEFT JOIN bottles b ON b.menu_item_id = m.id
+      LEFT JOIN bottle_types bt ON bt.id = b.bottle_type_id
+      LEFT JOIN translations bt_t ON bt_t.entity_type = 'bottle_type' AND bt_t.entity_id = bt.id AND bt_t.locale = ?
       WHERE m.id IN (${placeholders})
     `;
     
-    const { results: items } = await db.prepare(itemsQuery).bind(locale, locale, ...ids).all();
+    const { results: items } = await db.prepare(itemsQuery).bind(locale, locale, locale, ...ids).all();
 
     // Fetch ingredients translated to target language
     const ingQuery = `
@@ -66,6 +71,7 @@ export const GET: APIRoute = async ({ request, locals }) => {
 
     const tagsMap: Record<number, string[]> = {};
     tags.forEach((r: any) => {
+      if (!tagsMap[r.menu_item_id]) ingsMap[r.menu_item_id] = []; // Safely use key
       if (!tagsMap[r.menu_item_id]) tagsMap[r.menu_item_id] = [];
       tagsMap[r.menu_item_id].push(r.name);
     });
@@ -78,7 +84,9 @@ export const GET: APIRoute = async ({ request, locals }) => {
       category_name: item.category_name,
       description: item.description,
       ingredients: ingsMap[item.id] || [],
-      tags: tagsMap[item.id] || []
+      tags: tagsMap[item.id] || [],
+      bottle_type: item.bottle_type || undefined,
+      bottle_volume: item.bottle_volume !== null && item.bottle_volume !== undefined ? item.bottle_volume : undefined
     }));
 
     return new Response(JSON.stringify(responseData), {

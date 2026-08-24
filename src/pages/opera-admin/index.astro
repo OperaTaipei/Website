@@ -16,6 +16,7 @@ const flavorTags = await dbHelpers.getFlavorTags(db);
 const media = await dbHelpers.getMedia(db);
 const bottleTypes = await dbHelpers.getBottleTypes(db);
 bottleTypes.sort((a, b) => a.name.localeCompare(b.name));
+const orphans = await dbHelpers.getOrphans(db);
 
 // Sort categories placing 'bottles' first, others alphabetically ascending by name
 categories.sort((a, b) => {
@@ -653,6 +654,7 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
         <button onclick="switchTab('ingredients')" id="nav-ingredients">Ingredients</button>
         <button onclick="switchTab('tags')" id="nav-tags">Flavor Tags</button>
         <button onclick="switchTab('print')" id="nav-print">Print menu</button>
+        <button onclick="switchTab('db')" id="nav-db">DB Management</button>
       </div>
     </div>
 
@@ -977,6 +979,115 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
         </div>
       </section>
 
+      <!-- Section: DB MANAGEMENT -->
+      <section id="section-db" style="display: none;">
+        <div class="action-bar">
+          <h2>DB Management</h2>
+          <button class="btn btn-danger" onclick="purgeAllOrphans()" disabled={orphans.ingredients.length === 0 && orphans.translations.length === 0 && orphans.pivotIngredients.length === 0 && orphans.pivotTags.length === 0}>
+            Purge All Orphans
+          </button>
+        </div>
+        <p class="description-text" style="color: var(--text-muted); margin-bottom: 2rem;">
+          Validate and purge orphan records in the database. Deleting menu items, categories, ingredients, or flavor tags can leave dangling associations or translations. We purge them in the correct database deletion sequence to avoid constraint errors.
+        </p>
+
+        <div style="display: grid; grid-template-columns: 1fr; gap: 1.5rem;">
+          <!-- Card: Orphan Ingredients -->
+          <div style="background: var(--bg-dark); border: 1px solid var(--border); padding: 1.5rem; border-radius: 6px;">
+            <h3 style="color: var(--primary); font-size: 1.1rem; margin-bottom: 1rem; display: flex; justify-content: space-between;">
+              <span>Orphan Ingredients</span>
+              <span class="user-tag" style="background: rgba(197, 168, 128, 0.1); color: var(--primary);">{orphans.ingredients.length}</span>
+            </h3>
+            {orphans.ingredients.length > 0 ? (
+              <div style="max-height: 250px; overflow-y: auto;">
+                <table style="width: 100%; font-size: 0.9rem;">
+                  <thead>
+                    <tr>
+                      <th style="text-align: left; padding: 0.5rem;">ID</th>
+                      <th style="text-align: left; padding: 0.5rem;">Code Name</th>
+                      <th style="text-align: left; padding: 0.5rem;">Display Name</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {orphans.ingredients.map(ing => (
+                      <tr>
+                        <td style="padding: 0.5rem; color: var(--text-muted);">{ing.id}</td>
+                        <td style="padding: 0.5rem;"><code>{ing.code_name}</code></td>
+                        <td style="padding: 0.5rem;">{ing.name}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <p style="color: var(--success); font-size: 0.9rem;">No orphan ingredients found.</p>
+            )}
+          </div>
+
+          <!-- Card: Orphan Translations -->
+          <div style="background: var(--bg-dark); border: 1px solid var(--border); padding: 1.5rem; border-radius: 6px;">
+            <h3 style="color: var(--primary); font-size: 1.1rem; margin-bottom: 1rem; display: flex; justify-content: space-between;">
+              <span>Orphan Translations</span>
+              <span class="user-tag" style="background: rgba(197, 168, 128, 0.1); color: var(--primary);">{orphans.translations.length}</span>
+            </h3>
+            {orphans.translations.length > 0 ? (
+              <div style="max-height: 250px; overflow-y: auto;">
+                <table style="width: 100%; font-size: 0.9rem;">
+                  <thead>
+                    <tr>
+                      <th style="text-align: left; padding: 0.5rem;">ID</th>
+                      <th style="text-align: left; padding: 0.5rem;">Locale</th>
+                      <th style="text-align: left; padding: 0.5rem;">Entity Type</th>
+                      <th style="text-align: left; padding: 0.5rem;">Entity ID</th>
+                      <th style="text-align: left; padding: 0.5rem;">Translated Name</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {orphans.translations.map(tr => (
+                      <tr>
+                        <td style="padding: 0.5rem; color: var(--text-muted);">{tr.id}</td>
+                        <td style="padding: 0.5rem;"><code style="text-transform: uppercase;">{tr.locale}</code></td>
+                        <td style="padding: 0.5rem; color: var(--text-muted);">{tr.entity_type}</td>
+                        <td style="padding: 0.5rem; color: var(--text-muted);">{tr.entity_id}</td>
+                        <td style="padding: 0.5rem;">{tr.name}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <p style="color: var(--success); font-size: 0.9rem;">No orphan translations found.</p>
+            )}
+          </div>
+
+          <!-- Card: Orphan Joins -->
+          <div style="background: var(--bg-dark); border: 1px solid var(--border); padding: 1.5rem; border-radius: 6px;">
+            <h3 style="color: var(--primary); font-size: 1.1rem; margin-bottom: 1rem; display: flex; justify-content: space-between;">
+              <span>Invalid Join Entries (Pivot Tables)</span>
+              <span class="user-tag" style="background: rgba(197, 168, 128, 0.1); color: var(--primary);">{orphans.pivotIngredients.length + orphans.pivotTags.length}</span>
+            </h3>
+            {orphans.pivotIngredients.length > 0 || orphans.pivotTags.length > 0 ? (
+              <div style="max-height: 200px; overflow-y: auto;">
+                <ul style="font-size: 0.9rem; padding-left: 1.5rem;">
+                  {orphans.pivotIngredients.map(entry => (
+                    <li style="margin-bottom: 0.25rem;">
+                      Ingredient pivot row references missing Menu Item <code style="color: var(--danger);">ID {entry.menu_item_id}</code> or Ingredient <code style="color: var(--danger);">ID {entry.ingredient_id}</code>
+                    </li>
+                  ))}
+                  {orphans.pivotTags.map(entry => (
+                    <li style="margin-bottom: 0.25rem;">
+                      Tag pivot row references missing Menu Item <code style="color: var(--danger);">ID {entry.menu_item_id}</code> or Tag <code style="color: var(--danger);">ID {entry.tag_id}</code>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : (
+              <p style="color: var(--success); font-size: 0.9rem;">No invalid join entries found.</p>
+            )}
+          </div>
+        </div>
+      </section>
+
     </div>
   </div>
 
@@ -1280,7 +1391,7 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
     const activeLanguageTab = 'en';
 
     function switchTab(sectionId) {
-      ['items', 'categories', 'ingredients', 'tags', 'print'].forEach(id => {
+      ['items', 'categories', 'ingredients', 'tags', 'print', 'db'].forEach(id => {
         const section = document.getElementById(`section-${id}`);
         const nav = document.getElementById(`nav-${id}`);
         if (section) section.style.display = id === sectionId ? 'block' : 'none';
@@ -1327,6 +1438,12 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
         row.style.display = 'none';
         typeInput.required = false;
         volumeInput.required = false;
+      }
+    }
+
+    async function purgeAllOrphans() {
+      if (confirm('Are you sure you want to purge all orphan records? This action cannot be undone.')) {
+        await callAction('purgeOrphans', {});
       }
     }
 
@@ -1862,7 +1979,11 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
 
         markdown += `## ${cat.toUpperCase()}\n\n`;
         categoriesGrouped[cat].forEach(item => {
-          let line = `* **${item.name}**`;
+          let nameStr = item.name;
+          if (item.bottle_type && item.bottle_volume) {
+            nameStr += ` (${item.bottle_type}, ${item.bottle_volume}L)`;
+          }
+          let line = `* **${nameStr}**`;
           if (includePrice) line += ` - NTD$ ${item.price}`;
           markdown += line + `\n`;
           if (includeIng && item.ingredients && item.ingredients.length > 0) {
@@ -1932,7 +2053,11 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
         html += `<h2 class="category-title">${cat}</h2>`;
         categoriesGrouped[cat].forEach(item => {
           html += `<div class="menu-item">`;
-          html += `<div class="item-header"><span>${item.name}</span>`;
+          let nameStr = item.name;
+          if (item.bottle_type && item.bottle_volume) {
+            nameStr += ` (${item.bottle_type}, ${item.bottle_volume}L)`;
+          }
+          html += `<div class="item-header"><span>${nameStr}</span>`;
           if (includePrice) html += `<span>$${item.price}</span>`;
           html += `</div>`;
           if (includeIng && item.ingredients && item.ingredients.length > 0) {

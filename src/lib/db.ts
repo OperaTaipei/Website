@@ -511,3 +511,93 @@ export async function deleteBottleType(db: D1Database, id: number): Promise<void
     throw new Error(error.message);
   }
 }
+
+export async function getOrphans(db: D1Database): Promise<{
+  ingredients: { id: number; name: string; code_name: string }[];
+  translations: { id: number; locale: string; entity_type: string; entity_id: number; name: string }[];
+  pivotIngredients: { menu_item_id: number; ingredient_id: number }[];
+  pivotTags: { menu_item_id: number; tag_id: number }[];
+}> {
+  // 1. Orphan Ingredients (not in menu_item_ingredients)
+  const orphanIngredientsQuery = `
+    SELECT i.id, i.code_name, COALESCE(t.name, i.code_name) as name
+    FROM ingredients i
+    LEFT JOIN translations t ON t.entity_type = 'ingredient' AND t.entity_id = i.id AND t.locale = 'en'
+    WHERE i.id NOT IN (SELECT DISTINCT ingredient_id FROM menu_item_ingredients)
+    ORDER BY name ASC
+  `;
+  const { results: ingredients } = await db.prepare(orphanIngredientsQuery).all();
+
+  // 2. Orphan Translations
+  const orphanTranslationsQuery = `
+    SELECT id, locale, entity_type, entity_id, name
+    FROM translations
+    WHERE (entity_type = 'menu_item' AND entity_id NOT IN (SELECT id FROM menu_items))
+       OR (entity_type = 'category' AND entity_id NOT IN (SELECT id FROM categories))
+       OR (entity_type = 'ingredient' AND entity_id NOT IN (SELECT id FROM ingredients))
+       OR (entity_type = 'tag' AND entity_id NOT IN (SELECT id FROM flavor_tags))
+       OR (entity_type = 'bottle_type' AND entity_id NOT IN (SELECT id FROM bottle_types))
+    ORDER BY entity_type ASC, name ASC
+  `;
+  const { results: translations } = await db.prepare(orphanTranslationsQuery).all();
+
+  // 3. Orphan Pivot Entries
+  const orphanPivotIngredientsQuery = `
+    SELECT mii.menu_item_id, mii.ingredient_id
+    FROM menu_item_ingredients mii
+    WHERE mii.menu_item_id NOT IN (SELECT id FROM menu_items)
+       OR mii.ingredient_id NOT IN (SELECT id FROM ingredients)
+  `;
+  const { results: pivotIngredients } = await db.prepare(orphanPivotIngredientsQuery).all();
+
+  const orphanPivotTagsQuery = `
+    SELECT mit.menu_item_id, mit.tag_id
+    FROM menu_item_tags mit
+    WHERE mit.menu_item_id NOT IN (SELECT id FROM menu_items)
+       OR mit.tag_id NOT IN (SELECT id FROM flavor_tags)
+  `;
+  const { results: pivotTags } = await db.prepare(orphanPivotTagsQuery).all();
+
+  return {
+    ingredients: ingredients as any,
+    translations: translations as any,
+    pivotIngredients: pivotIngredients as any,
+    pivotTags: pivotTags as any
+  };
+}
+
+export async function purgeOrphans(db: D1Database): Promise<void> {
+  // Execute deletion queries in correct sequence:
+  // 1. Pivot entries (referencing non-existent menu items, ingredients, or tags)
+  // 2. Orphan ingredients (ingredients not in menu_item_ingredients)
+  // 3. Orphan translations (translations referencing non-existent categories, ingredients, tags, menu_items, or bottle_types)
+  const statements = [
+    // 1. Pivot Entries
+    db.prepare(`
+      DELETE FROM menu_item_ingredients
+      WHERE menu_item_id NOT IN (SELECT id FROM menu_items)
+         OR ingredient_id NOT IN (SELECT id FROM ingredients)
+    `),
+    db.prepare(`
+      DELETE FROM menu_item_tags
+      WHERE menu_item_id NOT IN (SELECT id FROM menu_items)
+         OR tag_id NOT IN (SELECT id FROM flavor_tags)
+    `),
+    // 2. Orphan Ingredients
+    db.prepare(`
+      DELETE FROM ingredients
+      WHERE id NOT IN (SELECT DISTINCT ingredient_id FROM menu_item_ingredients)
+    `),
+    // 3. Orphan Translations
+    db.prepare(`
+      DELETE FROM translations
+      WHERE (entity_type = 'menu_item' AND entity_id NOT IN (SELECT id FROM menu_items))
+         OR (entity_type = 'category' AND entity_id NOT IN (SELECT id FROM categories))
+         OR (entity_type = 'ingredient' AND entity_id NOT IN (SELECT id FROM ingredients))
+         OR (entity_type = 'tag' AND entity_id NOT IN (SELECT id FROM flavor_tags))
+         OR (entity_type = 'bottle_type' AND entity_id NOT IN (SELECT id FROM bottle_types))
+    `)
+  ];
+
+  await db.batch(statements);
+}

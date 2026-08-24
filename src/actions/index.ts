@@ -264,5 +264,20 @@ export const server = {
         return { success: false, error: err.message || 'Failed to delete bottle type.' };
       }
     }
+  }),
+
+  purgeOrphans: defineAction({
+    accept: 'json',
+    input: z.object({}),
+    handler: async (input, context) => {
+      const db = context.locals.runtime?.env?.DB;
+      if (!db) throw new Error('Database connection not available.');
+      try {
+        await dbHelpers.purgeOrphans(db);
+        return { success: true, message: 'All orphan records purged successfully.' };
+      } catch (err: any) {
+        return { success: false, error: err.message || 'Failed to purge orphan records.' };
+      }
+    }
   })
 };
