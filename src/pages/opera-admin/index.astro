@@ -1559,6 +1559,7 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
         if (section) section.style.display = id === sectionId ? 'block' : 'none';
         if (nav) nav.className = id === sectionId ? 'active' : '';
       });
+      sessionStorage.setItem('admin_active_tab', sectionId);
     }
 
     function switchCategoryTab(categoryId) {
@@ -1569,7 +1570,20 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
         if (btn.id === `cat-tab-${categoryId}`) btn.classList.add('active');
         else btn.classList.remove('active');
       });
+      sessionStorage.setItem('admin_active_category_tab', categoryId);
     }
+
+    // Restore active tab and category tab from sessionStorage
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedTab = sessionStorage.getItem('admin_active_tab');
+      if (savedTab) {
+        switchTab(savedTab);
+      }
+      const savedCategoryTab = sessionStorage.getItem('admin_active_category_tab');
+      if (savedCategoryTab && document.getElementById(`cat-tab-${savedCategoryTab}`)) {
+        switchCategoryTab(savedCategoryTab);
+      }
+    });
 
     function switchLanguageTab(locale) {
       ['en', 'fr', 'ja', 'zh'].forEach(loc => {
