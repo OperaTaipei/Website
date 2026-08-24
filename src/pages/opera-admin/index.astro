@@ -113,6 +113,7 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
     .logo {
       height: 75px;
       width: auto;
+      margin-top: 1rem;
     }
 
     h1 {
@@ -133,7 +134,7 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
        ========================================================================= */
     .grid {
       display: grid;
-      grid-template-columns: 250px 1fr;
+      grid-template-columns: 200px 1fr;
       gap: 2rem;
     }
 
@@ -676,9 +677,6 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
     </div>
   </header>
 
-  <!-- Alert Banner -->
-  <div id="alert-banner"></div>
-
   <!-- Loading Overlay -->
   <div id="loading-overlay">
     <div style="text-align: center;">
@@ -688,17 +686,21 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
   </div>
 
   <div class="grid">
-    <!-- Sidebar navigation -->
-    <div class="sidebar">
-      <div class="sidebar-nav">
-        <button onclick="switchTab('items')" id="nav-items" class="active">Menu Items</button>
-        <button onclick="switchTab('categories')" id="nav-categories">Categories</button>
-        <button onclick="switchTab('ingredients')" id="nav-ingredients">Ingredients</button>
-        <button onclick="switchTab('tags')" id="nav-tags">Flavor Tags</button>
-        <button onclick="switchTab('media')" id="nav-media">Media Gallery</button>
-        <button onclick="switchTab('print')" id="nav-print">Print menu</button>
-        <button onclick="switchTab('db')" id="nav-db">DB Management</button>
+    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+      <!-- Sidebar navigation -->
+      <div class="sidebar">
+        <div class="sidebar-nav">
+          <button onclick="switchTab('items')" id="nav-items" class="active">Menu Items</button>
+          <button onclick="switchTab('categories')" id="nav-categories">Categories</button>
+          <button onclick="switchTab('ingredients')" id="nav-ingredients">Ingredients</button>
+          <button onclick="switchTab('tags')" id="nav-tags">Flavor Tags</button>
+          <button onclick="switchTab('media')" id="nav-media">Media Gallery</button>
+          <button onclick="switchTab('print')" id="nav-print">Print menu</button>
+          <button onclick="switchTab('db')" id="nav-db">DB Management</button>
+        </div>
       </div>
+      <!-- Alert Banner -->
+      <div id="alert-banner"></div>
     </div>
 
     <!-- Main Content Area -->
