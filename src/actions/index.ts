@@ -360,6 +360,26 @@ export const server = {
         return { success: false, error: err.message || 'Failed to purge orphan records.' };
       }
     }
+  }),
+
+  triggerPublish: defineAction({
+    accept: 'json',
+    input: z.object({}),
+    handler: async (input, context) => {
+      const hookUrl = context.locals.runtime?.env?.CLOUDFLARE_DEPLOY_HOOK_URL;
+      if (!hookUrl) {
+        return { success: false, error: 'Cloudflare Deploy Hook URL not configured. Please define CLOUDFLARE_DEPLOY_HOOK_URL in wrangler.jsonc or your dashboard.' };
+      }
+      try {
+        const res = await fetch(hookUrl, { method: 'POST' });
+        if (!res.ok) {
+          throw new Error(`Cloudflare API returned status: ${res.status}`);
+        }
+        return { success: true, message: 'Rebuild triggered successfully!' };
+      } catch (err: any) {
+        return { success: false, error: err.message || 'Failed to trigger rebuild.' };
+      }
+    }
   })
 };
 

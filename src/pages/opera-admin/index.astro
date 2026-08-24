@@ -28,7 +28,23 @@ categories.sort((a, b) => {
 menuItems.sort((a, b) => a.name.localeCompare(b.name));
 
 // Helper to check Cloudflare Access headers if available
-const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email') || 'Local Dev Admin';
+const isLocal = new URL(Astro.request.url).hostname === 'localhost' || new URL(Astro.request.url).hostname === '127.0.0.1';
+const userEmailHeader = Astro.request.headers.get('Cf-Access-Authenticated-User-Email');
+
+if (!isLocal) {
+  if (!userEmailHeader) {
+    return new Response("Unauthorized: Missing Cf-Access authentication header", { status: 401 });
+  }
+  const allowedEmailsStr = Astro.locals.runtime?.env?.ADMIN_EMAILS || import.meta.env.ADMIN_EMAILS;
+  if (allowedEmailsStr) {
+    const allowedEmails = allowedEmailsStr.split(',').map((email: string) => email.trim().toLowerCase());
+    if (!allowedEmails.includes(userEmailHeader.toLowerCase())) {
+      return new Response(`Forbidden: Access denied for ${userEmailHeader}`, { status: 403 });
+    }
+  }
+}
+
+const userEmail = userEmailHeader || 'Local Dev Admin';
 ---
 
 <!DOCTYPE html>
@@ -673,7 +689,8 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
     </div>
     <div class="header-right">
       <span class="user-tag">User: {userEmail}</span>
-      <span style="font-size: 0.8rem; color: var(--text-muted);">Version: {version}</span>
+      <span style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">Version: {version}</span>
+      <button class="btn btn-sm" onclick="triggerPublish()" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">Publish Changes</button>
     </div>
   </header>
 
@@ -727,6 +744,22 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
               {category.name}
             </button>
           ))}
+        </div>
+
+        <!-- Search and Pagination Controls -->
+        <div class="search-pagination-bar" style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+          <div style="flex: 1; min-width: 250px;">
+            <input type="text" id="admin-search-input" placeholder="Search menu items by name, ingredients, or tags..." style="width: 100%; padding: 0.6rem 1rem; border-radius: 4px; border: 1px solid var(--border); background: var(--bg-card); color: var(--text);" oninput="updateFilteredItems()" />
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <span style="font-size: 0.9rem; color: var(--text-muted);">Items per page:</span>
+            <select id="admin-page-size" style="padding: 0.5rem; border-radius: 4px; border: 1px solid var(--border); background: var(--bg-card); color: var(--text);" onchange="changePageSize(this.value)">
+              <option value="10" selected>10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="all">All</option>
+            </select>
+          </div>
         </div>
 
         {categories.map((category, index) => {
@@ -833,6 +866,8 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
             </div>
           );
         })}
+        <!-- Pagination controls container -->
+        <div id="admin-pagination-container" style="display: flex; justify-content: center; align-items: center; gap: 0.5rem; margin-top: 1.5rem; margin-bottom: 1.5rem;"></div>
       </section>
 
       <!-- Section: CATEGORIES -->
@@ -1562,6 +1597,111 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
       sessionStorage.setItem('admin_active_tab', sectionId);
     }
 
+    let adminCurrentPage = 1;
+    let adminPageSize = 10;
+
+    function changePageSize(size) {
+      adminPageSize = size === 'all' ? 'all' : parseInt(size, 10);
+      adminCurrentPage = 1;
+      updateFilteredItems();
+    }
+
+    function updateFilteredItems() {
+      const searchInput = document.getElementById('admin-search-input');
+      const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+
+      const activeTableContainer = Array.from(document.querySelectorAll('.category-items-table')).find(el => el.style.display !== 'none');
+      if (!activeTableContainer) return;
+
+      const tbody = activeTableContainer.querySelector('tbody');
+      if (!tbody) return;
+
+      const rows = Array.from(tbody.querySelectorAll('tr[data-id]'));
+      const emptyRow = tbody.querySelector('tr:not([data-id])');
+      
+      let totalMatching = 0;
+      const matchingRows = [];
+
+      rows.forEach(row => {
+        const textContent = row.textContent.toLowerCase();
+        const matches = textContent.includes(query);
+        if (matches) {
+          matchingRows.push(row);
+          totalMatching++;
+        } else {
+          row.style.display = 'none';
+        }
+      });
+
+      if (emptyRow) {
+        if (totalMatching === 0) {
+          emptyRow.style.display = 'table-row';
+          const td = emptyRow.querySelector('td');
+          if (td) {
+            td.innerText = query ? 'No matching items found.' : 'No items in this category.';
+          }
+        } else {
+          emptyRow.style.display = 'none';
+        }
+      }
+
+      const totalPages = adminPageSize === 'all' ? 1 : Math.ceil(totalMatching / adminPageSize);
+      if (adminCurrentPage > totalPages) {
+        adminCurrentPage = Math.max(1, totalPages);
+      }
+
+      matchingRows.forEach((row, idx) => {
+        if (adminPageSize === 'all') {
+          row.style.display = 'table-row';
+        } else {
+          const start = (adminCurrentPage - 1) * adminPageSize;
+          const end = start + adminPageSize;
+          if (idx >= start && idx < end) {
+            row.style.display = 'table-row';
+          } else {
+            row.style.display = 'none';
+          }
+        }
+      });
+
+      const pagContainer = document.getElementById('admin-pagination-container');
+      if (pagContainer) {
+        pagContainer.innerHTML = '';
+        if (totalPages > 1) {
+          const prevBtn = document.createElement('button');
+          prevBtn.className = 'btn btn-secondary btn-sm';
+          prevBtn.innerText = 'Prev';
+          prevBtn.disabled = adminCurrentPage === 1;
+          prevBtn.onclick = () => {
+            adminCurrentPage--;
+            updateFilteredItems();
+          };
+          pagContainer.appendChild(prevBtn);
+
+          for (let i = 1; i <= totalPages; i++) {
+            const pageBtn = document.createElement('button');
+            pageBtn.className = i === adminCurrentPage ? 'btn btn-sm' : 'btn btn-secondary btn-sm';
+            pageBtn.innerText = i;
+            pageBtn.onclick = () => {
+              adminCurrentPage = i;
+              updateFilteredItems();
+            };
+            pagContainer.appendChild(pageBtn);
+          }
+
+          const nextBtn = document.createElement('button');
+          nextBtn.className = 'btn btn-secondary btn-sm';
+          nextBtn.innerText = 'Next';
+          nextBtn.disabled = adminCurrentPage === totalPages;
+          nextBtn.onclick = () => {
+            adminCurrentPage++;
+            updateFilteredItems();
+          };
+          pagContainer.appendChild(nextBtn);
+        }
+      }
+    }
+
     function switchCategoryTab(categoryId) {
       document.querySelectorAll('.category-items-table').forEach(el => {
         el.style.display = el.id === `category-table-${categoryId}` ? 'block' : 'none';
@@ -1571,9 +1711,10 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
         else btn.classList.remove('active');
       });
       sessionStorage.setItem('admin_active_category_tab', categoryId);
+      adminCurrentPage = 1;
+      updateFilteredItems();
     }
 
-    // Restore active tab and category tab from sessionStorage
     document.addEventListener('DOMContentLoaded', () => {
       const savedTab = sessionStorage.getItem('admin_active_tab');
       if (savedTab) {
@@ -1582,8 +1723,16 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
       const savedCategoryTab = sessionStorage.getItem('admin_active_category_tab');
       if (savedCategoryTab && document.getElementById(`cat-tab-${savedCategoryTab}`)) {
         switchCategoryTab(savedCategoryTab);
+      } else {
+        updateFilteredItems();
       }
     });
+
+    async function triggerPublish() {
+      if (confirm('Are you sure you want to trigger a full site rebuild? This will publish all database changes to the live site.')) {
+        await callAction('triggerPublish', {});
+      }
+    }
 
     function switchLanguageTab(locale) {
       ['en', 'fr', 'ja', 'zh'].forEach(loc => {
@@ -2232,28 +2381,90 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
       document.getElementById('dialog-media').showModal();
     }
 
+    function compressImage(file, maxDim, quality) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          const img = new Image();
+          img.onload = function() {
+            const canvas = document.createElement('canvas');
+            let width = img.width;
+            let height = img.height;
+
+            if (width > height) {
+              if (width > maxDim) {
+                height = Math.round((height * maxDim) / width);
+                width = maxDim;
+              }
+            } else {
+              if (height > maxDim) {
+                width = Math.round((width * maxDim) / height);
+                height = maxDim;
+              }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+
+            const mimeType = file.type || 'image/jpeg';
+            canvas.toBlob((blob) => {
+              if (blob) {
+                resolve(blob);
+              } else {
+                reject(new Error('Canvas compilation failed'));
+              }
+            }, mimeType, quality);
+          };
+          img.onerror = () => reject(new Error('Image failed to load'));
+          img.src = event.target.result;
+        };
+        reader.onerror = () => reject(new Error('File reader failed'));
+        reader.readAsDataURL(file);
+      });
+    }
+
     async function submitMedia(event) {
       event.preventDefault();
       const form = document.getElementById('form-media');
       const formData = new FormData(form);
 
       const fileInput = document.getElementById('media-file');
-      const file = fileInput.files[0];
+      let file = fileInput.files[0];
       const isEdit = !!formData.get('id');
 
       // Client-side validations
       if (file) {
-        // Size validation: 150 KB = 153,600 bytes
-        if (file.size > 153600) {
-          alert('File size exceeds the 150 KB limit.');
-          return;
-        }
-
-        // Extension validation
+        // Extension validation first
         const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
         if (!allowedExtensions.exec(file.name)) {
           alert('Only JPG and PNG files are allowed.');
           return;
+        }
+
+        // Auto-compression logic if size exceeds 150 KB
+        if (file.size > 153600) {
+          try {
+            showLoading(true);
+            const compressedBlob = await compressImage(file, 1200, 0.7);
+            showLoading(false);
+            if (compressedBlob.size > 153600) {
+              const moreCompressedBlob = await compressImage(file, 800, 0.5);
+              if (moreCompressedBlob.size > 153600) {
+                alert('Image is too large and could not be compressed below 150 KB. Please select a smaller image.');
+                return;
+              }
+              formData.set('file', moreCompressedBlob, file.name);
+            } else {
+              formData.set('file', compressedBlob, file.name);
+            }
+          } catch (compressErr) {
+            showLoading(false);
+            alert('Failed to compress image. Please upload an image smaller than 150 KB.');
+            return;
+          }
         }
       } else if (!isEdit) {
         alert('Please select an image file to upload.');
