@@ -1128,7 +1128,7 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
                   {m.url}
                 </div>
                 <div style="margin-top: auto; display: flex; justify-content: flex-end; gap: 0.5rem; padding-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.05);">
-                  <button class="btn btn-secondary btn-sm" onclick={`openMediaDialog(${JSON.stringify(m)})`} style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Edit</button>
+                  <button class="btn btn-secondary btn-sm" data-media={JSON.stringify(m)} onclick="openMediaDialog(JSON.parse(this.dataset.media))" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Edit</button>
                   <button class="btn btn-danger btn-sm" onclick={`deleteMediaRecord(${m.id})`} style="padding: 0.25rem 0.5rem; font-size: 0.8rem; background: var(--danger);">Delete</button>
                 </div>
               </div>
