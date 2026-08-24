@@ -1405,15 +1405,18 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
     </div>
   </dialog>
 
-  <script is:inline define:vars={{ menuItems, categories, ingredients, flavorTags, bottleTypes }}>
-    window.allMenuItems = menuItems;
-    window.allCategories = categories;
-    window.allIngredients = ingredients;
-    window.allFlavorTags = flavorTags;
-    window.allBottleTypes = bottleTypes;
-  </script>
+  <script type="application/json" id="data-menu-items">{JSON.stringify(menuItems)}</script>
+  <script type="application/json" id="data-categories">{JSON.stringify(categories)}</script>
+  <script type="application/json" id="data-ingredients">{JSON.stringify(ingredients)}</script>
+  <script type="application/json" id="data-flavor-tags">{JSON.stringify(flavorTags)}</script>
+  <script type="application/json" id="data-bottle-types">{JSON.stringify(bottleTypes)}</script>
 
   <script is:inline>
+    window.allMenuItems = JSON.parse(document.getElementById('data-menu-items').textContent);
+    window.allCategories = JSON.parse(document.getElementById('data-categories').textContent);
+    window.allIngredients = JSON.parse(document.getElementById('data-ingredients').textContent);
+    window.allFlavorTags = JSON.parse(document.getElementById('data-flavor-tags').textContent);
+    window.allBottleTypes = JSON.parse(document.getElementById('data-bottle-types').textContent);
     /* =========================================================================
        1. GLOBAL STATE & UI CONTROL HELPERS
        ========================================================================= */
