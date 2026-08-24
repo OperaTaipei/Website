@@ -1,14 +1,11 @@
--- Database seed generated from current menu configuration
 PRAGMA foreign_keys = ON;
 
--- Seeding categories
 INSERT OR IGNORE INTO categories (id, code_name) VALUES (1, 'signatures');
 INSERT OR IGNORE INTO categories (id, code_name) VALUES (2, 'food');
 INSERT OR IGNORE INTO categories (id, code_name) VALUES (3, 'ontap');
 INSERT OR IGNORE INTO categories (id, code_name) VALUES (4, 'classics');
 INSERT OR IGNORE INTO categories (id, code_name) VALUES (5, 'bottles');
 
--- Seeding ingredients
 INSERT OR IGNORE INTO ingredients (id, code_name) VALUES (1, 'gin');
 INSERT OR IGNORE INTO ingredients (id, code_name) VALUES (2, 'lime');
 INSERT OR IGNORE INTO ingredients (id, code_name) VALUES (3, 'watermelon-syrup');
@@ -122,7 +119,6 @@ INSERT OR IGNORE INTO ingredients (id, code_name) VALUES (110, 'premium-vodka-bo
 INSERT OR IGNORE INTO ingredients (id, code_name) VALUES (111, 'japanese-craft-gin-bottle');
 INSERT OR IGNORE INTO ingredients (id, code_name) VALUES (112, 'black-forest-craft-gin-bottle');
 
--- Seeding flavor tags
 INSERT OR IGNORE INTO flavor_tags (id, code_name) VALUES (1, 'refreshing');
 INSERT OR IGNORE INTO flavor_tags (id, code_name) VALUES (2, 'fruity');
 INSERT OR IGNORE INTO flavor_tags (id, code_name) VALUES (3, 'sour');
@@ -139,7 +135,6 @@ INSERT OR IGNORE INTO flavor_tags (id, code_name) VALUES (13, 'filling');
 INSERT OR IGNORE INTO flavor_tags (id, code_name) VALUES (14, 'seafood');
 INSERT OR IGNORE INTO flavor_tags (id, code_name) VALUES (15, 'classic');
 
--- Seeding media
 INSERT OR IGNORE INTO media (id, url, alt_text) VALUES (1, '/images/fingerfood_salsanachos.jpg', 'fingerfood_salsanachos');
 INSERT OR IGNORE INTO media (id, url, alt_text) VALUES (2, '/images/fingerfood_mixnuts.jpg', 'fingerfood_mixnuts');
 INSERT OR IGNORE INTO media (id, url, alt_text) VALUES (3, '/images/pxl_20250212_102007677.jpg', 'pxl_20250212_102007677');
@@ -147,14 +142,12 @@ INSERT OR IGNORE INTO media (id, url, alt_text) VALUES (4, '/images/nachos.jpg',
 INSERT OR IGNORE INTO media (id, url, alt_text) VALUES (5, '/images/roasted_chicken_wrap.jpg', 'roasted_chicken_wrap');
 INSERT OR IGNORE INTO media (id, url, alt_text) VALUES (6, '/images/cured_salmon_toast.jpg', 'cured_salmon_toast');
 
--- Seeding bottle types
 INSERT OR IGNORE INTO bottle_types (id, code_name) VALUES (1, 'Spirit');
 INSERT OR IGNORE INTO bottle_types (id, code_name) VALUES (2, 'Whiskey');
 INSERT OR IGNORE INTO bottle_types (id, code_name) VALUES (3, 'Tequila');
 INSERT OR IGNORE INTO bottle_types (id, code_name) VALUES (4, 'Vodka');
 INSERT OR IGNORE INTO bottle_types (id, code_name) VALUES (5, 'Gin');
 
--- Seeding menu items and connections
 INSERT OR IGNORE INTO menu_items (id, code_name, category_id, media_id, price, is_available) VALUES (1, 'watermelon-gt', 1, NULL, 350, 1);
 INSERT OR IGNORE INTO menu_item_tags (menu_item_id, tag_id) VALUES (1, 1);
 INSERT OR IGNORE INTO menu_item_tags (menu_item_id, tag_id) VALUES (1, 2);
@@ -462,7 +455,6 @@ INSERT OR IGNORE INTO menu_items (id, code_name, category_id, media_id, price, i
 INSERT OR IGNORE INTO bottles (menu_item_id, bottle_type_id, volume) VALUES (65, 5, 0.5);
 INSERT OR IGNORE INTO menu_item_ingredients (menu_item_id, ingredient_id) VALUES (65, 112);
 
--- Seeding translations
 INSERT OR IGNORE INTO translations (locale, entity_type, entity_id, name, description) VALUES ('en', 'category', 1, 'Signature Cocktails', NULL);
 INSERT OR IGNORE INTO translations (locale, entity_type, entity_id, name, description) VALUES ('en', 'category', 2, 'Finger Food', NULL);
 INSERT OR IGNORE INTO translations (locale, entity_type, entity_id, name, description) VALUES ('en', 'category', 3, 'On Tap', NULL);
