@@ -2,8 +2,7 @@
 export const prerender = false;
 
 import * as dbHelpers from '../../lib/db';
-import packageJson from '../../../package.json';
-const version = packageJson.version;
+const version = import.meta.env.PUBLIC_APP_VERSION || 'v0.0.0';
 
 const db = Astro.locals.runtime?.env?.DB;
 if (!db) {
