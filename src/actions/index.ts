@@ -352,8 +352,19 @@ export const server = {
     input: z.object({}),
     handler: async (input, context) => {
       const db = context.locals.runtime?.env?.DB;
+      const bucket = context.locals.runtime?.env?.MEDIA_BUCKET;
       if (!db) throw new Error('Database connection not available.');
       try {
+        // Fetch orphans first to get URLs of media that need to be deleted from R2
+        const orphans = await dbHelpers.getOrphans(db);
+        if (orphans.media && orphans.media.length > 0 && bucket) {
+          for (const media of orphans.media) {
+            const fileName = media.url.split('/').pop();
+            if (fileName) {
+              await bucket.delete(fileName);
+            }
+          }
+        }
         await dbHelpers.purgeOrphans(db);
         return { success: true, message: 'All orphan records purged successfully.' };
       } catch (err: any) {

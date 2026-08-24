@@ -517,6 +517,7 @@ export async function getOrphans(db: D1Database): Promise<{
   translations: { id: number; locale: string; entity_type: string; entity_id: number; name: string }[];
   pivotIngredients: { menu_item_id: number; ingredient_id: number }[];
   pivotTags: { menu_item_id: number; tag_id: number }[];
+  media: { id: number; url: string; alt_text: string | null }[];
 }> {
   // 1. Orphan Ingredients (not in menu_item_ingredients)
   const orphanIngredientsQuery = `
@@ -558,11 +559,21 @@ export async function getOrphans(db: D1Database): Promise<{
   `;
   const { results: pivotTags } = await db.prepare(orphanPivotTagsQuery).all();
 
+  // 4. Orphan Media
+  const orphanMediaQuery = `
+    SELECT id, url, alt_text
+    FROM media
+    WHERE id NOT IN (SELECT DISTINCT media_id FROM menu_items WHERE media_id IS NOT NULL)
+    ORDER BY url ASC
+  `;
+  const { results: media } = await db.prepare(orphanMediaQuery).all();
+
   return {
     ingredients: ingredients as any,
     translations: translations as any,
     pivotIngredients: pivotIngredients as any,
-    pivotTags: pivotTags as any
+    pivotTags: pivotTags as any,
+    media: media as any
   };
 }
 
@@ -571,6 +582,7 @@ export async function purgeOrphans(db: D1Database): Promise<void> {
   // 1. Pivot entries (referencing non-existent menu items, ingredients, or tags)
   // 2. Orphan ingredients (ingredients not in menu_item_ingredients)
   // 3. Orphan translations (translations referencing non-existent categories, ingredients, tags, menu_items, or bottle_types)
+  // 4. Orphan media (media not referenced by any menu_item)
   const statements = [
     // 1. Pivot Entries
     db.prepare(`
@@ -596,6 +608,11 @@ export async function purgeOrphans(db: D1Database): Promise<void> {
          OR (entity_type = 'ingredient' AND entity_id NOT IN (SELECT id FROM ingredients))
          OR (entity_type = 'tag' AND entity_id NOT IN (SELECT id FROM flavor_tags))
          OR (entity_type = 'bottle_type' AND entity_id NOT IN (SELECT id FROM bottle_types))
+    `),
+    // 4. Orphan Media
+    db.prepare(`
+      DELETE FROM media
+      WHERE id NOT IN (SELECT DISTINCT media_id FROM menu_items WHERE media_id IS NOT NULL)
     `)
   ];
 

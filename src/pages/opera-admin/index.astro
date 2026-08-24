@@ -1063,7 +1063,7 @@ const userEmail = userEmailHeader || 'Local Dev Admin';
       <section id="section-db" style="display: none;">
         <div class="action-bar">
           <h2>DB Management</h2>
-          <button class="btn btn-danger" onclick="purgeAllOrphans()" disabled={orphans.ingredients.length === 0 && orphans.translations.length === 0 && orphans.pivotIngredients.length === 0 && orphans.pivotTags.length === 0}>
+          <button class="btn btn-danger" onclick="purgeAllOrphans()" disabled={orphans.ingredients.length === 0 && orphans.translations.length === 0 && orphans.pivotIngredients.length === 0 && orphans.pivotTags.length === 0 && orphans.media.length === 0}>
             Purge All Orphans
           </button>
         </div>
@@ -1163,6 +1163,43 @@ const userEmail = userEmailHeader || 'Local Dev Admin';
               </div>
             ) : (
               <p style="color: var(--success); font-size: 0.9rem;">No invalid join entries found.</p>
+            )}
+          </div>
+
+          <!-- Card: Orphan Media -->
+          <div style="background: var(--bg-dark); border: 1px solid var(--border); padding: 1.5rem; border-radius: 6px;">
+            <h3 style="color: var(--primary); font-size: 1.1rem; margin-bottom: 1rem; display: flex; justify-content: space-between;">
+              <span>Orphan Media Assets</span>
+              <span class="user-tag" style="background: rgba(197, 168, 128, 0.1); color: var(--primary);">{orphans.media.length}</span>
+            </h3>
+            {orphans.media.length > 0 ? (
+              <div style="max-height: 250px; overflow-y: auto;">
+                <table style="width: 100%; font-size: 0.9rem;">
+                  <thead>
+                    <tr>
+                      <th style="text-align: left; padding: 0.5rem;">ID</th>
+                      <th style="text-align: left; padding: 0.5rem;">Preview</th>
+                      <th style="text-align: left; padding: 0.5rem;">URL / Alt Text</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {orphans.media.map(med => (
+                      <tr>
+                        <td style="padding: 0.5rem; color: var(--text-muted);">{med.id}</td>
+                        <td style="padding: 0.5rem;">
+                          <img src={med.url} alt={med.alt_text || ''} style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px; border: 1px solid var(--border);" />
+                        </td>
+                        <td style="padding: 0.5rem;">
+                          <div style="font-weight: 500; word-break: break-all;">{med.url}</div>
+                          <div style="font-size: 0.8rem; color: var(--text-muted);">{med.alt_text || 'No alt text'}</div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <p style="color: var(--success); font-size: 0.9rem;">No orphan media assets found.</p>
             )}
           </div>
         </div>

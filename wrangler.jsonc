@@ -24,6 +24,9 @@
       "binding": "MEDIA_BUCKET",
       "bucket_name": "opera-media"
     }
-  ]
+  ],
+  "vars": {
+    "CLOUDFLARE_DEPLOY_HOOK_URL": ""
+  }
 }
 
