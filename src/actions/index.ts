@@ -266,6 +266,48 @@ export const server = {
     }
   }),
 
+  // ----------------------------------------------------
+  // MEDIA ACTIONS
+  // ----------------------------------------------------
+  saveMedia: defineAction({
+    accept: 'json',
+    input: z.object({
+      id: z.number().optional(),
+      url: z.string().min(1, 'URL/Path is required'),
+      alt_text: z.string().nullable().optional()
+    }),
+    handler: async (input, context) => {
+      const db = context.locals.runtime?.env?.DB;
+      if (!db) throw new Error('Database connection not available.');
+      try {
+        if (input.id) {
+          await dbHelpers.updateMedia(db, input.id, input.url, input.alt_text);
+          return { success: true, message: 'Media updated successfully.' };
+        } else {
+          const newId = await dbHelpers.createMedia(db, input.url, input.alt_text);
+          return { success: true, message: 'Media created successfully.', id: newId };
+        }
+      } catch (err: any) {
+        return { success: false, error: err.message || 'Failed to save media.' };
+      }
+    }
+  }),
+
+  deleteMedia: defineAction({
+    accept: 'json',
+    input: z.object({ id: z.number() }),
+    handler: async (input, context) => {
+      const db = context.locals.runtime?.env?.DB;
+      if (!db) throw new Error('Database connection not available.');
+      try {
+        await dbHelpers.deleteMedia(db, input.id);
+        return { success: true, message: 'Media deleted successfully.' };
+      } catch (err: any) {
+        return { success: false, error: err.message || 'Failed to delete media.' };
+      }
+    }
+  }),
+
   purgeOrphans: defineAction({
     accept: 'json',
     input: z.object({}),
@@ -281,3 +323,4 @@ export const server = {
     }
   })
 };
+

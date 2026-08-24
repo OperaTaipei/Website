@@ -601,3 +601,17 @@ export async function purgeOrphans(db: D1Database): Promise<void> {
 
   await db.batch(statements);
 }
+
+export async function createMedia(db: D1Database, url: string, altText?: string | null): Promise<number> {
+  const res = await db.prepare(`INSERT INTO media (url, alt_text) VALUES (?, ?)`).bind(url, altText || null).run();
+  return res.meta.last_row_id;
+}
+
+export async function updateMedia(db: D1Database, id: number, url: string, altText?: string | null): Promise<void> {
+  await db.prepare(`UPDATE media SET url = ?, alt_text = ? WHERE id = ?`).bind(url, altText || null, id).run();
+}
+
+export async function deleteMedia(db: D1Database, id: number): Promise<void> {
+  await db.prepare(`DELETE FROM media WHERE id = ?`).bind(id).run();
+}
+
