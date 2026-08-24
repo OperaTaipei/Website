@@ -2,6 +2,8 @@
 export const prerender = false;
 
 import * as dbHelpers from '../../lib/db';
+import packageJson from '../../../package.json';
+const version = packageJson.version;
 
 const db = Astro.locals.runtime?.env?.DB;
 if (!db) {
@@ -65,7 +67,15 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
     body {
       background-color: var(--bg-dark);
       color: var(--text);
-      padding: 3rem 3rem 2rem 3rem;
+      padding: 3rem 0 2rem 0;
+    }
+
+    .admin-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 0 1.5rem;
+      box-sizing: border-box;
     }
 
     /* =========================================================================
@@ -77,7 +87,7 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
       align-items: center;
       margin-bottom: 2rem;
       border-bottom: 1px solid var(--border);
-      padding-bottom: 1rem;
+      padding: 0 1.5rem 1rem 1.5rem;
     }
 
     .header-left, .header-right {
@@ -91,6 +101,9 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
 
     .header-right {
       justify-content: flex-end;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.25rem;
     }
 
     .header-center {
@@ -621,6 +634,7 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
   </style>
 </head>
 <body>
+  <div class="admin-container">
 
   <header>
     <div class="header-left">
@@ -631,6 +645,7 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
     </div>
     <div class="header-right">
       <span class="user-tag">User: {userEmail}</span>
+      <span style="font-size: 0.8rem; color: var(--text-muted);">Version: {version}</span>
     </div>
   </header>
 
@@ -1405,6 +1420,8 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
       <button type="button" id="btn-confirm-delete-cascade" class="btn" style="background: var(--danger);">Yes, Delete Element</button>
     </div>
   </dialog>
+
+  </div> <!-- end .admin-container -->
 
   <script type="application/json" id="data-menu-items" set:html={JSON.stringify(menuItems)}></script>
   <script type="application/json" id="data-categories" set:html={JSON.stringify(categories)}></script>
