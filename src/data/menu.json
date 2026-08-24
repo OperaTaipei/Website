@@ -491,150 +491,200 @@
     "id": "house-spirit",
     "category": "bottles",
     "price": 3000,
-    "tags": []
+    "tags": [],
+    "bottle_type": "Spirit",
+    "bottle_volume": 0.7
   },
   {
     "id": "house-wine",
     "category": "bottles",
     "price": 1300,
-    "tags": []
+    "tags": [],
+    "bottle_type": "Spirit",
+    "bottle_volume": 0.75
   },
   {
     "id": "chateau-edmus",
     "category": "bottles",
     "price": 2900,
-    "tags": []
+    "tags": [],
+    "bottle_type": "Spirit",
+    "bottle_volume": 0.75
   },
   {
     "id": "les-bellissands",
     "category": "bottles",
     "price": 5500,
-    "tags": []
+    "tags": [],
+    "bottle_type": "Spirit",
+    "bottle_volume": 0.75
   },
   {
     "id": "pouilly-fuisse",
     "category": "bottles",
     "price": 3400,
-    "tags": []
+    "tags": [],
+    "bottle_type": "Spirit",
+    "bottle_volume": 0.75
   },
   {
     "id": "marquis-brut",
     "category": "bottles",
     "price": 4000,
-    "tags": []
+    "tags": [],
+    "bottle_type": "Spirit",
+    "bottle_volume": 0.75
   },
   {
     "id": "marquis-brut-3",
     "category": "bottles",
     "price": 10000,
-    "tags": []
+    "tags": [],
+    "bottle_type": "Spirit",
+    "bottle_volume": 3.0
   },
   {
     "id": "pommery-brut",
     "category": "bottles",
     "price": 5000,
-    "tags": []
+    "tags": [],
+    "bottle_type": "Spirit",
+    "bottle_volume": 0.75
   },
   {
     "id": "pommery-brut-3",
     "category": "bottles",
     "price": 12000,
-    "tags": []
+    "tags": [],
+    "bottle_type": "Spirit",
+    "bottle_volume": 3.0
   },
   {
     "id": "highland-park-12",
     "category": "bottles",
     "price": 5000,
-    "tags": []
+    "tags": [],
+    "bottle_type": "Whiskey",
+    "bottle_volume": 0.7
   },
   {
     "id": "singleton-12",
     "category": "bottles",
     "price": 5000,
-    "tags": []
+    "tags": [],
+    "bottle_type": "Whiskey",
+    "bottle_volume": 0.7
   },
   {
     "id": "talisker-10",
     "category": "bottles",
     "price": 5000,
-    "tags": []
+    "tags": [],
+    "bottle_type": "Whiskey",
+    "bottle_volume": 0.7
   },
   {
     "id": "lagavulin-8",
     "category": "bottles",
     "price": 6000,
-    "tags": []
+    "tags": [],
+    "bottle_type": "Whiskey",
+    "bottle_volume": 0.7
   },
   {
     "id": "jw-xr21",
     "category": "bottles",
     "price": 9000,
-    "tags": []
+    "tags": [],
+    "bottle_type": "Whiskey",
+    "bottle_volume": 0.7
   },
   {
     "id": "balvenie-12",
     "category": "bottles",
     "price": 6000,
-    "tags": []
+    "tags": [],
+    "bottle_type": "Whiskey",
+    "bottle_volume": 0.7
   },
   {
     "id": "balvenie-21",
     "category": "bottles",
     "price": 16000,
-    "tags": []
+    "tags": [],
+    "bottle_type": "Whiskey",
+    "bottle_volume": 0.7
   },
   {
     "id": "macallan-15",
     "category": "bottles",
     "price": 12000,
-    "tags": []
+    "tags": [],
+    "bottle_type": "Whiskey",
+    "bottle_volume": 0.7
   },
   {
     "id": "merlet-vsop",
     "category": "bottles",
     "price": 6000,
-    "tags": []
+    "tags": [],
+    "bottle_type": "Spirit",
+    "bottle_volume": 0.7
   },
   {
     "id": "don-julio-repo",
     "category": "bottles",
     "price": 7000,
-    "tags": []
+    "tags": [],
+    "bottle_type": "Tequila",
+    "bottle_volume": 0.7
   },
   {
     "id": "don-julio-anejo",
     "category": "bottles",
     "price": 8000,
-    "tags": []
+    "tags": [],
+    "bottle_type": "Tequila",
+    "bottle_volume": 0.7
   },
   {
     "id": "don-julio-1942",
     "category": "bottles",
     "price": 12000,
-    "tags": []
+    "tags": [],
+    "bottle_type": "Tequila",
+    "bottle_volume": 0.7
   },
   {
     "id": "clase-azul",
     "category": "bottles",
     "price": 16000,
-    "tags": []
+    "tags": [],
+    "bottle_type": "Tequila",
+    "bottle_volume": 0.7
   },
   {
     "id": "grey-goose",
     "category": "bottles",
     "price": 5000,
-    "tags": []
+    "tags": [],
+    "bottle_type": "Vodka",
+    "bottle_volume": 0.7
   },
   {
     "id": "roku-gin",
     "category": "bottles",
     "price": 4000,
-    "tags": []
+    "tags": [],
+    "bottle_type": "Gin",
+    "bottle_volume": 0.7
   },
   {
     "id": "monkey-47",
     "category": "bottles",
     "price": 5000,
-    "tags": []
+    "tags": [],
+    "bottle_type": "Gin",
+    "bottle_volume": 0.5
   }
 ]

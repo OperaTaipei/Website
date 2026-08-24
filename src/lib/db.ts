@@ -37,6 +37,8 @@ export interface MenuItem {
   description: string | null;
   ingredients: string[]; // List of ingredient names
   tags: string[]; // List of tag names
+  bottle_type?: string;
+  bottle_volume?: number;
 }
 
 export interface TranslationsInput {
@@ -93,12 +95,15 @@ export async function getMenuItems(db: D1Database): Promise<MenuItem[]> {
            COALESCE(cat_t.name, c.code_name) as category_name,
            med.url as media_url,
            COALESCE(t.name, m.code_name) as name,
-           t.description as description
+           t.description as description,
+           b.type as bottle_type,
+           b.volume as bottle_volume
     FROM menu_items m
     INNER JOIN categories c ON c.id = m.category_id
     LEFT JOIN translations cat_t ON cat_t.entity_type = 'category' AND cat_t.entity_id = c.id AND cat_t.locale = 'en'
     LEFT JOIN media med ON med.id = m.media_id
     LEFT JOIN translations t ON t.entity_type = 'menu_item' AND t.entity_id = m.id AND t.locale = 'en'
+    LEFT JOIN bottles b ON b.menu_item_id = m.id
     ORDER BY category_name ASC, name ASC
   `;
   
@@ -147,7 +152,9 @@ export async function getMenuItems(db: D1Database): Promise<MenuItem[]> {
     name: item.name,
     description: item.description,
     ingredients: ingsMap[item.id] || [],
-    tags: tagsMap[item.id] || []
+    tags: tagsMap[item.id] || [],
+    bottle_type: item.bottle_type || undefined,
+    bottle_volume: item.bottle_volume !== null && item.bottle_volume !== undefined ? item.bottle_volume : undefined
   }));
 }
 
@@ -222,6 +229,8 @@ export async function createMenuItem(
     ingredients: number[]; // IDs
     tags: number[]; // IDs
     translations: TranslationsInput;
+    bottle_type?: string;
+    bottle_volume?: number;
   }
 ): Promise<number> {
   // 1. Insert Menu Item
@@ -234,6 +243,14 @@ export async function createMenuItem(
     .run();
 
   const insertId = res.meta.last_row_id;
+
+  // Insert bottle details if provided
+  if (data.bottle_type && data.bottle_volume !== undefined) {
+    await db
+      .prepare(`INSERT INTO bottles (menu_item_id, type, volume) VALUES (?, ?, ?)`)
+      .bind(insertId, data.bottle_type, data.bottle_volume)
+      .run();
+  }
 
   // 2. Insert Join Tables
   const batchStatements = [];
@@ -273,6 +290,8 @@ export async function updateMenuItem(
     ingredients: number[]; // IDs
     tags: number[]; // IDs
     translations: TranslationsInput;
+    bottle_type?: string;
+    bottle_volume?: number;
   }
 ) {
   // 1. Update Core
@@ -284,6 +303,19 @@ export async function updateMenuItem(
     `)
     .bind(data.code_name, data.category_id, data.media_id, data.price, data.is_available ? 1 : 0, id)
     .run();
+
+  // Update or insert or delete bottle details
+  if (data.bottle_type && data.bottle_volume !== undefined) {
+    await db.prepare(`
+      INSERT INTO bottles (menu_item_id, type, volume)
+      VALUES (?, ?, ?)
+      ON CONFLICT(menu_item_id) DO UPDATE SET
+        type = excluded.type,
+        volume = excluded.volume
+    `).bind(id, data.bottle_type, data.bottle_volume).run();
+  } else {
+    await db.prepare(`DELETE FROM bottles WHERE menu_item_id = ?`).bind(id).run();
+  }
 
   // 2. Update Relations (Clear and insert)
   await db.batch([

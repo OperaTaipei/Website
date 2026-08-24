@@ -29,7 +29,9 @@ export const server = {
       is_available: z.boolean(),
       ingredients: z.array(z.number()),
       tags: z.array(z.number()),
-      translations: translationsInputSchema
+      translations: translationsInputSchema,
+      bottle_type: z.enum(['Whiskey', 'Gin', 'Vodka', 'Tequila', 'Mescal', 'Spirit', 'Liqueur', 'Rum']).nullable().optional(),
+      bottle_volume: z.number().min(0).nullable().optional()
     }),
     handler: async (input, context) => {
       const db = context.locals.runtime?.env?.DB;
@@ -46,7 +48,9 @@ export const server = {
           is_available: input.is_available,
           ingredients: input.ingredients,
           tags: input.tags,
-          translations: input.translations as dbHelpers.TranslationsInput
+          translations: input.translations as dbHelpers.TranslationsInput,
+          bottle_type: input.bottle_type || undefined,
+          bottle_volume: input.bottle_volume !== null && input.bottle_volume !== undefined ? input.bottle_volume : undefined
         };
 
         if (input.id) {

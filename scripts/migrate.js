@@ -109,12 +109,17 @@ async function run() {
   let itemId = 1;
   const menuItemKeyToId = {};
   
-  menuData.forEach(item => {
+    menuData.forEach(item => {
     const catId = categoryIds[item.category];
     const mediaId = item.image ? mediaIds[item.image] : 'NULL';
     const price = item.price;
     sqlStatements.push(`INSERT OR IGNORE INTO menu_items (id, code_name, category_id, media_id, price, is_available) VALUES (${itemId}, ${sqlEscape(item.id)}, ${catId}, ${mediaId}, ${price}, 1);`);
     menuItemKeyToId[item.id] = itemId;
+
+    // Seeding bottles table if it has bottle properties
+    if (item.category === 'bottles' && item.bottle_type && item.bottle_volume !== undefined) {
+      sqlStatements.push(`INSERT OR IGNORE INTO bottles (menu_item_id, type, volume) VALUES (${itemId}, ${sqlEscape(item.bottle_type)}, ${item.bottle_volume});`);
+    }
 
     // Join table tags
     if (item.tags && Array.isArray(item.tags)) {

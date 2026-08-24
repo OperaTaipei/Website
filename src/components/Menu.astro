@@ -268,8 +268,11 @@ const drinkTags = ['refreshing', 'spirit-forward', 'sour', 'smoky', 'spicy', 'sw
         {bottles.filter(item => item.id === 'house-spirit').map(item => {
           const itemText = t.menu_items[item.id] || {};
           return (
-            <div class="menu-item">
-              <div class="menu-item-name">{itemText.name}</div>
+            <div class="menu-item clickable-menu-item" data-id={item.id} role="button" aria-label={`View details for ${itemText.name}`}>
+              <div class="menu-item-name">
+                {itemText.name}
+                {item.bottle_volume && <span style="font-size: 0.85rem; color: rgba(245, 240, 232, 0.5); font-weight: normal; margin-left: 0.5rem;">({item.bottle_volume}L)</span>}
+              </div>
               <div class="menu-item-name-chinese">{itemText.ingredients}</div>
               <div class="menu-item-price">3,000 NTD</div>
             </div>
@@ -283,8 +286,11 @@ const drinkTags = ['refreshing', 'spirit-forward', 'sour', 'smoky', 'spicy', 'sw
         {bottles.filter(item => ['house-wine', 'chateau-edmus', 'les-bellissands', 'pouilly-fuisse'].includes(item.id)).map(item => {
           const itemText = t.menu_items[item.id] || {};
           return (
-            <div class="menu-item">
-              <div class="menu-item-name">{itemText.name}</div>
+            <div class="menu-item clickable-menu-item" data-id={item.id} role="button" aria-label={`View details for ${itemText.name}`}>
+              <div class="menu-item-name">
+                {itemText.name}
+                {item.bottle_volume && <span style="font-size: 0.85rem; color: rgba(245, 240, 232, 0.5); font-weight: normal; margin-left: 0.5rem;">({item.bottle_volume}L)</span>}
+              </div>
               {itemText.ingredients && <div class="menu-item-ingredients">{itemText.ingredients}</div>}
               <div class="menu-item-price">{item.price.toLocaleString()} NTD</div>
             </div>
@@ -298,8 +304,11 @@ const drinkTags = ['refreshing', 'spirit-forward', 'sour', 'smoky', 'spicy', 'sw
         {bottles.filter(item => ['marquis-brut', 'marquis-brut-3', 'pommery-brut', 'pommery-brut-3'].includes(item.id)).map(item => {
           const itemText = t.menu_items[item.id] || {};
           return (
-            <div class="menu-item">
-              <div class="menu-item-name">{itemText.name}</div>
+            <div class="menu-item clickable-menu-item" data-id={item.id} role="button" aria-label={`View details for ${itemText.name}`}>
+              <div class="menu-item-name">
+                {itemText.name}
+                {item.bottle_volume && <span style="font-size: 0.85rem; color: rgba(245, 240, 232, 0.5); font-weight: normal; margin-left: 0.5rem;">({item.bottle_volume}L)</span>}
+              </div>
               {itemText.ingredients && <div class="menu-item-ingredients">{itemText.ingredients}</div>}
               <div class="menu-item-price">{item.price.toLocaleString()} NTD</div>
             </div>
@@ -313,8 +322,11 @@ const drinkTags = ['refreshing', 'spirit-forward', 'sour', 'smoky', 'spicy', 'sw
         {bottles.filter(item => ['highland-park-12', 'singleton-12', 'talisker-10', 'lagavulin-8', 'jw-xr21', 'balvenie-12', 'balvenie-21', 'macallan-15'].includes(item.id)).map(item => {
           const itemText = t.menu_items[item.id] || {};
           return (
-            <div class="menu-item">
-              <div class="menu-item-name">{itemText.name}</div>
+            <div class="menu-item clickable-menu-item" data-id={item.id} role="button" aria-label={`View details for ${itemText.name}`}>
+              <div class="menu-item-name">
+                {itemText.name}
+                {item.bottle_volume && <span style="font-size: 0.85rem; color: rgba(245, 240, 232, 0.5); font-weight: normal; margin-left: 0.5rem;">({item.bottle_volume}L)</span>}
+              </div>
               {itemText.ingredients && <div class="menu-item-ingredients">{itemText.ingredients}</div>}
               <div class="menu-item-price">{item.price.toLocaleString()} NTD</div>
             </div>
@@ -328,8 +340,11 @@ const drinkTags = ['refreshing', 'spirit-forward', 'sour', 'smoky', 'spicy', 'sw
         {bottles.filter(item => ['merlet-vsop', 'don-julio-repo', 'don-julio-anejo', 'don-julio-1942', 'clase-azul', 'grey-goose', 'roku-gin', 'monkey-47'].includes(item.id)).map(item => {
           const itemText = t.menu_items[item.id] || {};
           return (
-            <div class="menu-item">
-              <div class="menu-item-name">{itemText.name}</div>
+            <div class="menu-item clickable-menu-item" data-id={item.id} role="button" aria-label={`View details for ${itemText.name}`}>
+              <div class="menu-item-name">
+                {itemText.name}
+                {item.bottle_volume && <span style="font-size: 0.85rem; color: rgba(245, 240, 232, 0.5); font-weight: normal; margin-left: 0.5rem;">({item.bottle_volume}L)</span>}
+              </div>
               {itemText.ingredients && <div class="menu-item-ingredients">{itemText.ingredients}</div>}
               <div class="menu-item-price">{item.price.toLocaleString()} NTD</div>
             </div>

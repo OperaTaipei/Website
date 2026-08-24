@@ -23,6 +23,12 @@ const { t, lang } = Astro.props;
       <div class="menu-modal-details">
         <div class="menu-modal-tags" id="modal-tags"></div>
         <h3 class="menu-modal-title" id="modal-title"></h3>
+        
+        <!-- Bottle Specs (Differentiates bottles from cocktails) -->
+        <div class="menu-modal-bottle-specs" id="modal-bottle-specs" style="display: none; margin-bottom: 15px; font-size: 0.85rem; color: #c9a84c; text-transform: uppercase; letter-spacing: 0.05em;">
+          <span id="modal-bottle-type"></span> &bull; <span id="modal-bottle-volume"></span>
+        </div>
+
         <p class="menu-modal-price" id="modal-price"></p>
         <p class="menu-modal-description" id="modal-desc"></p>
         
@@ -53,6 +59,10 @@ const { t, lang } = Astro.props;
   const modalIngredientsPills = document.getElementById('modal-ingredients-pills');
   const tooltip = document.getElementById('ingredient-tooltip');
 
+  const modalBottleSpecs = document.getElementById('modal-bottle-specs');
+  const modalBottleType = document.getElementById('modal-bottle-type');
+  const modalBottleVolume = document.getElementById('modal-bottle-volume');
+
   // Open Modal logic
   document.querySelectorAll('.clickable-menu-item').forEach(item => {
     item.addEventListener('click', () => {
@@ -66,6 +76,17 @@ const { t, lang } = Astro.props;
       if (modalTitle) modalTitle.textContent = itemText.name;
       if (modalPrice) modalPrice.textContent = `${data.price} NTD$`;
       if (modalDesc) modalDesc.textContent = itemText.description;
+
+      // Set Bottle Specs
+      if (modalBottleSpecs) {
+        if (data.bottle_type && data.bottle_volume) {
+          modalBottleSpecs.style.display = 'block';
+          if (modalBottleType) modalBottleType.textContent = data.bottle_type;
+          if (modalBottleVolume) modalBottleVolume.textContent = `${data.bottle_volume} L`;
+        } else {
+          modalBottleSpecs.style.display = 'none';
+        }
+      }
 
       // Set Image
       if (modalImg) {

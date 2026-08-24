@@ -37,6 +37,14 @@ CREATE TABLE IF NOT EXISTS menu_items (
     FOREIGN KEY (media_id) REFERENCES media(id) ON DELETE SET NULL
 );
 
+-- 5b. Bottles table to store bottle-specific properties (Option B)
+CREATE TABLE IF NOT EXISTS bottles (
+    menu_item_id INTEGER PRIMARY KEY,
+    type TEXT NOT NULL CHECK(type IN ('Whiskey', 'Gin', 'Vodka', 'Tequila', 'Mescal', 'Spirit', 'Liqueur', 'Rum')),
+    volume REAL NOT NULL, -- in Liters
+    FOREIGN KEY (menu_item_id) REFERENCES menu_items(id) ON DELETE CASCADE
+);
+
 -- 6. Menu Item Ingredients Join Table (with restrict checks to prevent deletion of ingredients if in use)
 CREATE TABLE IF NOT EXISTS menu_item_ingredients (
     menu_item_id INTEGER NOT NULL,

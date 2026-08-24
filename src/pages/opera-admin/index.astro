@@ -699,7 +699,14 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
                 <tbody>
                   {items.map(item => (
                     <tr data-id={item.id}>
-                      <td style="font-weight: 500;">{item.name}</td>
+                      <td style="font-weight: 500;">
+                        {item.name}
+                        {item.bottle_type && (
+                          <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: normal; margin-left: 0.5rem;">
+                            ({item.bottle_type}, {item.bottle_volume}L)
+                          </span>
+                        )}
+                      </td>
                       <td>{item.price}</td>
                       <td>
                         {item.ingredients.map(ing => (
@@ -1009,15 +1016,37 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
       <div class="form-row">
         <div class="form-group">
           <label>Category</label>
-          <select id="item-category" name="category_id" class="form-control" required>
+          <select id="item-category" name="category_id" class="form-control" required onchange="toggleBottleFields()">
             {categories.map(c => (
-              <option value={c.id}>{c.name}</option>
+              <option value={c.id} data-code-name={c.code_name}>{c.name}</option>
             ))}
           </select>
         </div>
         <div class="form-group">
           <label>Price (NTD$)</label>
           <input type="number" id="item-price" name="price" class="form-control" required />
+        </div>
+      </div>
+
+      <!-- Bottle Details (Only for Bottles category) -->
+      <div class="form-row" id="bottle-fields-row" style="display: none;">
+        <div class="form-group">
+          <label>Bottle Type</label>
+          <select id="item-bottle-type" name="bottle_type" class="form-control">
+            <option value="">Select Type</option>
+            <option value="Whiskey">Whiskey</option>
+            <option value="Gin">Gin</option>
+            <option value="Vodka">Vodka</option>
+            <option value="Tequila">Tequila</option>
+            <option value="Mescal">Mescal</option>
+            <option value="Spirit">Spirit</option>
+            <option value="Liqueur">Liqueur</option>
+            <option value="Rum">Rum</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Volume (Liters)</label>
+          <input type="number" step="0.01" id="item-bottle-volume" name="bottle_volume" class="form-control" placeholder="e.g. 0.7" />
         </div>
       </div>
 
@@ -1209,6 +1238,25 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
       });
     }
 
+    function toggleBottleFields() {
+      const select = document.getElementById('item-category');
+      const selectedOption = select.options[select.selectedIndex];
+      const codeName = selectedOption ? selectedOption.getAttribute('data-code-name') : '';
+      const row = document.getElementById('bottle-fields-row');
+      const typeInput = document.getElementById('item-bottle-type');
+      const volumeInput = document.getElementById('item-bottle-volume');
+      
+      if (codeName === 'bottles') {
+        row.style.display = 'flex';
+        typeInput.required = true;
+        volumeInput.required = true;
+      } else {
+        row.style.display = 'none';
+        typeInput.required = false;
+        volumeInput.required = false;
+      }
+    }
+
     function copyFromEnglish(targetLocale) {
       const enName = document.getElementById('item-en-name').value;
       const enDesc = document.getElementById('item-en-desc').value;
@@ -1302,6 +1350,10 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
       document.querySelectorAll('.ing-checkbox').forEach(c => c.checked = false);
       document.querySelectorAll('.tag-checkbox').forEach(c => c.checked = false);
       
+      document.getElementById('item-bottle-type').value = '';
+      document.getElementById('item-bottle-volume').value = '';
+      toggleBottleFields();
+      
       switchLanguageTab('en');
       document.getElementById('dialog-item').showModal();
     }
@@ -1328,6 +1380,10 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
         document.getElementById('item-media').value = item.media_id || '';
         document.getElementById('item-price').value = item.price;
         document.getElementById('item-available').checked = item.is_available;
+
+        document.getElementById('item-bottle-type').value = item.bottle_type || '';
+        document.getElementById('item-bottle-volume').value = item.bottle_volume !== undefined ? item.bottle_volume : '';
+        toggleBottleFields();
 
         // Set translations
         ['en', 'fr', 'ja', 'zh'].forEach(loc => {
@@ -1373,6 +1429,11 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
       const ingredients = Array.from(ingCheckboxes).map(c => Number(c.value));
       const tags = Array.from(tagCheckboxes).map(c => Number(c.value));
 
+      const select = document.getElementById('item-category');
+      const selectedOption = select.options[select.selectedIndex];
+      const codeName = selectedOption ? selectedOption.getAttribute('data-code-name') : '';
+      const isBottle = codeName === 'bottles';
+
       const payload = {
         id: formData.get('id') ? Number(formData.get('id')) : undefined,
         code_name: formData.get('code_name'),
@@ -1387,7 +1448,9 @@ const userEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email'
           fr: { name: formData.get('translations.fr.name'), description: formData.get('translations.fr.description') },
           ja: { name: formData.get('translations.ja.name'), description: formData.get('translations.ja.description') },
           zh: { name: formData.get('translations.zh.name'), description: formData.get('translations.zh.description') }
-        }
+        },
+        bottle_type: isBottle && formData.get('bottle_type') ? formData.get('bottle_type') : null,
+        bottle_volume: isBottle && formData.get('bottle_volume') ? Number(formData.get('bottle_volume')) : null
       };
 
       await callAction('saveMenuItem', payload);
