@@ -10,12 +10,14 @@ export interface Ingredient {
   id: number;
   code_name: string;
   name: string;
+  is_unused?: number;
 }
 
 export interface FlavorTag {
   id: number;
   code_name: string;
   name: string;
+  is_unused?: number;
 }
 
 export interface Media {
@@ -33,7 +35,7 @@ export interface BottleType {
 export interface MenuItem {
   id: number;
   code_name: string;
-  category_id: number;
+  category_id: number | null;
   category_name: string;
   media_id: number | null;
   media_url: string | null;
@@ -46,6 +48,7 @@ export interface MenuItem {
   bottle_type?: string;
   bottle_type_id?: number;
   bottle_volume?: number;
+  has_no_category?: number;
 }
 
 export interface TranslationsInput {
@@ -71,7 +74,8 @@ export async function getCategories(db: D1Database): Promise<Category[]> {
 
 export async function getIngredients(db: D1Database): Promise<Ingredient[]> {
   const query = `
-    SELECT i.id, i.code_name, COALESCE(t.name, i.code_name) as name
+    SELECT i.id, i.code_name, COALESCE(t.name, i.code_name) as name,
+           CASE WHEN i.id NOT IN (SELECT DISTINCT ingredient_id FROM menu_item_ingredients) THEN 1 ELSE 0 END as is_unused
     FROM ingredients i
     LEFT JOIN translations t ON t.entity_type = 'ingredient' AND t.entity_id = i.id AND t.locale = 'en'
     ORDER BY name ASC
@@ -82,7 +86,8 @@ export async function getIngredients(db: D1Database): Promise<Ingredient[]> {
 
 export async function getFlavorTags(db: D1Database): Promise<FlavorTag[]> {
   const query = `
-    SELECT f.id, f.code_name, COALESCE(t.name, f.code_name) as name
+    SELECT f.id, f.code_name, COALESCE(t.name, f.code_name) as name,
+           CASE WHEN f.id NOT IN (SELECT DISTINCT tag_id FROM menu_item_tags) THEN 1 ELSE 0 END as is_unused
     FROM flavor_tags f
     LEFT JOIN translations t ON t.entity_type = 'tag' AND t.entity_id = f.id AND t.locale = 'en'
     ORDER BY name ASC
@@ -99,22 +104,23 @@ export async function getMedia(db: D1Database): Promise<Media[]> {
 export async function getMenuItems(db: D1Database): Promise<MenuItem[]> {
   const itemsQuery = `
     SELECT m.id, m.code_name, m.category_id, m.media_id, m.price, m.is_available,
-           COALESCE(cat_t.name, c.code_name) as category_name,
+           COALESCE(cat_t.name, c.code_name, 'No Category') as category_name,
            med.url as media_url,
            COALESCE(t.name, m.code_name) as name,
            t.description as description,
            b.bottle_type_id,
            COALESCE(bt_t.name, bt.code_name) as bottle_type,
-           b.volume as bottle_volume
-    FROM menu_items m
-    INNER JOIN categories c ON c.id = m.category_id
-    LEFT JOIN translations cat_t ON cat_t.entity_type = 'category' AND cat_t.entity_id = c.id AND cat_t.locale = 'en'
-    LEFT JOIN media med ON med.id = m.media_id
-    LEFT JOIN translations t ON t.entity_type = 'menu_item' AND t.entity_id = m.id AND t.locale = 'en'
-    LEFT JOIN bottles b ON b.menu_item_id = m.id
-    LEFT JOIN bottle_types bt ON bt.id = b.bottle_type_id
-    LEFT JOIN translations bt_t ON bt_t.entity_type = 'bottle_type' AND bt_t.entity_id = bt.id AND bt_t.locale = 'en'
-    ORDER BY category_name ASC, name ASC
+           b.volume as bottle_volume,
+           CASE WHEN c.id IS NULL THEN 1 ELSE 0 END as has_no_category
+     FROM menu_items m
+     LEFT JOIN categories c ON c.id = m.category_id
+     LEFT JOIN translations cat_t ON cat_t.entity_type = 'category' AND cat_t.entity_id = c.id AND cat_t.locale = 'en'
+     LEFT JOIN media med ON med.id = m.media_id
+     LEFT JOIN translations t ON t.entity_type = 'menu_item' AND t.entity_id = m.id AND t.locale = 'en'
+     LEFT JOIN bottles b ON b.menu_item_id = m.id
+     LEFT JOIN bottle_types bt ON bt.id = b.bottle_type_id
+     LEFT JOIN translations bt_t ON bt_t.entity_type = 'bottle_type' AND bt_t.entity_id = bt.id AND bt_t.locale = 'en'
+     ORDER BY category_name ASC, name ASC
   `;
   
   const { results: items } = await db.prepare(itemsQuery).all();
@@ -165,7 +171,8 @@ export async function getMenuItems(db: D1Database): Promise<MenuItem[]> {
     tags: tagsMap[item.id] || [],
     bottle_type: item.bottle_type || undefined,
     bottle_type_id: item.bottle_type_id !== null && item.bottle_type_id !== undefined ? item.bottle_type_id : undefined,
-    bottle_volume: item.bottle_volume !== null && item.bottle_volume !== undefined ? item.bottle_volume : undefined
+    bottle_volume: item.bottle_volume !== null && item.bottle_volume !== undefined ? item.bottle_volume : undefined,
+    has_no_category: item.has_no_category
   }));
 }
 

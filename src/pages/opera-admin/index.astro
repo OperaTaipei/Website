@@ -26,6 +26,7 @@ categories.sort((a, b) => {
   return a.name.localeCompare(b.name);
 });
 menuItems.sort((a, b) => a.name.localeCompare(b.name));
+const uncategorizedItems = menuItems.filter(item => item.has_no_category === 1);
 
 // Helper to check Cloudflare Access headers if available
 const isLocal = new URL(Astro.request.url).hostname === 'localhost' || new URL(Astro.request.url).hostname === '127.0.0.1';
@@ -321,6 +322,27 @@ const userEmail = userEmailHeader || 'Local Dev Admin';
 
     tr:hover {
       background: rgba(255, 255, 255, 0.02);
+    }
+
+    tr.row-unused {
+      background-color: rgba(239, 68, 68, 0.08);
+    }
+
+    tr.row-unused:hover {
+      background-color: rgba(239, 68, 68, 0.15) !important;
+    }
+
+    .info-banner {
+      background: rgba(197, 168, 128, 0.1);
+      color: var(--primary);
+      border: 1px solid var(--primary);
+      padding: 0.75rem 1rem;
+      border-radius: 4px;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
 
     .badge {
@@ -762,6 +784,11 @@ const userEmail = userEmailHeader || 'Local Dev Admin';
           </div>
         </div>
 
+        <div class="info-banner">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="flex-shrink: 0;"><path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>
+          <span><strong>Note:</strong> Menu items highlighted with a red background are not assigned to any category. You can edit them to assign a category.</span>
+        </div>
+
         <!-- Category sub-tabs -->
         <div class="category-subtabs" style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.75rem; flex-wrap: wrap;">
           {categories.map((category, index) => (
@@ -774,6 +801,17 @@ const userEmail = userEmailHeader || 'Local Dev Admin';
               {category.name}
             </button>
           ))}
+          {uncategorizedItems.length > 0 && (
+            <button 
+              type="button" 
+              class="tab-btn category-tab-btn" 
+              onclick="switchCategoryTab('uncategorized')"
+              id="cat-tab-uncategorized"
+              style="border-color: var(--danger); color: var(--danger);"
+            >
+              Uncategorized ({uncategorizedItems.length})
+            </button>
+          )}
         </div>
 
         <!-- Search and Pagination Controls -->
@@ -895,6 +933,57 @@ const userEmail = userEmailHeader || 'Local Dev Admin';
             </div>
           );
         })}
+
+        {uncategorizedItems.length > 0 && (
+          <div 
+            class="category-items-table" 
+            id="category-table-uncategorized" 
+            style="display: none;"
+          >
+            <table>
+              <thead>
+                <tr>
+                  <th>Name (EN)</th>
+                  <th>Price (NTD$)</th>
+                  <th>Ingredients</th>
+                  <th>Tags</th>
+                  <th>Picture</th>
+                  <th>Visible</th>
+                  <th data-sortable="false">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {uncategorizedItems.map(item => (
+                  <tr data-id={item.id} class="row-unused">
+                    <td style="font-weight: 500;">{item.name}</td>
+                    <td>{item.price}</td>
+                    <td>
+                      {item.ingredients.map(ing => (
+                        <span class="badge">{ing}</span>
+                      ))}
+                    </td>
+                    <td>
+                      {item.tags.map(tag => (
+                        <span class="badge">{tag}</span>
+                      ))}
+                    </td>
+                    <td style={`font-weight: 500; color: ${item.media_id ? 'var(--success)' : 'inherit'};`}>{item.media_id ? 'Yes' : 'No'}</td>
+                    <td>
+                      <label class="switch">
+                        <input type="checkbox" checked={item.is_available} onchange={`toggleAvailability(${item.id}, this.checked)`} />
+                        <span class="slider"></span>
+                      </label>
+                    </td>
+                    <td>
+                      <button class="btn btn-secondary btn-sm" data-item={JSON.stringify(item)} onclick="editItem(JSON.parse(this.dataset.item))">Edit</button>
+                      <button class="btn btn-danger btn-sm" onclick={`deleteItem(${item.id})`}>Delete</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
         <!-- Pagination controls container -->
         <div id="admin-pagination-container" style="display: flex; justify-content: center; align-items: center; gap: 0.85rem; margin-top: 1.5rem; margin-bottom: 1.5rem;"></div>
       </section>
@@ -941,6 +1030,11 @@ const userEmail = userEmailHeader || 'Local Dev Admin';
           <button class="btn" onclick="openIngredientDialog()">+ Add Ingredient</button>
         </div>
 
+        <div class="info-banner">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="flex-shrink: 0;"><path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>
+          <span><strong>Note:</strong> Ingredients highlighted with a red background are not used by any menu items and can be safely deleted.</span>
+        </div>
+
         <!-- Search and Pagination Controls for Ingredients -->
         <div class="search-pagination-bar" style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
           <div style="flex: 1; min-width: 250px;">
@@ -966,7 +1060,7 @@ const userEmail = userEmailHeader || 'Local Dev Admin';
           </thead>
           <tbody>
             {ingredients.map(ing => (
-              <tr data-id={ing.id}>
+              <tr data-id={ing.id} class={ing.is_unused === 1 ? "row-unused" : ""}>
                 <td><code>{ing.code_name}</code></td>
                 <td>{ing.name}</td>
                 <td>
@@ -997,6 +1091,11 @@ const userEmail = userEmailHeader || 'Local Dev Admin';
           <button class="btn" onclick="openTagDialog()">+ Add Flavor Tag</button>
         </div>
 
+        <div class="info-banner">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="flex-shrink: 0;"><path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>
+          <span><strong>Note:</strong> Flavor tags highlighted with a red background are not used by any menu items and can be safely deleted.</span>
+        </div>
+
         <!-- Search and Pagination Controls for Tags -->
         <div class="search-pagination-bar" style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
           <div style="flex: 1; min-width: 250px;">
@@ -1022,7 +1121,7 @@ const userEmail = userEmailHeader || 'Local Dev Admin';
           </thead>
           <tbody>
             {flavorTags.map(tag => (
-              <tr data-id={tag.id}>
+              <tr data-id={tag.id} class={tag.is_unused === 1 ? "row-unused" : ""}>
                 <td><code>{tag.code_name}</code></td>
                 <td>{tag.name}</td>
                 <td>
