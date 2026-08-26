@@ -939,6 +939,22 @@ const userEmail = userEmailHeader || 'Local Dev Admin';
           <h2>Ingredients</h2>
           <button class="btn" onclick="openIngredientDialog()">+ Add Ingredient</button>
         </div>
+
+        <!-- Search and Pagination Controls for Ingredients -->
+        <div class="search-pagination-bar" style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+          <div style="flex: 1; min-width: 250px;">
+            <input type="text" id="ingredients-search-input" placeholder="Search ingredients by name or code name..." style="width: 100%; padding: 0.6rem 1rem; border-radius: 4px; border: 2px solid var(--primary); background: var(--bg-card); color: var(--text);" oninput="updateFilteredIngredients()" />
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <span style="font-size: 0.9rem; color: var(--text-muted);">Items per page:</span>
+            <select id="ingredients-page-size" style="padding: 0.5rem; border-radius: 4px; border: 2px solid var(--primary); background: var(--bg-card); color: var(--text); outline: none;" onchange="changeIngredientsPageSize(this.value)">
+              <option value="25" selected>25</option>
+              <option value="50">50</option>
+              <option value="all">All</option>
+            </select>
+          </div>
+        </div>
+
         <table>
           <thead>
             <tr>
@@ -949,7 +965,7 @@ const userEmail = userEmailHeader || 'Local Dev Admin';
           </thead>
           <tbody>
             {ingredients.map(ing => (
-              <tr>
+              <tr data-id={ing.id}>
                 <td><code>{ing.code_name}</code></td>
                 <td>{ing.name}</td>
                 <td>
@@ -958,8 +974,19 @@ const userEmail = userEmailHeader || 'Local Dev Admin';
                 </td>
               </tr>
             ))}
+            {ingredients.length === 0 && (
+              <tr>
+                <td colspan="3" style="text-align: center; color: var(--text-muted); padding: 2rem;">No ingredients.</td>
+              </tr>
+            )}
+            <tr style="display: none;">
+              <td colspan="3" style="text-align: center; color: var(--text-muted); padding: 2rem;">No matching ingredients found.</td>
+            </tr>
           </tbody>
         </table>
+
+        <!-- Pagination controls container for Ingredients -->
+        <div id="ingredients-pagination-container" style="display: flex; justify-content: center; align-items: center; gap: 0.85rem; margin-top: 1.5rem; margin-bottom: 1.5rem;"></div>
       </section>
 
       <!-- Section: FLAVOR TAGS -->
@@ -968,6 +995,22 @@ const userEmail = userEmailHeader || 'Local Dev Admin';
           <h2>Flavor Tags</h2>
           <button class="btn" onclick="openTagDialog()">+ Add Flavor Tag</button>
         </div>
+
+        <!-- Search and Pagination Controls for Tags -->
+        <div class="search-pagination-bar" style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+          <div style="flex: 1; min-width: 250px;">
+            <input type="text" id="tags-search-input" placeholder="Search flavor tags by name or code name..." style="width: 100%; padding: 0.6rem 1rem; border-radius: 4px; border: 2px solid var(--primary); background: var(--bg-card); color: var(--text);" oninput="updateFilteredTags()" />
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <span style="font-size: 0.9rem; color: var(--text-muted);">Items per page:</span>
+            <select id="tags-page-size" style="padding: 0.5rem; border-radius: 4px; border: 2px solid var(--primary); background: var(--bg-card); color: var(--text); outline: none;" onchange="changeTagsPageSize(this.value)">
+              <option value="25" selected>25</option>
+              <option value="50">50</option>
+              <option value="all">All</option>
+            </select>
+          </div>
+        </div>
+
         <table>
           <thead>
             <tr>
@@ -978,7 +1021,7 @@ const userEmail = userEmailHeader || 'Local Dev Admin';
           </thead>
           <tbody>
             {flavorTags.map(tag => (
-              <tr>
+              <tr data-id={tag.id}>
                 <td><code>{tag.code_name}</code></td>
                 <td>{tag.name}</td>
                 <td>
@@ -987,8 +1030,19 @@ const userEmail = userEmailHeader || 'Local Dev Admin';
                 </td>
               </tr>
             ))}
+            {flavorTags.length === 0 && (
+              <tr>
+                <td colspan="3" style="text-align: center; color: var(--text-muted); padding: 2rem;">No flavor tags.</td>
+              </tr>
+            )}
+            <tr style="display: none;">
+              <td colspan="3" style="text-align: center; color: var(--text-muted); padding: 2rem;">No matching flavor tags found.</td>
+            </tr>
           </tbody>
         </table>
+
+        <!-- Pagination controls container for Tags -->
+        <div id="tags-pagination-container" style="display: flex; justify-content: center; align-items: center; gap: 0.85rem; margin-top: 1.5rem; margin-bottom: 1.5rem;"></div>
       </section>
 
       <!-- Section: PRINT MENU -->
@@ -1660,6 +1714,11 @@ const userEmail = userEmailHeader || 'Local Dev Admin';
         if (nav) nav.className = id === sectionId ? 'active' : '';
       });
       sessionStorage.setItem('admin_active_tab', sectionId);
+      if (sectionId === 'ingredients') {
+        updateFilteredIngredients();
+      } else if (sectionId === 'tags') {
+        updateFilteredTags();
+      }
     }
 
     let adminCurrentPage = 1;
@@ -1767,6 +1826,200 @@ const userEmail = userEmailHeader || 'Local Dev Admin';
       }
     }
 
+    let ingredientsCurrentPage = 1;
+    let ingredientsPageSize = 25;
+
+    function changeIngredientsPageSize(size) {
+      ingredientsPageSize = size === 'all' ? 'all' : parseInt(size, 10);
+      ingredientsCurrentPage = 1;
+      updateFilteredIngredients();
+    }
+
+    function updateFilteredIngredients() {
+      const searchInput = document.getElementById('ingredients-search-input');
+      const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+
+      const section = document.getElementById('section-ingredients');
+      if (!section) return;
+
+      const tbody = section.querySelector('tbody');
+      if (!tbody) return;
+
+      const rows = Array.from(tbody.querySelectorAll('tr[data-id]'));
+      const emptyRow = tbody.querySelector('tr:not([data-id])');
+      
+      let totalMatching = 0;
+      const matchingRows = [];
+
+      rows.forEach(row => {
+        const textContent = row.textContent.toLowerCase();
+        const matches = textContent.includes(query);
+        if (matches) {
+          matchingRows.push(row);
+          totalMatching++;
+        } else {
+          row.style.display = 'none';
+        }
+      });
+
+      if (emptyRow) {
+        emptyRow.style.display = totalMatching === 0 ? 'table-row' : 'none';
+      }
+
+      const totalPages = ingredientsPageSize === 'all' ? 1 : Math.ceil(totalMatching / ingredientsPageSize);
+      if (ingredientsCurrentPage > totalPages) {
+        ingredientsCurrentPage = Math.max(1, totalPages);
+      }
+
+      matchingRows.forEach((row, idx) => {
+        if (ingredientsPageSize === 'all') {
+          row.style.display = 'table-row';
+        } else {
+          const start = (ingredientsCurrentPage - 1) * ingredientsPageSize;
+          const end = start + ingredientsPageSize;
+          if (idx >= start && idx < end) {
+            row.style.display = 'table-row';
+          } else {
+            row.style.display = 'none';
+          }
+        }
+      });
+
+      const pagContainer = document.getElementById('ingredients-pagination-container');
+      if (pagContainer) {
+        pagContainer.innerHTML = '';
+        if (totalPages > 1) {
+          const prevBtn = document.createElement('button');
+          prevBtn.className = 'pagination-btn';
+          prevBtn.innerText = 'Prev';
+          prevBtn.disabled = ingredientsCurrentPage === 1;
+          prevBtn.onclick = () => {
+            ingredientsCurrentPage--;
+            updateFilteredIngredients();
+          };
+          pagContainer.appendChild(prevBtn);
+
+          for (let i = 1; i <= totalPages; i++) {
+            const pageBtn = document.createElement('button');
+            pageBtn.className = 'pagination-btn' + (i === ingredientsCurrentPage ? ' active' : '');
+            pageBtn.innerText = i;
+            pageBtn.onclick = () => {
+              ingredientsCurrentPage = i;
+              updateFilteredIngredients();
+            };
+            pagContainer.appendChild(pageBtn);
+          }
+
+          const nextBtn = document.createElement('button');
+          nextBtn.className = 'pagination-btn';
+          nextBtn.innerText = 'Next';
+          nextBtn.disabled = ingredientsCurrentPage === totalPages;
+          nextBtn.onclick = () => {
+            ingredientsCurrentPage++;
+            updateFilteredIngredients();
+          };
+          pagContainer.appendChild(nextBtn);
+        }
+      }
+    }
+
+    let tagsCurrentPage = 1;
+    let tagsPageSize = 25;
+
+    function changeTagsPageSize(size) {
+      tagsPageSize = size === 'all' ? 'all' : parseInt(size, 10);
+      tagsCurrentPage = 1;
+      updateFilteredTags();
+    }
+
+    function updateFilteredTags() {
+      const searchInput = document.getElementById('tags-search-input');
+      const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+
+      const section = document.getElementById('section-tags');
+      if (!section) return;
+
+      const tbody = section.querySelector('tbody');
+      if (!tbody) return;
+
+      const rows = Array.from(tbody.querySelectorAll('tr[data-id]'));
+      const emptyRow = tbody.querySelector('tr:not([data-id])');
+      
+      let totalMatching = 0;
+      const matchingRows = [];
+
+      rows.forEach(row => {
+        const textContent = row.textContent.toLowerCase();
+        const matches = textContent.includes(query);
+        if (matches) {
+          matchingRows.push(row);
+          totalMatching++;
+        } else {
+          row.style.display = 'none';
+        }
+      });
+
+      if (emptyRow) {
+        emptyRow.style.display = totalMatching === 0 ? 'table-row' : 'none';
+      }
+
+      const totalPages = tagsPageSize === 'all' ? 1 : Math.ceil(totalMatching / tagsPageSize);
+      if (tagsCurrentPage > totalPages) {
+        tagsCurrentPage = Math.max(1, totalPages);
+      }
+
+      matchingRows.forEach((row, idx) => {
+        if (tagsPageSize === 'all') {
+          row.style.display = 'table-row';
+        } else {
+          const start = (tagsCurrentPage - 1) * tagsPageSize;
+          const end = start + tagsPageSize;
+          if (idx >= start && idx < end) {
+            row.style.display = 'table-row';
+          } else {
+            row.style.display = 'none';
+          }
+        }
+      });
+
+      const pagContainer = document.getElementById('tags-pagination-container');
+      if (pagContainer) {
+        pagContainer.innerHTML = '';
+        if (totalPages > 1) {
+          const prevBtn = document.createElement('button');
+          prevBtn.className = 'pagination-btn';
+          prevBtn.innerText = 'Prev';
+          prevBtn.disabled = tagsCurrentPage === 1;
+          prevBtn.onclick = () => {
+            tagsCurrentPage--;
+            updateFilteredTags();
+          };
+          pagContainer.appendChild(prevBtn);
+
+          for (let i = 1; i <= totalPages; i++) {
+            const pageBtn = document.createElement('button');
+            pageBtn.className = 'pagination-btn' + (i === tagsCurrentPage ? ' active' : '');
+            pageBtn.innerText = i;
+            pageBtn.onclick = () => {
+              tagsCurrentPage = i;
+              updateFilteredTags();
+            };
+            pagContainer.appendChild(pageBtn);
+          }
+
+          const nextBtn = document.createElement('button');
+          nextBtn.className = 'pagination-btn';
+          nextBtn.innerText = 'Next';
+          nextBtn.disabled = tagsCurrentPage === totalPages;
+          nextBtn.onclick = () => {
+            tagsCurrentPage++;
+            updateFilteredTags();
+          };
+          pagContainer.appendChild(nextBtn);
+        }
+      }
+    }
+
     function switchCategoryTab(categoryId) {
       document.querySelectorAll('.category-items-table').forEach(el => {
         el.style.display = el.id === `category-table-${categoryId}` ? 'block' : 'none';
@@ -1791,6 +2044,8 @@ const userEmail = userEmailHeader || 'Local Dev Admin';
       } else {
         updateFilteredItems();
       }
+      updateFilteredIngredients();
+      updateFilteredTags();
     });
 
     async function triggerPublish() {
