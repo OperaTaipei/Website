@@ -243,8 +243,8 @@ const userEmail = userEmailHeader || 'Local Dev Admin';
 
     .pagination-btn {
       background: var(--primary);
-      color: var(--bg-dark);
-      border: none;
+      color: #000000;
+      border: 2px solid var(--primary);
       padding: 0.65rem 1.25rem;
       font-weight: bold;
       border-radius: 4px;
@@ -253,11 +253,12 @@ const userEmail = userEmailHeader || 'Local Dev Admin';
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      transition: background 0.2s, opacity 0.2s, outline 0.2s;
+      transition: background 0.2s, color 0.2s, opacity 0.2s, border-color 0.2s;
     }
 
     .pagination-btn:hover:not(:disabled) {
       background: var(--primary-hover);
+      border-color: var(--primary-hover);
     }
 
     .pagination-btn:disabled {
@@ -266,8 +267,9 @@ const userEmail = userEmailHeader || 'Local Dev Admin';
     }
 
     .pagination-btn.active {
-      outline: 3px solid var(--text);
-      outline-offset: 2px;
+      background: #000000;
+      color: var(--primary);
+      border-color: var(--primary);
     }
 
     /* =========================================================================
