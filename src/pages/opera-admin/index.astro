@@ -890,8 +890,14 @@ const userEmail = userEmailHeader || 'Local Dev Admin';
                 <td><code>{cat.code_name}</code></td>
                 <td>{cat.name}</td>
                 <td>
-                  <button class="btn btn-secondary btn-sm" onclick={`editCategory(${cat.id}, '${cat.code_name}')`}>Edit</button>
-                  <button class="btn btn-danger btn-sm" onclick={`deleteCategory(${cat.id})`}>Delete</button>
+                  {cat.code_name === 'bottles' ? (
+                    <span style="color: var(--text-muted); font-size: 0.85rem; font-style: italic;">Locked</span>
+                  ) : (
+                    <>
+                      <button class="btn btn-secondary btn-sm" onclick={`editCategory(${cat.id}, '${cat.code_name}')`}>Edit</button>
+                      <button class="btn btn-danger btn-sm" onclick={`deleteCategory(${cat.id})`}>Delete</button>
+                    </>
+                  )}
                 </td>
               </tr>
             ))}
@@ -2077,6 +2083,10 @@ const userEmail = userEmailHeader || 'Local Dev Admin';
     }
 
     async function editCategory(id, codeName) {
+      if (codeName === 'bottles') {
+        showAlert('error', 'The "bottles" category cannot be edited.');
+        return;
+      }
       openCategoryDialog();
       document.getElementById('dialog-category-title').innerText = 'Edit Category';
       document.getElementById('category-id').value = id;
@@ -2126,6 +2136,10 @@ const userEmail = userEmailHeader || 'Local Dev Admin';
     async function deleteCategory(id) {
       const cat = window.allCategories.find(c => c.id === id);
       if (!cat) return;
+      if (cat.code_name === 'bottles') {
+        showAlert('error', 'The "bottles" category cannot be deleted.');
+        return;
+      }
       
       const name = `Category "${cat.name}"`;
       const cascades = [

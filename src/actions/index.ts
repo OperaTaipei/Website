@@ -197,6 +197,10 @@ export const server = {
       if (!db) throw new Error('Database connection not available.');
       try {
         if (input.id) {
+          const category = await db.prepare('SELECT code_name FROM categories WHERE id = ?').bind(input.id).first<{ code_name: string }>();
+          if (category?.code_name === 'bottles') {
+            return { success: false, error: 'The "bottles" category cannot be edited.' };
+          }
           await dbHelpers.updateCategory(db, input.id, input.code_name, input.translations as dbHelpers.TranslationsInput);
           return { success: true, message: 'Category updated successfully.' };
         } else {
@@ -216,6 +220,10 @@ export const server = {
       const db = context.locals.runtime?.env?.DB;
       if (!db) throw new Error('Database connection not available.');
       try {
+        const category = await db.prepare('SELECT code_name FROM categories WHERE id = ?').bind(input.id).first<{ code_name: string }>();
+        if (category?.code_name === 'bottles') {
+          return { success: false, error: 'The "bottles" category cannot be deleted.' };
+        }
         await dbHelpers.deleteCategory(db, input.id);
         return { success: true, message: 'Category deleted successfully.' };
       } catch (err: any) {
