@@ -30,7 +30,7 @@ const translationsMap: Record<string, any> = { en, zh, fr, ja };
 const t = translationsMap[lang] || en;
 
 const title = lang === 'zh' 
-  ? "Opéra Taipei | 台北天空酒吧・101景觀・包場活動場地 – 慕軒飯店15樓精緻調酒"
+  ? "Opéra Taipei | 台北天空酒吧・101景觀・包場活動場地 – 茹曦酒店15樓精緻調酒"
   : lang === 'fr'
     ? "Opéra Taipei | Skybar panoramique & Lieu d'événements privés"
     : lang === 'ja'
@@ -38,7 +38,7 @@ const title = lang === 'zh'
       : "Opéra Taipei | Panoramic Skybar & Private Event Venue – Cocktails with Taipei 101 View";
 
 const description = lang === 'zh'
-  ? "Opéra 台北天空酒吧，位於慕軒飯店15樓，擁有台北101全景視野，自製糖漿與浸漬調酒。提供企業包場、尾牙、婚禮、產品發布會場地租借，可容納20至300人。"
+  ? "Opéra 台北天空酒吧，位於茹曦酒店15樓，擁有台北101全景視野，自製糖漿與浸漬調酒。提供企業包場、尾牙、婚禮、產品發布會場地租借，可容納20至300人。"
   : lang === 'fr'
     ? "Opéra est le skybar panoramique de Taipei sur le toit de l'hôtel Illume. Vues imprenables sur Taipei 101. Événements privés et location pour 20-300 invités."
     : lang === 'ja'
@@ -67,7 +67,7 @@ const barSchema = {
   "url": canonical,
   "telephone": "+886955658147",
   "email": "contact@opera-taipei.com",
-  "image": "https://opera-taipei.com/wp-content/uploads/2024/04/nz93950-enhanced-nr.jpg",
+  "image": "https://opera-taipei.com/images/nz93950-enhanced-nr.jpg",
   "priceRange": "$$",
   "servesCuisine": "Cocktails, Finger Food",
   "menu": `${canonical}#menu`,
@@ -87,7 +87,7 @@ const barSchema = {
   "openingHoursSpecification": [
     {
       "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Tuesday", "Thursday"],
+      "dayOfWeek": ["Tuesday", "Wednesday", "Thursday"],
       "opens": "18:00",
       "closes": "01:00"
     },
@@ -100,7 +100,8 @@ const barSchema = {
   ],
   "sameAs": [
     "https://www.instagram.com/operataipei/",
-    "https://www.facebook.com/profile.php?id=100094965340485"
+    "https://www.facebook.com/profile.php?id=100094965340485",
+    "https://www.linkedin.com/company/opera-corporate-event-venue/"
   ],
   "hasMap": "https://www.google.com/maps/place/Op%C3%A9ra/@25.0527536,121.5481449,21z"
 };
@@ -113,7 +114,7 @@ const venueSchema = {
   "description": t.trusted_intro,
   "url": `${canonical}#events`,
   "email": "contact@opera-taipei.com",
-  "image": "https://opera-taipei.com/wp-content/uploads/2024/04/nz93950-enhanced-nr.jpg",
+  "image": "https://opera-taipei.com/images/nz93950-enhanced-nr.jpg",
   "maximumAttendeeCapacity": 300,
   "address": {
     "@type": "PostalAddress",
@@ -130,7 +131,7 @@ const venueSchema = {
   },
   "containedInPlace": {
     "@type": "Hotel",
-    "name": lang === 'zh' ? "台北慕軒飯店" : "Illume Hotel Taipei"
+    "name": lang === 'zh' ? "茹曦酒店 Illume Taipei" : "Illume Hotel Taipei"
   }
 };
 ---
