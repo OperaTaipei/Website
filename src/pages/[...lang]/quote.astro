@@ -1,0 +1,3173 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Contact from '../../components/Contact.astro';
+import Footer from '../../components/Footer.astro';
+
+import en from '../../i18n/en.json';
+import zh from '../../i18n/zh.json';
+import fr from '../../i18n/fr.json';
+import ja from '../../i18n/ja.json';
+import { quoteTranslations } from '../../i18n/quote';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: undefined } }, // English (/quote)
+    { params: { lang: 'zh' } },      // Chinese (/zh/quote)
+    { params: { lang: 'fr' } },      // French (/fr/quote)
+    { params: { lang: 'ja' } }       // Japanese (/ja/quote)
+  ];
+}
+
+const { lang = 'en' } = Astro.params;
+
+const baseMap: Record<string, any> = { en, zh, fr, ja };
+const t = {
+  ...(baseMap[lang] || en),
+  ...(quoteTranslations[lang] || quoteTranslations.en)
+};
+
+const mainSiteUrl = lang === 'en' ? '/' : `/${lang}/`;
+const canonical = lang === 'en'
+  ? 'https://opera-taipei.com/quote'
+  : `https://opera-taipei.com/${lang}/quote`;
+
+const alternates = [
+  { href: 'https://opera-taipei.com/quote', hreflang: 'en' },
+  { href: 'https://opera-taipei.com/zh/quote', hreflang: 'zh-Hant' },
+  { href: 'https://opera-taipei.com/fr/quote', hreflang: 'fr' },
+  { href: 'https://opera-taipei.com/ja/quote', hreflang: 'ja' }
+];
+
+const getQuoteLangLink = (targetLang: string) => {
+  if (targetLang === 'en') return '/quote';
+  return `/${targetLang}/quote`;
+};
+---
+
+<Layout
+  title={t.page_title}
+  description={t.page_desc}
+  lang={lang}
+  canonical={canonical}
+  alternates={alternates}
+>
+  <!-- html2pdf.js for direct client-side formatted PDF generation -->
+  <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer></script>
+
+  <div class="web-ui-container">
+    <!-- Navigation Bar -->
+    <nav id="navbar" class="quote-nav">
+      <div class="nav-left">
+        <a href={mainSiteUrl} class="nav-logo" aria-label="Opéra Taipei Home">
+          <img src="/images/opera-logo.png" alt="Opéra Taipei Logo" class="nav-logo-img" />
+        </a>
+        <a href={mainSiteUrl} class="back-main-link">{t.back_to_main}</a>
+      </div>
+
+      <ul class="nav-links">
+        <li><a href="#venue-details">{t.nav_venue_info}</a></li>
+        <li><a href="#step-info">{t.nav_questionnaire}</a></li>
+        <li><a href="#step-packages">{t.nav_packages}</a></li>
+        <li><a href="#step-summary">{t.nav_summary}</a></li>
+        <li><a href="#contact">{t.nav_contact}</a></li>
+      </ul>
+
+      <button class="hamburger" id="hamburger" aria-label="Toggle mobile menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <div class="lang-switcher">
+        <a href={getQuoteLangLink('en')} data-lang-switch="en" class={`lang-btn ${lang === 'en' ? 'active' : ''}`}>EN</a>
+        <a href={getQuoteLangLink('zh')} data-lang-switch="zh" class={`lang-btn ${lang === 'zh' ? 'active' : ''}`}>中文</a>
+        <a href={getQuoteLangLink('fr')} data-lang-switch="fr" class={`lang-btn ${lang === 'fr' ? 'active' : ''}`}>FR</a>
+        <a href={getQuoteLangLink('ja')} data-lang-switch="ja" class={`lang-btn ${lang === 'ja' ? 'active' : ''}`}>JA</a>
+      </div>
+    </nav>
+
+    <div class="mobile-menu" id="mobile-menu">
+      <a href={mainSiteUrl} class="mobile-nav-link">{t.back_to_main}</a>
+      <a href="#venue-details" class="mobile-nav-link">{t.nav_venue_info}</a>
+      <a href="#step-info" class="mobile-nav-link">{t.nav_questionnaire}</a>
+      <a href="#step-packages" class="mobile-nav-link">{t.nav_packages}</a>
+      <a href="#step-summary" class="mobile-nav-link">{t.nav_summary}</a>
+      <a href="#contact" class="mobile-nav-link">{t.nav_contact}</a>
+    </div>
+
+    <main>
+      <!-- ====================================================
+           HERO & REFERENCE ESTIMATE BANNER
+      ==================================================== -->
+      <section class="quote-hero">
+        <div class="hero-background"></div>
+        <div class="hero-circles"></div>
+
+        <div class="quote-hero-inner fade-in visible">
+          <p class="hero-eyebrow">{t.hero_eyebrow}</p>
+          <h1 class="hero-title" style="font-size: clamp(2.6rem, 6vw, 5rem);" set:html={t.hero_title} />
+          <p class="hero-subtitle" style="margin-bottom: 30px;">{t.hero_subtitle}</p>
+
+          <!-- Prominent Reference Disclaimer Banner -->
+          <div class="reference-disclaimer-banner">
+            <div class="ref-badge-pill">{t.ref_badge}</div>
+            <h2 class="ref-banner-heading">{t.ref_banner_title}</h2>
+            <p class="ref-banner-copy">{t.ref_banner_text}</p>
+            <div class="ref-banner-actions">
+              <a href="#step-info" class="btn-gold"><span>{t.ref_cta_start}</span></a>
+              <a href="#contact" class="btn-ghost">{t.ref_cta_talk}</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================
+           SECTION 1: VENUE DETAILS, BAR VISUALS & TABLE SETUP
+      ==================================================== -->
+      <section id="venue-details" class="quote-section quote-section--dark">
+        <div class="section-wrap fade-in visible">
+          <p class="section-label">{t.venue_sec_label}</p>
+          <h2 class="section-title" set:html={t.venue_sec_title} />
+          <div class="section-divider"></div>
+          <p class="quote-sec-intro">{t.venue_sec_intro}</p>
+
+          <!-- Key Venue Metrics Strip -->
+          <div class="venue-stats-grid">
+            <div class="venue-stat-card">
+              <div class="stat-val">{t.stat_capacity}</div>
+              <div class="stat-lbl">{t.stat_capacity_lbl}</div>
+            </div>
+            <div class="venue-stat-card">
+              <div class="stat-val">{t.stat_seating}</div>
+              <div class="stat-lbl">{t.stat_seating_lbl}</div>
+            </div>
+            <div class="venue-stat-card">
+              <div class="stat-val">{t.stat_screens}</div>
+              <div class="stat-lbl">{t.stat_screens_lbl}</div>
+            </div>
+            <div class="venue-stat-card">
+              <div class="stat-val">{t.stat_audio}</div>
+              <div class="stat-lbl">{t.stat_audio_lbl}</div>
+            </div>
+          </div>
+
+          <!-- Interactive Tabs for Visuals / 3D Floor Plan / Equipment & Rates -->
+          <div class="venue-showcase-tabs">
+            <button type="button" class="venue-tab-btn active" data-venue-tab="floorplan">{t.venue_tab_floorplan}</button>
+            <button type="button" class="venue-tab-btn" data-venue-tab="visuals">{t.venue_tab_visuals}</button>
+            <button type="button" class="venue-tab-btn" data-venue-tab="equipment">{t.venue_tab_equipment}</button>
+          </div>
+
+          <!-- Panel 1: 3D Floor Plan & Table Setup -->
+          <div class="venue-tab-panel active" id="panel-floorplan">
+            <div class="floorplan-showcase-grid">
+              <div class="floorplan-img-box">
+                <img src="/images/3DPlanOpera.png" alt="Opéra Taipei 3D Floor Plan & Table Layout" class="floor-plan-img" />
+              </div>
+              <div class="floorplan-details-box">
+                <h3 class="sub-card-title">{t.floorplan_title}</h3>
+                <p class="sub-card-desc">{t.floorplan_desc}</p>
+
+                <div class="table-zones-list">
+                  <div class="table-zone-item">
+                    <span class="zone-name">Tables 1, 2, 3, 5</span>
+                    <span class="zone-cap">{t.res_capacity_1}</span>
+                    <span class="zone-min">10,000 NTD ({t.res_min_spend})</span>
+                  </div>
+                  <div class="table-zone-item">
+                    <span class="zone-name">Tables 6, 7</span>
+                    <span class="zone-cap">{t.res_capacity_2}</span>
+                    <span class="zone-min">5,000 NTD ({t.res_min_spend})</span>
+                  </div>
+                  <div class="table-zone-item">
+                    <span class="zone-name">Tables 4, 8</span>
+                    <span class="zone-cap">{t.res_capacity_3}</span>
+                    <span class="zone-min">15,000 NTD ({t.res_min_spend})</span>
+                  </div>
+                </div>
+
+                <div class="facilities-mini-box">
+                  <h4>{t.facilities_label}</h4>
+                  <ul>
+                    <li>{t.fac1}</li>
+                    <li>{t.fac2}</li>
+                    <li>{t.fac3}</li>
+                    <li>{t.fac4}</li>
+                    <li>{t.fac5}</li>
+                    <li>{t.fac6} · {t.fac7}</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Panel 2: Visuals of the Bar -->
+          <div class="venue-tab-panel" id="panel-visuals">
+            <div class="gallery-action-container" style="margin-top: 10px; margin-bottom: 25px;">
+              <button type="button" id="open-vibe-btn" class="btn-gold"><span>▶ {t.gallery_experience_vibe}</span></button>
+            </div>
+            <div class="quote-gallery-grid">
+              <div class="quote-gallery-item">
+                <img src="/images/nz93950-enhanced-nr.jpg" alt="Opéra Taipei panoramic Taipei 101 view" loading="lazy" />
+              </div>
+              <div class="quote-gallery-item">
+                <img src="/images/nz93619-enhanced-nr.jpg" alt="Opéra Taipei craft cocktail bar" loading="lazy" />
+              </div>
+              <div class="quote-gallery-item">
+                <img src="/images/nz93801-enhanced-nr.jpg" alt="Opéra Taipei seating & lounge setup" loading="lazy" />
+              </div>
+              <div class="quote-gallery-item">
+                <img src="/images/nz94160-enhanced-nr.jpg" alt="Opéra Taipei night ambiance" loading="lazy" />
+              </div>
+              <div class="quote-gallery-item">
+                <img src="/images/pxl_20230816_104529730.jpg" alt="Opéra Taipei skyline window seating" loading="lazy" />
+              </div>
+              <div class="quote-gallery-item">
+                <img src="/images/darts.jpg" alt="Opéra Taipei entertainment & darts area" loading="lazy" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Panel 3: Equipment, Services & Privatization Pricing Rules -->
+          <div class="venue-tab-panel" id="panel-equipment">
+            <div class="events-two-columns" style="margin-bottom: 24px;">
+              <div class="events-card">
+                <div class="events-card-label">{t.events_day} <span class="events-card-note">{t.events_day_note}</span></div>
+                <div class="venue-price-row">
+                  <span class="venue-price-label">{t.events_hr_venue}</span>
+                  <span class="venue-price-amount">5,000 NTD / hr</span>
+                </div>
+                <div class="venue-price-row">
+                  <span class="venue-price-label">{t.events_hr_drinks}</span>
+                  <span class="venue-price-amount">15,000 NTD / hr</span>
+                </div>
+              </div>
+              <div class="events-card">
+                <div class="events-card-label">{t.events_night} <span class="events-card-note">{t.events_night_note}</span></div>
+                <div class="venue-price-row">
+                  <span class="venue-price-label">{t.events_weekday}</span>
+                  <span class="venue-price-amount">100,000 NTD</span>
+                </div>
+                <div class="venue-price-row">
+                  <span class="venue-price-label">{t.events_weekend}</span>
+                  <span class="venue-price-amount">200,000 NTD</span>
+                </div>
+              </div>
+            </div>
+            <p class="events-note" style="margin-bottom: 30px;">{t.events_note}</p>
+
+            <div class="events-two-columns">
+              <div class="events-card">
+                <div class="events-card-label">{t.services_label} <span class="events-card-note">{t.services_note}</span></div>
+                <ul class="events-feature-list">
+                  <li>{t.svc1}</li>
+                  <li>{t.svc2}</li>
+                  <li>{t.svc3}</li>
+                  <li>{t.svc4}</li>
+                  <li>{t.svc5}</li>
+                  <li>{t.svc6}</li>
+                  <li>{t.svc7}</li>
+                  <li>{t.svc8}</li>
+                </ul>
+              </div>
+              <div class="events-card">
+                <div class="events-card-label">{t.facilities_label}</div>
+                <ul class="events-feature-list">
+                  <li>{t.fac1}</li>
+                  <li>{t.fac2}</li>
+                  <li>{t.fac3}</li>
+                  <li>{t.fac4}</li>
+                  <li>{t.fac5}</li>
+                  <li>{t.fac6}</li>
+                  <li>{t.fac7}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ====================================================
+           INTERACTIVE QUOTATION FORM
+      ==================================================== -->
+      <form id="quote-builder-form" onsubmit="return false;">
+
+        <!-- STEP 1: EVENT & CLIENT INFORMATION (PDF PAGE 1) -->
+        <section id="step-info" class="quote-section">
+          <div class="section-wrap">
+            <p class="section-label">{t.step1_label}</p>
+            <h2 class="section-title" set:html={t.step1_title} />
+            <div class="section-divider"></div>
+            <p class="quote-sec-intro">{t.step1_desc}</p>
+
+            <div class="form-card">
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label for="inp-title">{t.fld_title}</label>
+                  <input type="text" id="inp-title" name="title" placeholder={t.fld_title_ph} value="Private Event at Opéra" />
+                </div>
+                <div class="form-group">
+                  <label for="inp-date">{t.fld_date}</label>
+                  <input type="date" id="inp-date" name="date" />
+                </div>
+
+                <div class="form-group">
+                  <label for="inp-guest-name">{t.fld_guest_name}</label>
+                  <input type="text" id="inp-guest-name" name="guestName" placeholder={t.fld_guest_name_ph} />
+                </div>
+                <div class="form-group">
+                  <label for="inp-tax-id">{t.fld_tax_id}</label>
+                  <input type="text" id="inp-tax-id" name="taxId" placeholder={t.fld_tax_id_ph} maxlength="12" />
+                </div>
+
+                <div class="form-group form-group--full">
+                  <label for="inp-contact">{t.fld_contact_info}</label>
+                  <input type="text" id="inp-contact" name="contactInfo" placeholder={t.fld_contact_info_ph} />
+                </div>
+
+                <div class="form-group">
+                  <label for="inp-attending">
+                    {t.fld_attending}
+                    <span class="label-hint">({t.fld_attending_hint})</span>
+                  </label>
+                  <div class="number-slider-wrap">
+                    <input type="number" id="inp-attending" name="attending" min="1" max="350" value="60" />
+                    <input type="range" id="rng-attending" min="10" max="300" step="5" value="60" />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="inp-setup-time">{t.fld_setup_time}</label>
+                  <input type="text" id="inp-setup-time" name="setupTime" placeholder={t.fld_setup_ph} value="18:00 - 19:00" />
+                </div>
+
+                <div class="form-group form-group--full">
+                  <label>{t.fld_event_time}</label>
+                  <div class="time-range-grid">
+                    <div>
+                      <span class="sub-lbl">{t.fld_event_start}</span>
+                      <input type="time" id="inp-start-time" name="startTime" value="19:00" />
+                    </div>
+                    <div>
+                      <span class="sub-lbl">{t.fld_event_end}</span>
+                      <input type="time" id="inp-end-time" name="endTime" value="22:00" />
+                    </div>
+                    <div>
+                      <span class="sub-lbl">{t.fld_event_duration}</span>
+                      <input type="number" id="inp-duration" name="duration" min="1" max="12" step="0.5" value="3" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- STEP 2: VISUALS & MUSIC OPTIONS (PDF PAGE 1) -->
+        <section id="step-options" class="quote-section quote-section--dark">
+          <div class="section-wrap">
+            <p class="section-label">{t.step2_label}</p>
+            <h2 class="section-title" set:html={t.step2_title} />
+            <div class="section-divider"></div>
+            <p class="quote-sec-intro">{t.step2_desc}</p>
+
+            <div class="options-two-col">
+              <!-- Visuals Table Card -->
+              <div class="option-table-card">
+                <div class="option-table-header">{t.tbl_visuals_hdr}</div>
+                <div class="option-row option-row--head">
+                  <div class="opt-name">{t.tbl_col_item}</div>
+                  <div class="opt-toggle">{t.tbl_col_yes} / {t.tbl_col_no}</div>
+                  <div class="opt-cost">{t.tbl_col_cost}</div>
+                </div>
+
+                <!-- TVs -->
+                <div class="option-row">
+                  <div class="opt-name">{t.vis_tvs}</div>
+                  <div class="opt-toggle">
+                    <div class="yn-switch" data-opt="vis_tvs">
+                      <button type="button" class="yn-btn active" data-val="YES">{t.tbl_col_yes}</button>
+                      <button type="button" class="yn-btn" data-val="NO">{t.tbl_col_no}</button>
+                    </div>
+                  </div>
+                  <div class="opt-cost cost-free">0</div>
+                </div>
+
+                <!-- LED walls -->
+                <div class="option-row">
+                  <div class="opt-name">{t.vis_led}</div>
+                  <div class="opt-toggle">
+                    <div class="yn-switch" data-opt="vis_led">
+                      <button type="button" class="yn-btn active" data-val="YES">{t.tbl_col_yes}</button>
+                      <button type="button" class="yn-btn" data-val="NO">{t.tbl_col_no}</button>
+                    </div>
+                  </div>
+                  <div class="opt-cost cost-free">0</div>
+                </div>
+
+                <!-- Window's projectors -->
+                <div class="option-row">
+                  <div class="opt-name">{t.vis_projectors}</div>
+                  <div class="opt-toggle">
+                    <div class="yn-switch" data-opt="vis_projectors">
+                      <button type="button" class="yn-btn active" data-val="YES">{t.tbl_col_yes}</button>
+                      <button type="button" class="yn-btn" data-val="NO">{t.tbl_col_no}</button>
+                    </div>
+                  </div>
+                  <div class="opt-cost cost-free">0</div>
+                </div>
+
+                <!-- First floor TV -->
+                <div class="option-row">
+                  <div class="opt-name">{t.vis_1f_tv}</div>
+                  <div class="opt-toggle">
+                    <div class="yn-switch" data-opt="vis_1f_tv">
+                      <button type="button" class="yn-btn active" data-val="YES">{t.tbl_col_yes}</button>
+                      <button type="button" class="yn-btn" data-val="NO">{t.tbl_col_no}</button>
+                    </div>
+                  </div>
+                  <div class="opt-cost cost-free">0</div>
+                </div>
+
+                <!-- Backdrop print -->
+                <div class="option-row">
+                  <div class="opt-name">
+                    {t.vis_backdrop}
+                    <small class="opt-subnote">{t.vis_backdrop_note}</small>
+                  </div>
+                  <div class="opt-toggle">
+                    <div class="yn-switch" data-opt="vis_backdrop">
+                      <button type="button" class="yn-btn" data-val="YES">{t.tbl_col_yes}</button>
+                      <button type="button" class="yn-btn active" data-val="NO">{t.tbl_col_no}</button>
+                    </div>
+                  </div>
+                  <div class="opt-cost cost-tbd">TBD</div>
+                </div>
+              </div>
+
+              <!-- Music Table Card -->
+              <div class="option-table-card">
+                <div class="option-table-header">{t.tbl_music_hdr}</div>
+                <div class="option-row option-row--head">
+                  <div class="opt-name">{t.tbl_col_item}</div>
+                  <div class="opt-toggle">{t.tbl_col_yes} / {t.tbl_col_no}</div>
+                  <div class="opt-cost">{t.tbl_col_cost}</div>
+                </div>
+
+                <!-- DJ -->
+                <div class="option-row">
+                  <div class="opt-name">{t.mus_dj}</div>
+                  <div class="opt-toggle">
+                    <div class="yn-switch" data-opt="mus_dj">
+                      <button type="button" class="yn-btn" data-val="YES">{t.tbl_col_yes}</button>
+                      <button type="button" class="yn-btn active" data-val="NO">{t.tbl_col_no}</button>
+                    </div>
+                  </div>
+                  <div class="opt-cost cost-tbd">TBD</div>
+                </div>
+
+                <!-- Playlist -->
+                <div class="option-row">
+                  <div class="opt-name">{t.mus_playlist}</div>
+                  <div class="opt-toggle">
+                    <div class="yn-switch" data-opt="mus_playlist">
+                      <button type="button" class="yn-btn active" data-val="YES">{t.tbl_col_yes}</button>
+                      <button type="button" class="yn-btn" data-val="NO">{t.tbl_col_no}</button>
+                    </div>
+                  </div>
+                  <div class="opt-cost cost-free">0</div>
+                </div>
+
+                <!-- Microphones -->
+                <div class="option-row">
+                  <div class="opt-name">{t.mus_mics}</div>
+                  <div class="opt-toggle">
+                    <div class="yn-switch" data-opt="mus_mics">
+                      <button type="button" class="yn-btn active" data-val="YES">{t.tbl_col_yes}</button>
+                      <button type="button" class="yn-btn" data-val="NO">{t.tbl_col_no}</button>
+                    </div>
+                  </div>
+                  <div class="opt-cost cost-free">0</div>
+                </div>
+
+                <!-- Music style -->
+                <div class="option-row option-row--music-style">
+                  <div class="opt-name">
+                    {t.mus_style}
+                    <input type="text" id="inp-music-style" placeholder={t.mus_style_ph} class="inline-style-input" value="Lounge & Upbeat Cocktail" />
+                  </div>
+                  <div class="opt-toggle">
+                    <div class="yn-switch" data-opt="mus_style">
+                      <button type="button" class="yn-btn active" data-val="YES">{t.tbl_col_yes}</button>
+                      <button type="button" class="yn-btn" data-val="NO">{t.tbl_col_no}</button>
+                    </div>
+                  </div>
+                  <div class="opt-cost cost-free">0</div>
+                </div>
+
+                <!-- Photographer -->
+                <div class="option-row">
+                  <div class="opt-name">{t.mus_photographer}</div>
+                  <div class="opt-toggle">
+                    <div class="yn-switch" data-opt="mus_photographer">
+                      <button type="button" class="yn-btn" data-val="YES">{t.tbl_col_yes}</button>
+                      <button type="button" class="yn-btn active" data-val="NO">{t.tbl_col_no}</button>
+                    </div>
+                  </div>
+                  <div class="opt-cost cost-tbd">TBD</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Other Requests Textarea -->
+            <div class="form-card" style="margin-top: 24px;">
+              <div class="form-group form-group--full">
+                <label for="inp-other-requests">{t.fld_other_requests}</label>
+                <textarea id="inp-other-requests" rows="3" placeholder={t.fld_other_requests_ph}></textarea>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- STEP 3: DRINK PACKAGES (4 OPTIONS) -->
+        <section id="step-packages" class="quote-section">
+          <div class="section-wrap">
+            <p class="section-label">{t.step3_label}</p>
+            <h2 class="section-title" set:html={t.step3_title} />
+            <div class="section-divider"></div>
+            <p class="quote-sec-intro">{t.step3_desc}</p>
+
+            <div class="drink-packages-grid">
+              <!-- Package 1: Open Bar Tally Up (Master Tab) -->
+              <div class="drink-pkg-card" data-pkg-card="tally">
+                <div class="pkg-card-top">
+                  <div class="pkg-header-row">
+                    <span class="pkg-tag-pill">{t.pkg_1_tag}</span>
+                    <span class="pkg-status-indicator" data-select-lbl={t.pkg_select_badge} data-selected-lbl={t.pkg_selected_badge}>{t.pkg_select_badge}</span>
+                  </div>
+                  <h3 class="pkg-title">{t.pkg_1_name}</h3>
+                  <p class="pkg-desc">{t.pkg_1_desc}</p>
+                </div>
+
+                <div class="pkg-config-box">
+                  <div class="form-group">
+                    <label for="inp-tally-cap">{t.pkg_1_cap_lbl}</label>
+                    <input type="number" id="inp-tally-cap" min="0" step="5000" value="100000" placeholder={t.pkg_1_cap_ph} />
+                  </div>
+                  <div class="form-group" style="margin-top: 12px;">
+                    <label>{t.pkg_1_policy_lbl}</label>
+                    <div class="radio-group">
+                      <label class="radio-lbl">
+                        <input type="radio" name="tallyPolicy" value="Check with host to extend" checked />
+                        <span>{t.pkg_1_policy_check}</span>
+                      </label>
+                      <label class="radio-lbl">
+                        <input type="radio" name="tallyPolicy" value="Close the bar" />
+                        <span>{t.pkg_1_policy_close}</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Package 2: Drink Tickets (300 NTD per ticket) -->
+              <div class="drink-pkg-card" data-pkg-card="tickets">
+                <div class="pkg-card-top">
+                  <div class="pkg-header-row">
+                    <span class="pkg-tag-pill">{t.pkg_2_tag}</span>
+                    <span class="pkg-status-indicator" data-select-lbl={t.pkg_select_badge} data-selected-lbl={t.pkg_selected_badge}>{t.pkg_select_badge}</span>
+                  </div>
+                  <h3 class="pkg-title">{t.pkg_2_name}</h3>
+                  <p class="pkg-desc">{t.pkg_2_desc}</p>
+                </div>
+
+                <div class="pkg-config-box">
+                  <div class="form-group">
+                    <label for="inp-ticket-qty">{t.pkg_2_qty_lbl}</label>
+                    <input type="number" id="inp-ticket-qty" min="1" step="10" value="120" />
+                  </div>
+                  <div class="quick-mult-pills">
+                    <button type="button" class="mult-pill" data-ticket-mult="1">{t.pkg_2_quick_1}</button>
+                    <button type="button" class="mult-pill" data-ticket-mult="2">{t.pkg_2_quick_2}</button>
+                    <button type="button" class="mult-pill" data-ticket-mult="3">{t.pkg_2_quick_3}</button>
+                  </div>
+                  <div class="pkg-live-calc" id="calc-tickets-preview">= 36,000 NTD$</div>
+                </div>
+              </div>
+
+              <!-- Package 3: All-You-Can-Drink (400 NTD per guest / hour) -->
+              <div class="drink-pkg-card active" data-pkg-card="aycd">
+                <div class="pkg-card-top">
+                  <div class="pkg-header-row">
+                    <span class="pkg-tag-pill">{t.pkg_3_tag}</span>
+                    <span class="pkg-status-indicator" data-select-lbl={t.pkg_select_badge} data-selected-lbl={t.pkg_selected_badge}>{t.pkg_selected_badge}</span>
+                  </div>
+                  <h3 class="pkg-title">{t.pkg_3_name}</h3>
+                  <p class="pkg-desc">{t.pkg_3_desc}</p>
+                </div>
+
+                <div class="pkg-config-box">
+                  <div class="form-grid-2" style="gap: 12px;">
+                    <div class="form-group">
+                      <label for="inp-aycd-guests">{t.pkg_3_guests_lbl}</label>
+                      <input type="number" id="inp-aycd-guests" min="1" max="350" value="60" />
+                    </div>
+                    <div class="form-group">
+                      <label for="inp-aycd-hours">{t.pkg_3_hours_lbl}</label>
+                      <input type="number" id="inp-aycd-hours" min="1" max="12" step="0.5" value="3" />
+                    </div>
+                  </div>
+                  <div class="pkg-live-calc" id="calc-aycd-preview">= 72,000 NTD$</div>
+                </div>
+              </div>
+
+              <!-- Package 4: Other -->
+              <div class="drink-pkg-card" data-pkg-card="other">
+                <div class="pkg-card-top">
+                  <div class="pkg-header-row">
+                    <span class="pkg-tag-pill">{t.pkg_4_tag}</span>
+                    <span class="pkg-status-indicator" data-select-lbl={t.pkg_select_badge} data-selected-lbl={t.pkg_selected_badge}>{t.pkg_select_badge}</span>
+                  </div>
+                  <h3 class="pkg-title">{t.pkg_4_name}</h3>
+                  <p class="pkg-desc">{t.pkg_4_desc}</p>
+                </div>
+
+                <div class="pkg-config-box">
+                  <div class="form-group">
+                    <label for="inp-other-pkg-desc">{t.pkg_4_custom_lbl}</label>
+                    <textarea id="inp-other-pkg-desc" rows="2" placeholder={t.pkg_4_custom_ph}></textarea>
+                  </div>
+                  <div class="form-group" style="margin-top: 10px;">
+                    <label for="inp-other-pkg-amount">{t.pkg_4_est_lbl}</label>
+                    <input type="number" id="inp-other-pkg-amount" min="0" step="5000" value="0" placeholder="0 = TBD" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Optional Catering & Venue Minimum Spend Selector -->
+            <div class="form-card addon-card" style="margin-top: 28px;">
+              <h3 class="addon-heading">{t.addon_title}</h3>
+              <div class="form-grid-2">
+                <!-- Finger food toggle -->
+                <div class="addon-box">
+                  <label class="checkbox-lbl">
+                    <input type="checkbox" id="chk-add-food" />
+                    <strong>{t.addon_food_label}</strong>
+                  </label>
+                  <p class="addon-sub">{t.addon_food_desc}</p>
+                  <div id="food-budget-wrap" class="food-budget-controls" style="display: none;">
+                    <label for="inp-food-per-guest">{t.addon_food_per_guest}</label>
+                    <input type="number" id="inp-food-per-guest" min="100" step="50" value="400" />
+                  </div>
+                </div>
+
+                <!-- Privatization Tier / Minimum Spend Selector -->
+                <div class="addon-box">
+                  <label for="sel-venue-tier"><strong>{t.addon_venue_tier_label}</strong></label>
+                  <select id="sel-venue-tier" class="gold-select">
+                    <option value="none">{t.tier_none}</option>
+                    <option value="day_venue">{t.tier_day_venue}</option>
+                    <option value="day_fb">{t.tier_day_fb}</option>
+                    <option value="night_weekday">{t.tier_night_weekday}</option>
+                    <option value="night_weekend">{t.tier_night_weekend}</option>
+                  </select>
+                  <p class="addon-sub" style="margin-top: 8px; color: var(--color-gold-light);">{t.min_spend_Match_note}</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- STEP 4: LIVE QUOTE SUMMARY, TERMS & ACTIONS (PDF PAGE 2) -->
+        <section id="step-summary" class="quote-section quote-section--dark">
+          <div class="section-wrap">
+            <p class="section-label">{t.step4_label}</p>
+            <h2 class="section-title" set:html={t.step4_title} />
+            <div class="section-divider"></div>
+            <p class="quote-sec-intro">{t.step4_desc}</p>
+
+            <!-- Live Quote Card -->
+            <div class="quote-summary-card">
+              <div class="quote-summary-header">
+                <div>
+                  <span class="company-tiny">歐珀拉有限公司 OPERA TAIPEI LIMITED - 94271005</span>
+                  <h3 id="live-summary-title">Quote — Private Event at Opéra</h3>
+                </div>
+                <div class="ref-badge-pill">{t.ref_badge}</div>
+              </div>
+
+              <!-- Itemized Table -->
+              <div class="table-responsive">
+                <table class="live-quote-table">
+                  <thead>
+                    <tr>
+                      <th>{t.quote_tbl_item}</th>
+                      <th style="width: 160px; text-align: center;">{t.quote_tbl_qty}</th>
+                      <th style="width: 200px; text-align: right;">{t.quote_tbl_price}</th>
+                    </tr>
+                  </thead>
+                  <tbody id="live-quote-tbody">
+                    <!-- Populated dynamically by JS -->
+                  </tbody>
+                  <tfoot>
+                    <tr class="summary-black-row">
+                      <td colspan="2" class="text-right">{t.quote_subtotal}</td>
+                      <td id="live-subtotal" class="text-right">72,000</td>
+                    </tr>
+                    <tr class="summary-black-row">
+                      <td colspan="2" class="text-right">{t.quote_vat}</td>
+                      <td id="live-vat" class="text-right">3,600</td>
+                    </tr>
+                    <tr class="summary-black-row grand-total-row">
+                      <td colspan="2" class="text-right">{t.quote_grand_total}</td>
+                      <td id="live-grand-total" class="text-right">75,600</td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+              <p id="live-tbd-note" class="tbd-footnote" style="display: none;">{t.quote_tbd_notice}</p>
+
+              <!-- Primary Action Buttons -->
+              <div class="quote-actions-bar">
+                <button type="button" id="btn-download-pdf" class="btn-gold btn-gold--large action-btn-primary">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  <span>{t.btn_download_pdf}</span>
+                </button>
+
+                <button type="button" id="btn-send-email" class="btn-gold btn-gold--large action-btn-email">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  <span>{t.btn_send_email}</span>
+                </button>
+
+                <button type="button" id="btn-print-pdf" class="btn-ghost action-btn-secondary">
+                  <span>🖨️ {t.btn_Print_pdf}</span>
+                </button>
+
+                <button type="button" id="btn-share-link" class="btn-ghost action-btn-secondary">
+                  <span>🔗 {t.btn_copy_link}</span>
+                </button>
+              </div>
+              <p id="share-link-feedback" class="copy-feedback" style="display: none;">{t.link_copied_msg}</p>
+
+              <!-- Reassurance Banner Inside Quote Section -->
+              <div class="reassurance-callout">
+                <div class="reassurance-icon">✦</div>
+                <div>
+                  <h4>{t.reassurance_title}</h4>
+                  <p>{t.reassurance_text}</p>
+                </div>
+              </div>
+
+              <!-- Payment Terms & Company Legal Information (From PDF Page 2) -->
+              <div class="terms-and-legal-grid">
+                <div class="terms-box">
+                  <h4>{t.terms_title}</h4>
+                  <ul>
+                    <li>{t.term_1}</li>
+                    <li>{t.term_2}</li>
+                    <li>{t.term_3}</li>
+                  </ul>
+                </div>
+
+                <div class="legal-box">
+                  <h4>{t.legal_title}</h4>
+                  <table class="legal-info-table">
+                    <tbody>
+                      <tr><th>{t.legal_company_name}</th><td>歐珀拉有限公司 (OPERA TAIPEI LIMITED)</td></tr>
+                      <tr><th>{t.legal_tax_id}</th><td>94271005</td></tr>
+                      <tr><th>{t.legal_reg_addr}</th><td>台北市松山區復興北路57號14樓之3</td></tr>
+                      <tr><th>{t.legal_loc_addr}</th><td>台北市松山區敦化北路100號15樓</td></tr>
+                      <tr><th>{t.legal_bank_name}</th><td>E. Sun Bank (玉山銀行)</td></tr>
+                      <tr><th>{t.legal_swift}</th><td>ESUNTWTP</td></tr>
+                      <tr><th>{t.legal_acc_name}</th><td>歐珀拉有限公司 OPERA TAIPEI LIMITED</td></tr>
+                      <tr><th>{t.legal_bank_num}</th><td>808</td></tr>
+                      <tr><th>{t.legal_acc_num}</th><td>0912940027234</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+      </form>
+
+      <!-- ====================================================
+           BOTTOM CONTACT & BOOKING CHANNELS REMINDER
+      ==================================================== -->
+      <section class="quote-section" style="padding-bottom: 20px;">
+        <div class="section-wrap">
+          <div class="booking-channels-card" style="margin-top: 0;">
+            <span class="ref-badge-pill" style="margin-bottom: 12px; display: inline-block;">{t.ref_badge}</span>
+            <h4 class="booking-card-title">{t.reassurance_title}</h4>
+            <p class="booking-card-subtitle">{t.reassurance_text}</p>
+
+            <div class="booking-action-channels">
+              <a href="https://www.instagram.com/operataipei/" target="_blank" rel="noopener noreferrer" class="channel-btn ig-btn">
+                <span class="btn-text-wrap">
+                  <strong>{t.booking_ig} (@operataipei)</strong>
+                  <small>{t.booking_ig_sub}</small>
+                </span>
+              </a>
+
+              <a href="mailto:contact@opera-taipei.com" id="direct-mailto-bottom" class="channel-btn mail-btn">
+                <span class="btn-text-wrap">
+                  <strong>contact@opera-taipei.com</strong>
+                  <small>{t.booking_email_sub}</small>
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <Contact t={t} />
+    </main>
+
+    <Footer t={t} />
+
+    <!-- Vibe Video Modal -->
+    <div id="vibe-modal" class="vibe-modal-overlay">
+      <div class="vibe-modal-content">
+        <button type="button" id="close-vibe-btn" class="vibe-modal-close" aria-label="Close modal">&times;</button>
+        <div class="video-container">
+          <video id="vibe-video" controls loop playsinline>
+            <source src="/images/opera_vibe.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+    </div>
+
+    <!-- Email Confirmation Modal -->
+    <div id="email-modal" class="vibe-modal-overlay">
+      <div class="email-modal-card">
+        <button type="button" id="close-email-modal" class="vibe-modal-close">&times;</button>
+        <div class="ref-badge-pill" style="margin-bottom: 12px;">Opéra Taipei Events</div>
+        <h3 class="email-modal-heading">{t.email_modal_title}</h3>
+        <p class="email-modal-steps">{t.email_modal_body}</p>
+        <p class="email-modal-sub">{t.email_modal_fallback}</p>
+        <div class="email-modal-actions">
+          <a id="modal-mailto-link" href="mailto:contact@opera-taipei.com" class="btn-gold"><span>{t.email_modal_open_btn}</span></a>
+          <button type="button" id="modal-copy-text-btn" class="btn-ghost">{t.email_modal_copy_btn}</button>
+          <button type="button" id="modal-done-btn" class="btn-ghost">{t.email_modal_close}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       PRINT / PDF 2-PAGE TEMPLATE (MATCHING ATTACHED PDF DOCUMENT EXACTLY)
+  ========================================================================= -->
+  <div id="pdf-render-wrapper" aria-hidden="true">
+    <div id="pdf-document-template">
+
+      <!-- ================= PDF PAGE 1 ================= -->
+      <div class="pdf-page pdf-page-1">
+        <div class="pdf-top-company">
+          <span>歐珀拉有限公司 <em>OPERA TAIPEI LIMITED - 94271005</em></span>
+          <span class="pdf-ref-tag">REFERENCE QUOTATION / 初步參考報價單</span>
+        </div>
+
+        <div class="pdf-header-row">
+          <div class="pdf-title-date-box">
+            <div class="pdf-title-cell" id="pdf-title">Private Event at Opéra</div>
+            <div class="pdf-date-cell">DATE <span id="pdf-date">2026/02/11</span></div>
+          </div>
+          <div class="pdf-logo-box">
+            <img src="/images/opera-logo.png" alt="OPÉRA" crossorigin="anonymous" />
+          </div>
+        </div>
+
+        <!-- Information & Options Master Table -->
+        <table class="pdf-main-table">
+          <thead>
+            <tr class="pdf-blue-header">
+              <th colspan="4">Information</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="pdf-info-lbl">Guest name (company legal name) :</td>
+              <td colspan="3" class="pdf-info-val" id="pdf-guest-name"></td>
+            </tr>
+            <tr>
+              <td class="pdf-info-lbl">Guest company tax ID :</td>
+              <td colspan="3" class="pdf-info-val" id="pdf-tax-id"></td>
+            </tr>
+            <tr>
+              <td class="pdf-info-lbl">Guest contact information :</td>
+              <td colspan="3" class="pdf-info-val" id="pdf-contact"></td>
+            </tr>
+            <tr>
+              <td class="pdf-info-lbl">Attending number :</td>
+              <td colspan="3" class="pdf-info-val" id="pdf-attending"></td>
+            </tr>
+            <tr>
+              <td class="pdf-info-lbl">Event time :</td>
+              <td colspan="3" class="pdf-info-val" id="pdf-event-time"></td>
+            </tr>
+            <tr>
+              <td class="pdf-info-lbl">Setup time :</td>
+              <td colspan="3" class="pdf-info-val" id="pdf-setup-time"></td>
+            </tr>
+
+            <!-- Visuals Section -->
+            <tr class="pdf-blue-header">
+              <th colspan="4">Visuals</th>
+            </tr>
+            <tr class="pdf-sub-header">
+              <td style="width: 42%;"></td>
+              <td style="width: 18%; text-align: center;">YES</td>
+              <td style="width: 18%; text-align: center;">NO</td>
+              <td style="width: 22%; text-align: center;">Cost NTD$</td>
+            </tr>
+            <tr>
+              <td>TVs</td>
+              <td class="pdf-yn-cell" id="pdf-vis_tvs-yes">✓</td>
+              <td class="pdf-yn-cell" id="pdf-vis_tvs-no"></td>
+              <td class="pdf-cost-cell">0</td>
+            </tr>
+            <tr>
+              <td>LED walls</td>
+              <td class="pdf-yn-cell" id="pdf-vis_led-yes">✓</td>
+              <td class="pdf-yn-cell" id="pdf-vis_led-no"></td>
+              <td class="pdf-cost-cell">0</td>
+            </tr>
+            <tr>
+              <td>Window's projectors</td>
+              <td class="pdf-yn-cell" id="pdf-vis_projectors-yes">✓</td>
+              <td class="pdf-yn-cell" id="pdf-vis_projectors-no"></td>
+              <td class="pdf-cost-cell">0</td>
+            </tr>
+            <tr>
+              <td>First floor TV</td>
+              <td class="pdf-yn-cell" id="pdf-vis_1f_tv-yes">✓</td>
+              <td class="pdf-yn-cell" id="pdf-vis_1f_tv-no"></td>
+              <td class="pdf-cost-cell">0</td>
+            </tr>
+            <tr>
+              <td>Backdrop print</td>
+              <td class="pdf-yn-cell" id="pdf-vis_backdrop-yes"></td>
+              <td class="pdf-yn-cell" id="pdf-vis_backdrop-no">✓</td>
+              <td class="pdf-cost-cell">TBD</td>
+            </tr>
+
+            <!-- Music Section -->
+            <tr class="pdf-blue-header">
+              <th colspan="4">Music</th>
+            </tr>
+            <tr>
+              <td>DJ</td>
+              <td class="pdf-yn-cell" id="pdf-mus_dj-yes"></td>
+              <td class="pdf-yn-cell" id="pdf-mus_dj-no">✓</td>
+              <td class="pdf-cost-cell">TBD</td>
+            </tr>
+            <tr>
+              <td>Playlist</td>
+              <td class="pdf-yn-cell" id="pdf-mus_playlist-yes">✓</td>
+              <td class="pdf-yn-cell" id="pdf-mus_playlist-no"></td>
+              <td class="pdf-cost-cell">0</td>
+            </tr>
+            <tr>
+              <td>Microphones</td>
+              <td class="pdf-yn-cell" id="pdf-mus_mics-yes">✓</td>
+              <td class="pdf-yn-cell" id="pdf-mus_mics-no"></td>
+              <td class="pdf-cost-cell">0</td>
+            </tr>
+            <tr>
+              <td>Music style</td>
+              <td class="pdf-yn-cell" id="pdf-mus_style-yes">✓</td>
+              <td class="pdf-yn-cell" id="pdf-mus_style-no"></td>
+              <td class="pdf-cost-cell">0</td>
+            </tr>
+            <tr>
+              <td>Photographer</td>
+              <td class="pdf-yn-cell" id="pdf-mus_photographer-yes"></td>
+              <td class="pdf-yn-cell" id="pdf-mus_photographer-no">✓</td>
+              <td class="pdf-cost-cell">TBD</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="pdf-other-requests">
+          <strong>Other requests :</strong>
+          <div id="pdf-other-requests-val" class="pdf-other-text"></div>
+        </div>
+
+        <div class="pdf-footer">
+          <div class="pdf-footer-left">Signature:</div>
+          <div class="pdf-footer-center">Date, location:</div>
+          <div class="pdf-footer-right">
+            <em>Taipei, SongShan dst., DunHua North rd, num. 100, 15F</em><br />
+            台北市松山區敦化北路100號15樓
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= PDF PAGE 2 ================= -->
+      <div class="pdf-page pdf-page-2">
+        <div class="pdf-top-company">
+          <span>歐珀拉有限公司 <em>OPERA TAIPEI LIMITED - 94271005</em></span>
+          <span class="pdf-ref-tag">REFERENCE QUOTATION / 初步參考報價單</span>
+        </div>
+
+        <h2 class="pdf-quote-heading">Quote</h2>
+
+        <table class="pdf-quote-table">
+          <thead>
+            <tr>
+              <th style="width: 46%;">Item</th>
+              <th style="width: 28%;">Quantity</th>
+              <th style="width: 26%;">Price</th>
+            </tr>
+          </thead>
+          <tbody id="pdf-quote-tbody">
+            <!-- Dynamically populated with min 6 rows -->
+          </tbody>
+          <tfoot>
+            <tr class="pdf-black-row">
+              <td></td>
+              <td class="pdf-black-lbl">TOTAL ($NT)</td>
+              <td class="pdf-black-val" id="pdf-subtotal"></td>
+            </tr>
+            <tr class="pdf-black-row">
+              <td></td>
+              <td class="pdf-black-lbl">5% VAT ($NT)</td>
+              <td class="pdf-black-val" id="pdf-vat"></td>
+            </tr>
+            <tr class="pdf-black-row">
+              <td></td>
+              <td class="pdf-black-lbl">AMOUNT TO BE PAID ($NT)</td>
+              <td class="pdf-black-val" id="pdf-grand-total"></td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <div class="pdf-ref-disclaimer-note">
+          * Note: This document is a preliminary reference estimate generated online. Our team at Opéra Taipei will be delighted to get in touch with you to discuss and finalize your tailored quotation. 本報價單僅供初步參考，Opéra 團隊將與您聯繫討論並確認最終正式報價。
+        </div>
+
+        <h3 class="pdf-section-title">Payment Terms and Conditions | 付款條款與條件</h3>
+        <ul class="pdf-terms-list">
+          <li>30% Deposit is required to secure the venue for a private event. Deposit can be refunded up to 2 weeks before the event date. 預訂私人活動場地需支付總金額的30%作為訂金。若於活動日期前至少兩週取消，訂金可全額退還。</li>
+          <li>Full payment has to be completed within 5 days after the event date. 活動結束後5天內需完成尾款支付。</li>
+          <li>No outside food nor drinks is allowed at OPERA, unless previously discussed. Cleaning fee will be charged. 除非事先協商，否則不允許攜帶外部食物或飲品進入 OPERA。清潔費將另行收取。</li>
+        </ul>
+
+        <h3 class="pdf-section-title">Company legal information</h3>
+        <table class="pdf-legal-table">
+          <tbody>
+            <tr>
+              <td class="pdf-legal-lbl">Company name</td>
+              <td class="pdf-legal-val">歐珀拉有限公司</td>
+              <td rowspan="9" class="pdf-stamp-cell">
+                <!-- Crisp SVG Company Stamp matching Page 2 of attached PDF -->
+                <svg viewBox="0 0 220 145" width="165" height="110" class="pdf-company-stamp">
+                  <ellipse cx="110" cy="72" rx="102" ry="64" fill="none" stroke="#1e3a78" stroke-width="3.2" />
+                  <ellipse cx="110" cy="72" rx="97" ry="59" fill="none" stroke="#1e3a78" stroke-width="1" />
+                  <text x="110" y="34" text-anchor="middle" fill="#1e3a78" font-size="14" font-weight="bold" letter-spacing="3">歐珀拉有限公司</text>
+                  <text x="110" y="52" text-anchor="middle" fill="#1e3a78" font-size="10.5" font-weight="bold" letter-spacing="1.5">統一發票專用章</text>
+                  <text x="110" y="66" text-anchor="middle" fill="#1e3a78" font-size="9.5" letter-spacing="2">統一編號</text>
+                  <text x="110" y="86" text-anchor="middle" fill="#1e3a78" font-size="19" font-weight="bold" font-family="monospace" letter-spacing="2">★94271005★</text>
+                  <text x="110" y="104" text-anchor="middle" fill="#1e3a78" font-size="10.5" font-weight="bold" letter-spacing="2">臺北市松山區</text>
+                  <text x="110" y="121" text-anchor="middle" fill="#1e3a78" font-size="10" font-weight="bold" letter-spacing="0.5">復興北路57號14樓之3</text>
+                </svg>
+              </td>
+            </tr>
+            <tr>
+              <td class="pdf-legal-lbl">Company tax ID.</td>
+              <td class="pdf-legal-val">94271005</td>
+            </tr>
+            <tr>
+              <td class="pdf-legal-lbl">Registration address</td>
+              <td class="pdf-legal-val">台北市松山區復興北路57號14樓之3</td>
+            </tr>
+            <tr>
+              <td class="pdf-legal-lbl">Location address</td>
+              <td class="pdf-legal-val">台北市松山區敦化北路100號15樓</td>
+            </tr>
+            <tr>
+              <td class="pdf-legal-lbl">Bank name</td>
+              <td class="pdf-legal-val">E. Sun Bank</td>
+            </tr>
+            <tr>
+              <td class="pdf-legal-lbl">Swift code</td>
+              <td class="pdf-legal-val">ESUNTWTP</td>
+            </tr>
+            <tr>
+              <td class="pdf-legal-lbl">Account name</td>
+              <td class="pdf-legal-val">歐珀拉有限公司 OPERA TAIPEI LIMITED</td>
+            </tr>
+            <tr>
+              <td class="pdf-legal-lbl">Bank number</td>
+              <td class="pdf-legal-val">808</td>
+            </tr>
+            <tr>
+              <td class="pdf-legal-lbl">Account number</td>
+              <td class="pdf-legal-val">0912940027234</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="pdf-footer">
+          <div class="pdf-footer-left">Signature:</div>
+          <div class="pdf-footer-center">Date, location:</div>
+          <div class="pdf-footer-right">
+            <em>Taipei, SongShan dst., DunHua North rd, num. 100, 15F</em><br />
+            台北市松山區敦化北路100號15樓
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</Layout>
+
+<style>
+  /* ================================================================
+     QUOTE PAGE WEB UI STYLES
+  ================================================================ */
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .back-main-link {
+    color: var(--color-gold-light);
+    text-decoration: none;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border: 1px solid var(--color-gold-border);
+    border-radius: 20px;
+    transition: all 0.25s ease;
+  }
+
+  .back-main-link:hover {
+    background: rgba(201, 168, 76, 0.15);
+    border-color: var(--color-gold);
+  }
+
+  .quote-hero {
+    min-height: 75vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    padding: 130px 24px 70px;
+  }
+
+  .quote-hero-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 920px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .reference-disclaimer-banner {
+    background: linear-gradient(145deg, rgba(26, 23, 20, 0.95), rgba(14, 13, 12, 0.95));
+    border: 1px solid var(--color-gold);
+    border-radius: 12px;
+    padding: 32px 36px;
+    max-width: 820px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(201, 168, 76, 0.12);
+    text-align: center;
+  }
+
+  .ref-badge-pill {
+    display: inline-block;
+    background: var(--color-gold);
+    color: #080808;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+  }
+
+  .ref-banner-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.5rem, 3vw, 2.1rem);
+    font-weight: 400;
+    color: var(--color-white);
+    margin-bottom: 12px;
+  }
+
+  .ref-banner-copy {
+    font-size: 0.88rem;
+    line-height: 1.75;
+    color: rgba(245, 240, 232, 0.82);
+    margin-bottom: 24px;
+  }
+
+  .ref-banner-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* Quote Sections */
+  .quote-section {
+    padding: 80px 40px;
+    background: var(--color-black);
+  }
+
+  .quote-section--dark {
+    background: var(--color-deep-dark);
+  }
+
+  .quote-sec-intro {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    line-height: 1.8;
+    max-width: 780px;
+    margin-bottom: 36px;
+  }
+
+  /* Venue Stats Strip */
+  .venue-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 36px;
+  }
+
+  .venue-stat-card {
+    background: var(--color-card);
+    border: 1px solid var(--color-gold-border);
+    padding: 22px 20px;
+    border-radius: 8px;
+    text-align: center;
+  }
+
+  .stat-val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.65rem;
+    color: var(--color-gold-light);
+    margin-bottom: 6px;
+  }
+
+  .stat-lbl {
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* Venue Showcase Tabs */
+  .venue-showcase-tabs {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+
+  .venue-tab-btn {
+    padding: 11px 24px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--color-gold-border);
+    border-radius: 30px;
+    color: var(--color-text-muted);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+
+  .venue-tab-btn:hover {
+    border-color: var(--color-gold);
+    color: var(--color-gold-light);
+  }
+
+  .venue-tab-btn.active {
+    background: var(--color-gold);
+    color: #080808;
+    border-color: var(--color-gold);
+    font-weight: 600;
+  }
+
+  .venue-tab-panel {
+    display: none;
+  }
+
+  .venue-tab-panel.active {
+    display: block;
+  }
+
+  .floorplan-showcase-grid {
+    display: grid;
+    grid-template-columns: 1.25fr 1fr;
+    gap: 32px;
+    align-items: center;
+    background: var(--color-card);
+    border: 1px solid var(--color-gold-border);
+    border-radius: 12px;
+    padding: 28px;
+  }
+
+  .floor-plan-img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    display: block;
+  }
+
+  .sub-card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.75rem;
+    color: var(--color-white);
+    margin-bottom: 10px;
+  }
+
+  .sub-card-desc {
+    font-size: 0.84rem;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+
+  .table-zones-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+
+  .table-zone-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(201, 168, 76, 0.15);
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+  }
+
+  .zone-name {
+    color: var(--color-gold-light);
+    font-weight: 500;
+  }
+
+  .zone-cap {
+    color: var(--color-text-muted);
+  }
+
+  .zone-min {
+    color: var(--color-white);
+    font-weight: 500;
+  }
+
+  .facilities-mini-box {
+    border-top: 1px solid var(--color-gold-border);
+    padding-top: 16px;
+  }
+
+  .facilities-mini-box h4 {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color-gold);
+    margin-bottom: 10px;
+  }
+
+  .facilities-mini-box ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    font-size: 0.78rem;
+    color: rgba(245, 240, 232, 0.8);
+  }
+
+  .facilities-mini-box li::before {
+    content: '✦ ';
+    color: var(--color-gold);
+  }
+
+  .quote-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .quote-gallery-item {
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--color-gold-border);
+    aspect-ratio: 16 / 10;
+  }
+
+  .quote-gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .quote-gallery-item:hover img {
+    transform: scale(1.04);
+  }
+
+  /* Form Styling */
+  .form-card {
+    background: var(--color-card);
+    border: 1px solid var(--color-gold-border);
+    border-radius: 12px;
+    padding: 32px;
+  }
+
+  .form-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .form-group--full {
+    grid-column: 1 / -1;
+  }
+
+  .form-group label {
+    font-size: 0.76rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-gold-light);
+    font-weight: 500;
+  }
+
+  .label-hint {
+    font-size: 0.68rem;
+    color: var(--color-text-muted);
+    text-transform: none;
+    font-weight: 300;
+    margin-left: 6px;
+  }
+
+  .form-group input[type="text"],
+  .form-group input[type="number"],
+  .form-group input[type="date"],
+  .form-group input[type="time"],
+  .form-group textarea,
+  .gold-select {
+    background: rgba(8, 8, 8, 0.75);
+    border: 1px solid rgba(201, 168, 76, 0.3);
+    border-radius: 6px;
+    padding: 12px 14px;
+    color: var(--color-white);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.88rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .gold-select:focus {
+    outline: none;
+    border-color: var(--color-gold);
+    box-shadow: 0 0 0 2px rgba(201, 168, 76, 0.15);
+  }
+
+  .number-slider-wrap {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .number-slider-wrap input[type="number"] {
+    width: 110px;
+    flex-shrink: 0;
+  }
+
+  .number-slider-wrap input[type="range"] {
+    flex: 1;
+    accent-color: var(--color-gold);
+    cursor: pointer;
+  }
+
+  .time-range-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+  }
+
+  .sub-lbl {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    margin-bottom: 6px;
+  }
+
+  /* Step 2: Visuals & Music Interactive Tables */
+  .options-two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .option-table-card {
+    background: var(--color-card);
+    border: 1px solid var(--color-gold-border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .option-table-header {
+    background: rgba(201, 168, 76, 0.14);
+    border-bottom: 1px solid var(--color-gold-border);
+    padding: 14px 20px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    color: var(--color-gold-light);
+    letter-spacing: 0.05em;
+  }
+
+  .option-row {
+    display: grid;
+    grid-template-columns: 1fr 150px 95px;
+    align-items: center;
+    padding: 14px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    gap: 10px;
+  }
+
+  .option-row:last-child {
+    border-bottom: none;
+  }
+
+  .option-row--head {
+    background: rgba(0, 0, 0, 0.35);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-text-muted);
+    padding: 10px 20px;
+  }
+
+  .opt-name {
+    font-size: 0.85rem;
+    color: var(--color-white);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .opt-subnote {
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+  }
+
+  .inline-style-input {
+    margin-top: 4px;
+    background: rgba(8, 8, 8, 0.8);
+    border: 1px solid rgba(201, 168, 76, 0.3);
+    border-radius: 4px;
+    padding: 6px 10px;
+    color: var(--color-white);
+    font-size: 0.78rem;
+  }
+
+  .yn-switch {
+    display: inline-flex;
+    background: rgba(8, 8, 8, 0.8);
+    border: 1px solid rgba(201, 168, 76, 0.3);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .yn-btn {
+    border: none;
+    background: transparent;
+    color: var(--color-text-muted);
+    padding: 6px 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .yn-btn.active[data-val="YES"] {
+    background: var(--color-gold);
+    color: #080808;
+  }
+
+  .yn-btn.active[data-val="NO"] {
+    background: rgba(255, 255, 255, 0.16);
+    color: var(--color-white);
+  }
+
+  .opt-cost {
+    text-align: right;
+    font-size: 0.84rem;
+    font-weight: 500;
+  }
+
+  .cost-free {
+    color: #8fd19e;
+  }
+
+  .cost-tbd {
+    color: var(--color-gold-light);
+  }
+
+  /* Step 3: Drink Package Cards */
+  .drink-packages-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .drink-pkg-card {
+    background: var(--color-card);
+    border: 1px solid var(--color-gold-border);
+    border-radius: 12px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: border-color 0.25s, box-shadow 0.25s, transform 0.2s;
+  }
+
+  .drink-pkg-card:hover {
+    border-color: rgba(201, 168, 76, 0.6);
+    transform: translateY(-2px);
+  }
+
+  .drink-pkg-card.active {
+    border: 2px solid var(--color-gold);
+    box-shadow: 0 0 28px rgba(201, 168, 76, 0.18);
+    background: linear-gradient(160deg, rgba(201, 168, 76, 0.08) 0%, var(--color-card) 100%);
+  }
+
+  .pkg-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+
+  .pkg-tag-pill {
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-gold-light);
+    background: rgba(201, 168, 76, 0.12);
+    border: 1px solid rgba(201, 168, 76, 0.3);
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+
+  .pkg-status-indicator {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 5px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--color-text-muted);
+  }
+
+  .drink-pkg-card.active .pkg-status-indicator {
+    background: var(--color-gold);
+    color: #080808;
+    border-color: var(--color-gold);
+  }
+
+  .pkg-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.55rem;
+    color: var(--color-white);
+    margin-bottom: 10px;
+  }
+
+  .pkg-desc {
+    font-size: 0.84rem;
+    color: rgba(245, 240, 232, 0.78);
+    line-height: 1.65;
+    margin-bottom: 20px;
+  }
+
+  .pkg-config-box {
+    border-top: 1px solid rgba(201, 168, 76, 0.2);
+    padding-top: 18px;
+  }
+
+  .radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .radio-lbl,
+  .checkbox-lbl {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.82rem;
+    color: var(--color-white);
+    cursor: pointer;
+    text-transform: none !important;
+  }
+
+  .radio-lbl input,
+  .checkbox-lbl input {
+    accent-color: var(--color-gold);
+    width: 16px;
+    height: 16px;
+  }
+
+  .quick-mult-pills {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+
+  .mult-pill {
+    background: rgba(201, 168, 76, 0.12);
+    border: 1px solid rgba(201, 168, 76, 0.35);
+    color: var(--color-gold-light);
+    padding: 5px 12px;
+    border-radius: 16px;
+    font-size: 0.72rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .mult-pill:hover {
+    background: var(--color-gold);
+    color: #080808;
+  }
+
+  .pkg-live-calc {
+    margin-top: 14px;
+    text-align: right;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.45rem;
+    color: var(--color-gold-light);
+    font-weight: 600;
+  }
+
+  .addon-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.45rem;
+    color: var(--color-gold-light);
+    margin-bottom: 18px;
+  }
+
+  .addon-box {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(201, 168, 76, 0.18);
+    padding: 18px;
+    border-radius: 8px;
+  }
+
+  .addon-sub {
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+
+  .food-budget-controls {
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .food-budget-controls label {
+    font-size: 0.75rem;
+    color: var(--color-gold-light);
+  }
+
+  .food-budget-controls input {
+    width: 130px;
+    background: #080808;
+    border: 1px solid var(--color-gold);
+    color: #fff;
+    padding: 8px 10px;
+    border-radius: 4px;
+  }
+
+  /* Step 4: Live Quote Summary Card */
+  .quote-summary-card {
+    background: var(--color-card);
+    border: 1px solid var(--color-gold);
+    border-radius: 12px;
+    padding: 36px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  }
+
+  .quote-summary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .company-tiny {
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+    letter-spacing: 0.08em;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .quote-summary-header h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    color: var(--color-white);
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+  }
+
+  .live-quote-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 14px;
+  }
+
+  .live-quote-table th,
+  .live-quote-table td {
+    border: 1px solid rgba(201, 168, 76, 0.28);
+    padding: 14px 18px;
+    font-size: 0.88rem;
+  }
+
+  .live-quote-table thead th {
+    background: rgba(201, 168, 76, 0.15);
+    color: var(--color-gold-light);
+    text-transform: uppercase;
+    font-size: 0.74rem;
+    letter-spacing: 0.12em;
+    text-align: left;
+  }
+
+  .summary-black-row td {
+    background: #050505;
+    color: var(--color-white);
+    font-weight: 500;
+  }
+
+  .grand-total-row td {
+    color: var(--color-gold-light);
+    font-size: 1.05rem;
+    font-weight: 600;
+    border-top: 2px solid var(--color-gold);
+  }
+
+  .text-right {
+    text-align: right !important;
+  }
+
+  .text-center {
+    text-align: center !important;
+  }
+
+  .tbd-footnote {
+    font-size: 0.8rem;
+    color: var(--color-gold-light);
+    font-style: italic;
+    margin-bottom: 24px;
+  }
+
+  /* Action Bar */
+  .quote-actions-bar {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin: 28px 0 16px;
+    align-items: center;
+  }
+
+  .action-btn-primary,
+  .action-btn-email {
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+  }
+
+  .action-btn-primary {
+    background: var(--color-gold);
+    color: #080808;
+  }
+
+  .action-btn-primary:hover {
+    background: var(--color-gold-light);
+  }
+
+  .action-btn-email {
+    background: transparent;
+  }
+
+  .action-btn-secondary {
+    cursor: pointer;
+    background: transparent;
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  .copy-feedback {
+    color: #8fd19e;
+    font-size: 0.82rem;
+    margin-bottom: 16px;
+  }
+
+  .reassurance-callout {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    background: rgba(201, 168, 76, 0.08);
+    border: 1px solid rgba(201, 168, 76, 0.35);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 26px 0;
+  }
+
+  .reassurance-icon {
+    font-size: 1.5rem;
+    color: var(--color-gold);
+    line-height: 1;
+  }
+
+  .reassurance-callout h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem;
+    color: var(--color-gold-light);
+    margin-bottom: 6px;
+  }
+
+  .reassurance-callout p {
+    font-size: 0.84rem;
+    color: rgba(245, 240, 232, 0.85);
+    line-height: 1.65;
+  }
+
+  /* Terms & Legal Grid */
+  .terms-and-legal-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    margin-top: 30px;
+    padding-top: 28px;
+    border-top: 1px solid var(--color-gold-border);
+  }
+
+  .terms-box h4,
+  .legal-box h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem;
+    color: var(--color-gold-light);
+    margin-bottom: 14px;
+  }
+
+  .terms-box ul {
+    padding-left: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-size: 0.8rem;
+    color: rgba(245, 240, 232, 0.8);
+    line-height: 1.65;
+  }
+
+  .legal-info-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.78rem;
+  }
+
+  .legal-info-table th,
+  .legal-info-table td {
+    border: 1px solid rgba(201, 168, 76, 0.2);
+    padding: 8px 12px;
+    text-align: left;
+  }
+
+  .legal-info-table th {
+    color: var(--color-text-muted);
+    width: 38%;
+    font-weight: 400;
+  }
+
+  .legal-info-table td {
+    color: var(--color-white);
+  }
+
+  /* Email Modal */
+  .email-modal-card {
+    position: relative;
+    background: var(--color-card);
+    border: 1px solid var(--color-gold);
+    border-radius: 12px;
+    padding: 36px;
+    max-width: 580px;
+    width: 92%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85);
+  }
+
+  .email-modal-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.9rem;
+    color: var(--color-white);
+    margin-bottom: 14px;
+  }
+
+  .email-modal-steps {
+    white-space: pre-line;
+    font-size: 0.86rem;
+    line-height: 1.8;
+    color: rgba(245, 240, 232, 0.9);
+    background: rgba(0, 0, 0, 0.4);
+    padding: 16px 18px;
+    border-radius: 8px;
+    border-left: 3px solid var(--color-gold);
+    margin-bottom: 18px;
+  }
+
+  .email-modal-sub {
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+    margin-bottom: 14px;
+  }
+
+  .email-modal-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  /* ================================================================
+     OFFICIAL 2-PAGE PDF DOCUMENT TEMPLATE (LIGHT / PRINT THEME)
+     Faithfully matches the attached Opéra Taipei PDF Quote
+  ================================================================ */
+  #pdf-render-wrapper {
+    position: fixed;
+    left: -9999px;
+    top: 0;
+    z-index: -1;
+    overflow: hidden;
+  }
+
+  #pdf-document-template {
+    width: 794px; /* Exact A4 width at 96 DPI */
+    background: #ffffff;
+    color: #000000;
+    font-family: 'Helvetica Neue', Arial, 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+  }
+
+  .pdf-page {
+    width: 794px;
+    height: 1120px; /* Exact A4 height at 96 DPI */
+    padding: 40px 52px;
+    box-sizing: border-box;
+    background: #ffffff;
+    color: #000000;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    page-break-after: always;
+  }
+
+  .pdf-page-2 {
+    page-break-after: auto;
+  }
+
+  .pdf-top-company {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: #666666;
+    margin-bottom: 14px;
+  }
+
+  .pdf-ref-tag {
+    font-size: 9.5px;
+    color: #8a6d1b;
+    border: 1px solid #c9a84c;
+    background: #fdf9ee;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-weight: 600;
+  }
+
+  .pdf-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+
+  .pdf-title-date-box {
+    width: 340px;
+    border: 1px solid #000000;
+  }
+
+  .pdf-title-cell {
+    padding: 10px 12px;
+    font-size: 22px;
+    font-weight: 700;
+    border-bottom: 1px solid #000000;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+  }
+
+  .pdf-date-cell {
+    padding: 10px 12px;
+    font-size: 14px;
+    color: #555555;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+
+  .pdf-logo-box {
+    width: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 20px;
+  }
+
+  .pdf-logo-box img {
+    max-height: 105px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  /* Page 1 Table */
+  .pdf-main-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-bottom: 16px;
+  }
+
+  .pdf-main-table th,
+  .pdf-main-table td {
+    border: 1px solid #000000;
+    padding: 6.5px 10px;
+  }
+
+  .pdf-blue-header th {
+    background-color: #a4c2f4 !important;
+    color: #000000;
+    text-align: center;
+    font-weight: 600;
+    font-size: 12.5px;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .pdf-sub-header td {
+    font-weight: 600;
+    background: #ffffff;
+  }
+
+  .pdf-info-lbl {
+    width: 38%;
+  }
+
+  .pdf-info-val {
+    font-weight: 500;
+  }
+
+  .pdf-yn-cell {
+    text-align: center;
+    font-weight: bold;
+    font-size: 13px;
+  }
+
+  .pdf-cost-cell {
+    text-align: center;
+  }
+
+  .pdf-other-requests {
+    font-size: 12px;
+    margin-top: 6px;
+    flex: 1;
+  }
+
+  .pdf-other-text {
+    margin-top: 6px;
+    font-size: 11.5px;
+    color: #222222;
+    white-space: pre-line;
+    line-height: 1.45;
+  }
+
+  /* Page 2 Elements */
+  .pdf-quote-heading {
+    font-size: 24px;
+    font-weight: 400;
+    margin: 4px 0 14px;
+  }
+
+  .pdf-quote-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+
+  .pdf-quote-table th,
+  .pdf-quote-table td {
+    border: 1px solid #000000;
+    padding: 7px 10px;
+    height: 28px;
+  }
+
+  .pdf-quote-table th {
+    text-align: left;
+    font-weight: 600;
+  }
+
+  .pdf-black-row td {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    border-color: #000000;
+    font-weight: 600;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .pdf-black-lbl {
+    text-align: right;
+    padding-right: 16px !important;
+  }
+
+  .pdf-black-val {
+    text-align: right;
+  }
+
+  .pdf-ref-disclaimer-note {
+    font-size: 10px;
+    color: #555555;
+    background: #f8f5ec;
+    border-left: 3px solid #c9a84c;
+    padding: 6px 10px;
+    margin-bottom: 14px;
+    line-height: 1.4;
+  }
+
+  .pdf-section-title {
+    font-size: 18px;
+    font-weight: 400;
+    margin: 10px 0 10px;
+  }
+
+  .pdf-terms-list {
+    padding-left: 22px;
+    font-size: 11px;
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+
+  .pdf-terms-list li {
+    margin-bottom: 6px;
+  }
+
+  .pdf-legal-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11.5px;
+    margin-bottom: auto;
+  }
+
+  .pdf-legal-table td {
+    border: 1px solid #000000;
+    padding: 5px 10px;
+  }
+
+  .pdf-legal-lbl {
+    width: 27%;
+  }
+
+  .pdf-legal-val {
+    width: 41%;
+  }
+
+  .pdf-stamp-cell {
+    width: 32%;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  /* Page Footer */
+  .pdf-footer {
+    margin-top: auto;
+    padding-top: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    font-size: 11.5px;
+  }
+
+  .pdf-footer-left {
+    width: 30%;
+  }
+
+  .pdf-footer-center {
+    width: 25%;
+  }
+
+  .pdf-footer-right {
+    width: 45%;
+    text-align: right;
+    color: #666666;
+    font-size: 10.5px;
+    line-height: 1.45;
+  }
+
+  /* Print Stylesheet: Print ONLY the 2-Page Official PDF Template */
+  @media print {
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+    body {
+      background: #ffffff !important;
+      color: #000000 !important;
+    }
+    .web-ui-container {
+      display: none !important;
+    }
+    #pdf-render-wrapper {
+      position: static !important;
+      left: 0 !important;
+      top: 0 !important;
+      z-index: 1 !important;
+      overflow: visible !important;
+    }
+    #pdf-document-template {
+      width: 100% !important;
+    }
+  }
+
+  /* Responsive Design */
+  @media (max-width: 960px) {
+    .venue-stats-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .floorplan-showcase-grid,
+    .options-two-col,
+    .drink-packages-grid,
+    .terms-and-legal-grid {
+      grid-template-columns: 1fr;
+    }
+    .quote-gallery-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .quote-section {
+      padding: 60px 20px;
+    }
+    .form-grid-2,
+    .time-range-grid,
+    .venue-stats-grid,
+    .quote-gallery-grid {
+      grid-template-columns: 1fr;
+    }
+    .option-row {
+      grid-template-columns: 1fr auto 65px;
+      padding: 12px 14px;
+    }
+    .back-main-link {
+      display: none;
+    }
+    .quote-summary-card {
+      padding: 22px 16px;
+    }
+  }
+</style>
+
+<script>
+  // =========================================================================
+  // INTERACTIVE QUOTATION LOGIC, LIVE CALCULATOR, PDF EXPORT & EMAIL SENDER
+  // =========================================================================
+
+  // 1. Mobile Hamburger Menu & Scroll Navbar
+  const navbar = document.getElementById('navbar');
+  if (navbar) {
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 80);
+    });
+  }
+
+  const hamburgerButton = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  if (hamburgerButton && mobileMenu) {
+    hamburgerButton.addEventListener('click', () => {
+      hamburgerButton.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburgerButton.classList.remove('open');
+        mobileMenu.classList.remove('open');
+      });
+    });
+  }
+
+  // 2. Venue Showcase Tabs
+  const venueTabBtns = document.querySelectorAll('.venue-tab-btn');
+  const venueTabPanels = document.querySelectorAll('.venue-tab-panel');
+  venueTabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('data-venue-tab');
+      venueTabBtns.forEach(b => b.classList.remove('active'));
+      venueTabPanels.forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      const panel = document.getElementById(`panel-${target}`);
+      if (panel) panel.classList.add('active');
+    });
+  });
+
+  // 3. Vibe Video Modal
+  const openVibeBtn = document.getElementById('open-vibe-btn');
+  const closeVibeBtn = document.getElementById('close-vibe-btn');
+  const vibeModal = document.getElementById('vibe-modal');
+  const vibeVideo = document.getElementById('vibe-video') as HTMLVideoElement | null;
+
+  if (openVibeBtn && vibeModal) {
+    openVibeBtn.addEventListener('click', () => {
+      vibeModal.classList.add('active');
+      if (vibeVideo) vibeVideo.play().catch(() => {});
+    });
+  }
+  if (closeVibeBtn && vibeModal) {
+    closeVibeBtn.addEventListener('click', () => {
+      vibeModal.classList.remove('active');
+      if (vibeVideo) {
+        vibeVideo.pause();
+        vibeVideo.currentTime = 0;
+      }
+    });
+  }
+
+  // 4. Form State & Elements
+  const inpTitle = document.getElementById('inp-title') as HTMLInputElement;
+  const inpDate = document.getElementById('inp-date') as HTMLInputElement;
+  const inpGuestName = document.getElementById('inp-guest-name') as HTMLInputElement;
+  const inpTaxId = document.getElementById('inp-tax-id') as HTMLInputElement;
+  const inpContact = document.getElementById('inp-contact') as HTMLInputElement;
+  const inpAttending = document.getElementById('inp-attending') as HTMLInputElement;
+  const rngAttending = document.getElementById('rng-attending') as HTMLInputElement;
+  const inpStartTime = document.getElementById('inp-start-time') as HTMLInputElement;
+  const inpEndTime = document.getElementById('inp-end-time') as HTMLInputElement;
+  const inpDuration = document.getElementById('inp-duration') as HTMLInputElement;
+  const inpSetupTime = document.getElementById('inp-setup-time') as HTMLInputElement;
+  const inpMusicStyle = document.getElementById('inp-music-style') as HTMLInputElement;
+  const inpOtherRequests = document.getElementById('inp-other-requests') as HTMLTextAreaElement;
+
+  // Drink package inputs
+  const inpTallyCap = document.getElementById('inp-tally-cap') as HTMLInputElement;
+  const inpTicketQty = document.getElementById('inp-ticket-qty') as HTMLInputElement;
+  const inpAycdGuests = document.getElementById('inp-aycd-guests') as HTMLInputElement;
+  const inpAycdHours = document.getElementById('inp-aycd-hours') as HTMLInputElement;
+  const inpOtherPkgDesc = document.getElementById('inp-other-pkg-desc') as HTMLTextAreaElement;
+  const inpOtherPkgAmount = document.getElementById('inp-other-pkg-amount') as HTMLInputElement;
+
+  // Add-ons
+  const chkAddFood = document.getElementById('chk-add-food') as HTMLInputElement;
+  const foodBudgetWrap = document.getElementById('food-budget-wrap');
+  const inpFoodPerGuest = document.getElementById('inp-food-per-guest') as HTMLInputElement;
+  const selVenueTier = document.getElementById('sel-venue-tier') as HTMLSelectElement;
+
+  // Default date to 2 weeks from today
+  if (inpDate && !inpDate.value) {
+    const d = new Date();
+    d.setDate(d.getDate() + 14);
+    inpDate.value = d.toISOString().split('T')[0];
+  }
+
+  // Track YES/NO options state
+  const ynState: Record<string, 'YES' | 'NO'> = {
+    vis_tvs: 'YES',
+    vis_led: 'YES',
+    vis_projectors: 'YES',
+    vis_1f_tv: 'YES',
+    vis_backdrop: 'NO',
+    mus_dj: 'NO',
+    mus_playlist: 'YES',
+    mus_mics: 'YES',
+    mus_style: 'YES',
+    mus_photographer: 'NO'
+  };
+
+  let selectedPkg: 'tally' | 'tickets' | 'aycd' | 'other' = 'aycd';
+
+  // Sync Attending Number & Slider & AYCD Guests
+  const syncGuests = (val: number) => {
+    const clean = Math.max(1, val || 1);
+    if (inpAttending) inpAttending.value = String(clean);
+    if (rngAttending) rngAttending.value = String(Math.min(300, clean));
+    if (inpAycdGuests) inpAycdGuests.value = String(clean);
+    updateQuote();
+  };
+
+  inpAttending?.addEventListener('input', () => syncGuests(Number(inpAttending.value)));
+  rngAttending?.addEventListener('input', () => syncGuests(Number(rngAttending.value)));
+
+  // Auto-calculate duration when start/end time changes
+  const calcDurationFromTimes = () => {
+    if (!inpStartTime?.value || !inpEndTime?.value) return;
+    const [sh, sm] = inpStartTime.value.split(':').map(Number);
+    const [eh, em] = inpEndTime.value.split(':').map(Number);
+    let startMin = sh * 60 + sm;
+    let endMin = eh * 60 + em;
+    if (endMin <= startMin) endMin += 24 * 60; // Crosses midnight
+    const hrs = Math.max(1, Math.round(((endMin - startMin) / 60) * 2) / 2);
+    if (inpDuration) inpDuration.value = String(hrs);
+    if (inpAycdHours) inpAycdHours.value = String(hrs);
+    updateQuote();
+  };
+
+  inpStartTime?.addEventListener('change', calcDurationFromTimes);
+  inpEndTime?.addEventListener('change', calcDurationFromTimes);
+  inpDuration?.addEventListener('input', () => {
+    if (inpAycdHours) inpAycdHours.value = inpDuration.value;
+    updateQuote();
+  });
+
+  // YES/NO Toggles
+  document.querySelectorAll('.yn-switch').forEach(sw => {
+    const optKey = sw.getAttribute('data-opt');
+    if (!optKey) return;
+    const btns = sw.querySelectorAll('.yn-btn');
+    btns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const val = btn.getAttribute('data-val') as 'YES' | 'NO';
+        ynState[optKey] = val;
+        btns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        updateQuote();
+      });
+    });
+  });
+
+  // Drink Package Card Selection
+  const pkgCards = document.querySelectorAll('.drink-pkg-card');
+  const setActivePkg = (pkgKey: 'tally' | 'tickets' | 'aycd' | 'other') => {
+    selectedPkg = pkgKey;
+    pkgCards.forEach(card => {
+      const k = card.getAttribute('data-pkg-card');
+      const isSelected = k === pkgKey;
+      card.classList.toggle('active', isSelected);
+      const badge = card.querySelector('.pkg-status-indicator');
+      if (badge) {
+        badge.textContent = isSelected
+          ? badge.getAttribute('data-selected-lbl')
+          : badge.getAttribute('data-select-lbl');
+      }
+    });
+    updateQuote();
+  };
+
+  pkgCards.forEach(card => {
+    card.addEventListener('click', () => {
+      const k = card.getAttribute('data-pkg-card') as 'tally' | 'tickets' | 'aycd' | 'other';
+      if (k) setActivePkg(k);
+    });
+  });
+
+  // Quick ticket multiplier pills
+  document.querySelectorAll('.mult-pill').forEach(pill => {
+    pill.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const mult = Number(pill.getAttribute('data-ticket-mult') || 1);
+      const guests = Number(inpAttending?.value || 60);
+      if (inpTicketQty) inpTicketQty.value = String(guests * mult);
+      setActivePkg('tickets');
+    });
+  });
+
+  // Food checkbox toggle
+  chkAddFood?.addEventListener('change', () => {
+    if (foodBudgetWrap) {
+      foodBudgetWrap.style.display = chkAddFood.checked ? 'flex' : 'none';
+    }
+    updateQuote();
+  });
+
+  // Format currency helper
+  const fmtNTD = (num: number) => num.toLocaleString('en-US');
+
+  // Build Quote Line Items & Sync Both Live Table and PDF DOM
+  interface QuoteLine {
+    item: string;
+    qty: string;
+    priceNum: number | null; // null means TBD
+    priceText: string;
+  }
+
+  const getQuoteState = () => {
+    const title = inpTitle?.value.trim() || 'Private Event at Opéra';
+    const rawDate = inpDate?.value || '';
+    const formattedDate = rawDate ? rawDate.replace(/-/g, '/') : '';
+    const guestName = inpGuestName?.value.trim() || '';
+    const taxId = inpTaxId?.value.trim() || '';
+    const contact = inpContact?.value.trim() || '';
+    const attending = Number(inpAttending?.value || 60);
+    const startTime = inpStartTime?.value || '19:00';
+    const endTime = inpEndTime?.value || '22:00';
+    const duration = Number(inpDuration?.value || 3);
+    const eventTimeStr = `${startTime} – ${endTime} (${duration} hrs)`;
+    const setupTime = inpSetupTime?.value.trim() || '';
+    const musicStyleText = inpMusicStyle?.value.trim() || '';
+    const otherRequests = inpOtherRequests?.value.trim() || '';
+
+    // Update live package mini previews
+    const ticketQty = Math.max(1, Number(inpTicketQty?.value || 100));
+    const ticketsTotal = ticketQty * 300;
+    const calcTicketsEl = document.getElementById('calc-tickets-preview');
+    if (calcTicketsEl) calcTicketsEl.textContent = `= ${fmtNTD(ticketsTotal)} NTD$`;
+
+    const aycdGuests = Math.max(1, Number(inpAycdGuests?.value || attending));
+    const aycdHours = Math.max(0.5, Number(inpAycdHours?.value || duration));
+    const aycdTotal = Math.round(aycdGuests * aycdHours * 400);
+    const calcAycdEl = document.getElementById('calc-aycd-preview');
+    if (calcAycdEl) calcAycdEl.textContent = `= ${fmtNTD(aycdTotal)} NTD$`;
+
+    const lines: QuoteLine[] = [];
+    let hasTbd = false;
+
+    // 1. Selected Drink Package Line
+    if (selectedPkg === 'tally') {
+      const cap = Number(inpTallyCap?.value || 0);
+      const policyRadio = document.querySelector('input[name="tallyPolicy"]:checked') as HTMLInputElement;
+      const policy = policyRadio?.value || 'Check with host to extend';
+      if (cap > 0) {
+        lines.push({
+          item: `Open Bar Tally Up (Master Tab — Cap: ${fmtNTD(cap)} NTD, ${policy})`,
+          qty: '1 Master Tab',
+          priceNum: cap,
+          priceText: `${fmtNTD(cap)} NTD$`
+        });
+      } else {
+        hasTbd = true;
+        lines.push({
+          item: `Open Bar Tally Up (Master Tab — ${policy})`,
+          qty: '1 Master Tab',
+          priceNum: null,
+          priceText: 'TBD (On consumption)'
+        });
+      }
+    } else if (selectedPkg === 'tickets') {
+      lines.push({
+        item: 'Drink Tickets (300 NTD per ticket)',
+        qty: `${fmtNTD(ticketQty)} tickets`,
+        priceNum: ticketsTotal,
+        priceText: `${fmtNTD(ticketsTotal)} NTD$`
+      });
+    } else if (selectedPkg === 'aycd') {
+      lines.push({
+        item: `All-You-Can-Drink (400 NTD / guest / hr)`,
+        qty: `${aycdGuests} guests × ${aycdHours} hrs`,
+        priceNum: aycdTotal,
+        priceText: `${fmtNTD(aycdTotal)} NTD$`
+      });
+    } else if (selectedPkg === 'other') {
+      const customDesc = inpOtherPkgDesc?.value.trim() || 'Custom Beverage / Rental Arrangement';
+      const customAmt = Number(inpOtherPkgAmount?.value || 0);
+      if (customAmt > 0) {
+        lines.push({
+          item: `Custom Package: ${customDesc}`,
+          qty: '1',
+          priceNum: customAmt,
+          priceText: `${fmtNTD(customAmt)} NTD$`
+        });
+      } else {
+        hasTbd = true;
+        lines.push({
+          item: `Custom Package: ${customDesc}`,
+          qty: '1',
+          priceNum: null,
+          priceText: 'TBD'
+        });
+      }
+    }
+
+    // 2. Optional Finger Food & Catering
+    if (chkAddFood?.checked) {
+      const foodPerGuest = Math.max(0, Number(inpFoodPerGuest?.value || 400));
+      const foodTotal = attending * foodPerGuest;
+      lines.push({
+        item: `Finger Food & Catering (${fmtNTD(foodPerGuest)} NTD / guest)`,
+        qty: `${attending} guests`,
+        priceNum: foodTotal,
+        priceText: `${fmtNTD(foodTotal)} NTD$`
+      });
+    }
+
+    // 3. Venue Privatization / Minimum Spend Tier
+    const tier = selVenueTier?.value || 'none';
+    const currentFbTotal = lines.reduce((acc, l) => acc + (l.priceNum || 0), 0);
+
+    if (tier === 'day_venue') {
+      const venueCost = Math.round(duration * 5000);
+      lines.push({
+        item: 'Daytime Venue Privatization (Venue Only — 5,000 NTD / hr)',
+        qty: `${duration} hrs`,
+        priceNum: venueCost,
+        priceText: `${fmtNTD(venueCost)} NTD$`
+      });
+    } else if (tier === 'day_fb') {
+      const minSpend = Math.round(duration * 15000);
+      if (currentFbTotal < minSpend) {
+        const diff = minSpend - currentFbTotal;
+        lines.push({
+          item: `Daytime Privatization Minimum Spend Balance (Min. ${fmtNTD(minSpend)} NTD)`,
+          qty: 'Balance',
+          priceNum: diff,
+          priceText: `${fmtNTD(diff)} NTD$`
+        });
+      }
+    } else if (tier === 'night_weekday') {
+      const minSpend = 100000;
+      if (currentFbTotal < minSpend) {
+        const diff = minSpend - currentFbTotal;
+        lines.push({
+          item: 'Nighttime Weekday Minimum Spend Balance (Min. 100,000 NTD)',
+          qty: 'Balance',
+          priceNum: diff,
+          priceText: `${fmtNTD(diff)} NTD$`
+        });
+      }
+    } else if (tier === 'night_weekend') {
+      const minSpend = 200000;
+      if (currentFbTotal < minSpend) {
+        const diff = minSpend - currentFbTotal;
+        lines.push({
+          item: 'Nighttime Weekend Minimum Spend Balance (Min. 200,000 NTD)',
+          qty: 'Balance',
+          priceNum: diff,
+          priceText: `${fmtNTD(diff)} NTD$`
+        });
+      }
+    }
+
+    // 4. Add selected TBD services so they appear clearly on the Quote table
+    if (ynState.vis_backdrop === 'YES') {
+      hasTbd = true;
+      lines.push({
+        item: 'Custom Backdrop Print (Visuals)',
+        qty: '1',
+        priceNum: null,
+        priceText: 'TBD'
+      });
+    }
+    if (ynState.mus_dj === 'YES') {
+      hasTbd = true;
+      lines.push({
+        item: 'Live Event DJ Performance',
+        qty: `${duration} hrs`,
+        priceNum: null,
+        priceText: 'TBD'
+      });
+    }
+    if (ynState.mus_photographer === 'YES') {
+      hasTbd = true;
+      lines.push({
+        item: 'Event Photographer Service',
+        qty: `${duration} hrs`,
+        priceNum: null,
+        priceText: 'TBD'
+      });
+    }
+
+    const subtotal = lines.reduce((sum, l) => sum + (l.priceNum || 0), 0);
+    const vat = Math.round(subtotal * 0.05);
+    const grandTotal = subtotal + vat;
+
+    return {
+      title,
+      rawDate,
+      formattedDate,
+      guestName,
+      taxId,
+      contact,
+      attending,
+      startTime,
+      endTime,
+      duration,
+      eventTimeStr,
+      setupTime,
+      musicStyleText,
+      otherRequests,
+      lines,
+      hasTbd,
+      subtotal,
+      vat,
+      grandTotal
+    };
+  };
+
+  const updateQuote = () => {
+    const state = getQuoteState();
+
+    // Update Live Web Summary
+    const liveTitle = document.getElementById('live-summary-title');
+    if (liveTitle) liveTitle.textContent = `Quote — ${state.title}`;
+
+    const liveTbody = document.getElementById('live-quote-tbody');
+    if (liveTbody) {
+      liveTbody.innerHTML = state.lines
+        .map(
+          l => `
+          <tr>
+            <td>${l.item}</td>
+            <td class="text-center">${l.qty}</td>
+            <td class="text-right">${l.priceText}</td>
+          </tr>
+        `
+        )
+        .join('');
+    }
+
+    const tbdSuffix = state.hasTbd ? ' + TBD' : '';
+    const elSub = document.getElementById('live-subtotal');
+    const elVat = document.getElementById('live-vat');
+    const elGrand = document.getElementById('live-grand-total');
+    if (elSub) elSub.textContent = `${fmtNTD(state.subtotal)}${tbdSuffix}`;
+    if (elVat) elVat.textContent = `${fmtNTD(state.vat)}`;
+    if (elGrand) elGrand.textContent = `${fmtNTD(state.grandTotal)}${tbdSuffix}`;
+
+    const tbdNote = document.getElementById('live-tbd-note');
+    if (tbdNote) tbdNote.style.display = state.hasTbd ? 'block' : 'none';
+
+    // Update Hidden Official 2-Page PDF DOM
+    const setTxt = (id: string, val: string) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = val;
+    };
+
+    setTxt('pdf-title', state.title);
+    setTxt('pdf-date', state.formattedDate);
+    setTxt('pdf-guest-name', state.guestName);
+    setTxt('pdf-tax-id', state.taxId);
+    setTxt('pdf-contact', state.contact);
+    setTxt('pdf-attending', `${state.attending} guests`);
+    setTxt('pdf-event-time', state.eventTimeStr);
+    setTxt('pdf-setup-time', state.setupTime);
+
+    // Sync YES/NO checkmarks in PDF Page 1
+    Object.keys(ynState).forEach(k => {
+      const isYes = ynState[k] === 'YES';
+      setTxt(`pdf-${k}-yes`, isYes ? '✓' : '');
+      setTxt(`pdf-${k}-no`, !isYes ? '✓' : '');
+    });
+
+    // Combine Other Requests + Music Style for PDF Page 1
+    const otherParts: string[] = [];
+    if (ynState.mus_style === 'YES' && state.musicStyleText) {
+      otherParts.push(`Music Style Preference: ${state.musicStyleText}`);
+    }
+    if (state.otherRequests) {
+      otherParts.push(state.otherRequests);
+    }
+    setTxt('pdf-other-requests-val', otherParts.join('\n'));
+
+    // Populate PDF Page 2 Quote Table (minimum 6 rows to match template)
+    const pdfQuoteTbody = document.getElementById('pdf-quote-tbody');
+    if (pdfQuoteTbody) {
+      const totalRows = Math.max(6, state.lines.length);
+      let rowsHtml = '';
+      for (let i = 0; i < totalRows; i++) {
+        const line = state.lines[i];
+        rowsHtml += `
+          <tr>
+            <td>${line ? line.item : '&nbsp;'}</td>
+            <td>${line ? line.qty : '&nbsp;'}</td>
+            <td style="text-align: right;">${line ? line.priceText : '&nbsp;'}</td>
+          </tr>
+        `;
+      }
+      pdfQuoteTbody.innerHTML = rowsHtml;
+    }
+
+    setTxt('pdf-subtotal', `${fmtNTD(state.subtotal)}${tbdSuffix}`);
+    setTxt('pdf-vat', `${fmtNTD(state.vat)}`);
+    setTxt('pdf-grand-total', `${fmtNTD(state.grandTotal)}${tbdSuffix}`);
+  };
+
+  // Attach input listeners to all form inputs
+  document.querySelectorAll('#quote-builder-form input, #quote-builder-form textarea, #quote-builder-form select').forEach(el => {
+    el.addEventListener('input', updateQuote);
+    el.addEventListener('change', updateQuote);
+  });
+
+  // 5. URL Query Parameter State Serialization (Shareable Quote Link)
+  const buildShareableUrl = () => {
+    const state = getQuoteState();
+    const params = new URLSearchParams();
+    params.set('title', state.title);
+    if (state.rawDate) params.set('date', state.rawDate);
+    if (state.guestName) params.set('name', state.guestName);
+    if (state.taxId) params.set('tax', state.taxId);
+    if (state.contact) params.set('contact', state.contact);
+    params.set('guests', String(state.attending));
+    params.set('start', state.startTime);
+    params.set('end', state.endTime);
+    params.set('dur', String(state.duration));
+    if (state.setupTime) params.set('setup', state.setupTime);
+    params.set('pkg', selectedPkg);
+    if (inpTallyCap?.value) params.set('cap', inpTallyCap.value);
+    if (inpTicketQty?.value) params.set('tix', inpTicketQty.value);
+    if (chkAddFood?.checked) params.set('food', inpFoodPerGuest?.value || '400');
+    if (selVenueTier?.value && selVenueTier.value !== 'none') params.set('tier', selVenueTier.value);
+    if (ynState.vis_backdrop === 'YES') params.set('backdrop', '1');
+    if (ynState.mus_dj === 'YES') params.set('dj', '1');
+    if (ynState.mus_photographer === 'YES') params.set('photo', '1');
+    if (state.otherRequests) params.set('notes', state.otherRequests);
+
+    return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+  };
+
+  const restoreStateFromUrl = () => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.size === 0) return;
+
+    if (params.has('title') && inpTitle) inpTitle.value = params.get('title')!;
+    if (params.has('date') && inpDate) inpDate.value = params.get('date')!;
+    if (params.has('name') && inpGuestName) inpGuestName.value = params.get('name')!;
+    if (params.has('tax') && inpTaxId) inpTaxId.value = params.get('tax')!;
+    if (params.has('contact') && inpContact) inpContact.value = params.get('contact')!;
+    if (params.has('guests')) syncGuests(Number(params.get('guests')));
+    if (params.has('start') && inpStartTime) inpStartTime.value = params.get('start')!;
+    if (params.has('end') && inpEndTime) inpEndTime.value = params.get('end')!;
+    if (params.has('dur') && inpDuration) {
+      inpDuration.value = params.get('dur')!;
+      if (inpAycdHours) inpAycdHours.value = params.get('dur')!;
+    }
+    if (params.has('setup') && inpSetupTime) inpSetupTime.value = params.get('setup')!;
+    if (params.has('cap') && inpTallyCap) inpTallyCap.value = params.get('cap')!;
+    if (params.has('tix') && inpTicketQty) inpTicketQty.value = params.get('tix')!;
+    if (params.has('food') && chkAddFood) {
+      chkAddFood.checked = true;
+      if (foodBudgetWrap) foodBudgetWrap.style.display = 'flex';
+      if (inpFoodPerGuest) inpFoodPerGuest.value = params.get('food')!;
+    }
+    if (params.has('tier') && selVenueTier) selVenueTier.value = params.get('tier')!;
+    if (params.get('backdrop') === '1') ynState.vis_backdrop = 'YES';
+    if (params.get('dj') === '1') ynState.mus_dj = 'YES';
+    if (params.get('photo') === '1') ynState.mus_photographer = 'YES';
+    if (params.has('notes') && inpOtherRequests) inpOtherRequests.value = params.get('notes')!;
+
+    // Update UI switches to match restored ynState
+    Object.keys(ynState).forEach(optKey => {
+      const sw = document.querySelector(`.yn-switch[data-opt="${optKey}"]`);
+      if (sw) {
+        sw.querySelectorAll('.yn-btn').forEach(b => {
+          b.classList.toggle('active', b.getAttribute('data-val') === ynState[optKey]);
+        });
+      }
+    });
+
+    if (params.has('pkg')) {
+      const p = params.get('pkg') as 'tally' | 'tickets' | 'aycd' | 'other';
+      if (['tally', 'tickets', 'aycd', 'other'].includes(p)) {
+        setActivePkg(p);
+      }
+    }
+  };
+
+  // Preserve query parameters when switching language
+  document.querySelectorAll('[data-lang-switch]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const baseHref = link.getAttribute('href') || '/quote';
+      const url = new URL(buildShareableUrl());
+      window.location.href = `${baseHref}${url.search}`;
+    });
+  });
+
+  // 6. PDF Generation Function
+  const generateAndDownloadPdf = async () => {
+    updateQuote();
+    const state = getQuoteState();
+    const element = document.getElementById('pdf-document-template');
+    if (!element) return;
+
+    const btn = document.getElementById('btn-download-pdf');
+    const origHtml = btn?.innerHTML || '';
+    if (btn) btn.innerHTML = '<span>⏳ Generating PDF...</span>';
+
+    const safeName = (state.guestName || state.title || 'Event')
+      .replace(/[^a-zA-Z0-9\u4e00-\u9fa5_-]/g, '_')
+      .slice(0, 30);
+    const fileName = `Opera_Taipei_Quote_${safeName}_${state.rawDate || 'Reference'}.pdf`;
+
+    try {
+      const html2pdfLib = (window as any).html2pdf;
+      if (html2pdfLib) {
+        await html2pdfLib()
+          .set({
+            margin: 0,
+            filename: fileName,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: {
+              scale: 2,
+              useCORS: true,
+              letterRendering: true,
+              width: 794,
+              windowWidth: 794
+            },
+            jsPDF: { unit: 'px', format: [794, 1122], orientation: 'portrait', hotfixes: ['px_scaling'] }
+          })
+          .from(element)
+          .save();
+      } else {
+        window.print();
+      }
+    } catch (err) {
+      console.error('PDF generation error, falling back to native print:', err);
+      window.print();
+    } finally {
+      if (btn) btn.innerHTML = origHtml;
+    }
+  };
+
+  document.getElementById('btn-download-pdf')?.addEventListener('click', generateAndDownloadPdf);
+  document.getElementById('btn-print-pdf')?.addEventListener('click', () => {
+    updateQuote();
+    window.print();
+  });
+
+  // 7. Shareable Link Copy Button
+  document.getElementById('btn-share-link')?.addEventListener('click', async () => {
+    const shareUrl = buildShareableUrl();
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      const fb = document.getElementById('share-link-feedback');
+      if (fb) {
+        fb.style.display = 'block';
+        setTimeout(() => (fb.style.display = 'none'), 4000);
+      }
+    } catch {}
+  });
+
+  // 8. Build Plain-Text Summary & Send Email with Quote Request
+  const buildEmailSummary = () => {
+    const state = getQuoteState();
+    const shareUrl = buildShareableUrl();
+    const tbdSuffix = state.hasTbd ? ' + TBD' : '';
+
+    const itemsList = state.lines
+      .map(l => `  • ${l.item} (${l.qty}): ${l.priceText}`)
+      .join('\n');
+
+    const subject = `[Private Event Quote Request] ${state.title} - ${state.rawDate} (${state.attending} Guests)`;
+    const body = `Hello Opéra Taipei Events Team,
+
+I have generated a preliminary reference quote on your website and would love to get in touch to discuss and finalize our event details!
+(Please also find the formatted PDF quotation attached to this email.)
+
+=========================================
+1. EVENT & HOST INFORMATION
+=========================================
+- Event Title: ${state.title}
+- Event Date: ${state.formattedDate}
+- Guest / Company Name: ${state.guestName || 'N/A'}
+- Company Tax ID: ${state.taxId || 'N/A'}
+- Contact Info: ${state.contact || 'N/A'}
+- Attending Number: ${state.attending} guests
+- Event Time: ${state.eventTimeStr}
+- Setup Time: ${state.setupTime || 'N/A'}
+
+=========================================
+2. VISUALS & MUSIC OPTIONS
+=========================================
+- TVs: ${ynState.vis_tvs} | LED Walls: ${ynState.vis_led} | Window Projectors: ${ynState.vis_projectors} | 1F TV: ${ynState.vis_1f_tv}
+- Backdrop Print: ${ynState.vis_backdrop}
+- DJ: ${ynState.mus_dj} | Playlist: ${ynState.mus_playlist} | Microphones: ${ynState.mus_mics} | Photographer: ${ynState.mus_photographer}
+- Music Style: ${state.musicStyleText || 'N/A'}
+- Other Requests: ${state.otherRequests || 'None'}
+
+=========================================
+3. PRELIMINARY QUOTE BREAKDOWN (REFERENCE)
+=========================================
+${itemsList}
+
+- TOTAL ($NT): ${fmtNTD(state.subtotal)}${tbdSuffix}
+- 5% VAT ($NT): ${fmtNTD(state.vat)}
+- AMOUNT TO BE PAID ($NT): ${fmtNTD(state.grandTotal)}${tbdSuffix}
+
+=========================================
+4. INTERACTIVE QUOTE LINK
+=========================================
+${shareUrl}
+
+Best regards,
+${state.guestName || 'Event Host'}`;
+
+    return { subject, body };
+  };
+
+  const emailModal = document.getElementById('email-modal');
+  const closeEmailModal = () => emailModal?.classList.remove('active');
+  document.getElementById('close-email-modal')?.addEventListener('click', closeEmailModal);
+  document.getElementById('modal-done-btn')?.addEventListener('click', closeEmailModal);
+
+  document.getElementById('btn-send-email')?.addEventListener('click', async () => {
+    // 1. Trigger PDF download so the user has the PDF file ready to attach
+    await generateAndDownloadPdf();
+
+    // 2. Prepare mailto link
+    const { subject, body } = buildEmailSummary();
+    const mailtoHref = `mailto:contact@opera-taipei.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    const modalLink = document.getElementById('modal-mailto-link') as HTMLAnchorElement | null;
+    if (modalLink) modalLink.href = mailtoHref;
+
+    // 3. Show helpful modal & open email client
+    emailModal?.classList.add('active');
+    window.location.href = mailtoHref;
+  });
+
+  document.getElementById('modal-copy-text-btn')?.addEventListener('click', async (e) => {
+    const { body } = buildEmailSummary();
+    try {
+      await navigator.clipboard.writeText(body);
+      const btn = e.currentTarget as HTMLButtonElement;
+      const orig = btn.textContent;
+      btn.textContent = '✓ Copied!';
+      setTimeout(() => (btn.textContent = orig), 2500);
+    } catch {}
+  });
+
+  // Initialize on page load
+  restoreStateFromUrl();
+  updateQuote();
+</script>
