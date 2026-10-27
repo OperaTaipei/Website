@@ -42,6 +42,17 @@ const getQuoteLangLink = (targetLang: string) => {
   if (targetLang === 'en') return '/quote';
   return `/${targetLang}/quote`;
 };
+
+// Generate 30-min interval time options in strict AM / PM format
+const timeOptions = Array.from({ length: 48 }, (_, i) => {
+  const h24 = Math.floor(i / 2);
+  const m = i % 2 === 0 ? '00' : '30';
+  const period = h24 >= 12 ? 'PM' : 'AM';
+  const h12 = h24 % 12 === 0 ? 12 : h24 % 12;
+  const val = `${String(h24).padStart(2, '0')}:${m}`;
+  const label = `${String(h12).padStart(2, '0')}:${m} ${period}`;
+  return { val, label };
+});
 ---
 
 <Layout
@@ -162,33 +173,17 @@ const getQuoteLangLink = (targetLang: string) => {
                 <h3 class="sub-card-title">{t.floorplan_title}</h3>
                 <p class="sub-card-desc">{t.floorplan_desc}</p>
 
-                <div class="table-zones-list">
-                  <div class="table-zone-item">
-                    <span class="zone-name">Tables 1, 2, 3, 5</span>
-                    <span class="zone-cap">{t.res_capacity_1}</span>
-                    <span class="zone-min">10,000 NTD ({t.res_min_spend})</span>
-                  </div>
-                  <div class="table-zone-item">
-                    <span class="zone-name">Tables 6, 7</span>
-                    <span class="zone-cap">{t.res_capacity_2}</span>
-                    <span class="zone-min">5,000 NTD ({t.res_min_spend})</span>
-                  </div>
-                  <div class="table-zone-item">
-                    <span class="zone-name">Tables 4, 8</span>
-                    <span class="zone-cap">{t.res_capacity_3}</span>
-                    <span class="zone-min">15,000 NTD ({t.res_min_spend})</span>
-                  </div>
-                </div>
-
                 <div class="facilities-mini-box">
-                  <h4>{t.facilities_label}</h4>
+                  <h4>{t.trusted_col2}</h4>
                   <ul>
-                    <li>{t.fac1}</li>
-                    <li>{t.fac2}</li>
-                    <li>{t.fac3}</li>
-                    <li>{t.fac4}</li>
-                    <li>{t.fac5}</li>
-                    <li>{t.fac6} · {t.fac7}</li>
+                    <li>{t.trusted_e1}</li>
+                    <li>{t.trusted_e2}</li>
+                    <li>{t.trusted_e3}</li>
+                    <li>{t.trusted_e4}</li>
+                    <li>{t.trusted_e5}</li>
+                    <li>{t.trusted_e6}</li>
+                    <li>{t.trusted_e7}</li>
+                    <li>{t.trusted_e8}</li>
                   </ul>
                 </div>
               </div>
@@ -223,35 +218,9 @@ const getQuoteLangLink = (targetLang: string) => {
             </div>
           </div>
 
-          <!-- 3. Equipment, Services & Privatization Pricing Rules Section Block -->
+          <!-- 3. Equipments Section Block -->
           <div class="venue-sub-section" id="section-equipment">
             <div class="events-block-title">{t.venue_tab_equipment}</div>
-            <div class="events-two-columns" style="margin-bottom: 24px;">
-              <div class="events-card">
-                <div class="events-card-label">{t.events_day} <span class="events-card-note">{t.events_day_note}</span></div>
-                <div class="venue-price-row">
-                  <span class="venue-price-label">{t.events_hr_venue}</span>
-                  <span class="venue-price-amount">5,000 NTD / hr</span>
-                </div>
-                <div class="venue-price-row">
-                  <span class="venue-price-label">{t.events_hr_drinks}</span>
-                  <span class="venue-price-amount">15,000 NTD / hr</span>
-                </div>
-              </div>
-              <div class="events-card">
-                <div class="events-card-label">{t.events_night} <span class="events-card-note">{t.events_night_note}</span></div>
-                <div class="venue-price-row">
-                  <span class="venue-price-label">{t.events_weekday}</span>
-                  <span class="venue-price-amount">100,000 NTD</span>
-                </div>
-                <div class="venue-price-row">
-                  <span class="venue-price-label">{t.events_weekend}</span>
-                  <span class="venue-price-amount">200,000 NTD</span>
-                </div>
-              </div>
-            </div>
-            <p class="events-note" style="margin-bottom: 30px;">{t.events_note}</p>
-
             <div class="events-two-columns">
               <div class="events-card">
                 <div class="events-card-label">{t.services_label} <span class="events-card-note">{t.services_note}</span></div>
@@ -295,6 +264,37 @@ const getQuoteLangLink = (targetLang: string) => {
             <p class="section-label">{t.step1_label}</p>
             <h2 class="section-title" set:html={t.step1_title} />
             <div class="section-divider"></div>
+
+            <!-- Pricing Rules Block under Event Information Title -->
+            <div class="pricing-rules-block" style="margin-bottom: 40px;">
+              <div class="events-block-title">{t.pricing_rules_title}</div>
+              <div class="events-two-columns" style="margin-bottom: 18px;">
+                <div class="events-card">
+                  <div class="events-card-label">{t.events_day} <span class="events-card-note">{t.events_day_note}</span></div>
+                  <div class="venue-price-row">
+                    <span class="venue-price-label">{t.events_hr_venue}</span>
+                    <span class="venue-price-amount">5,000 NTD / hr</span>
+                  </div>
+                  <div class="venue-price-row">
+                    <span class="venue-price-label">{t.events_hr_drinks}</span>
+                    <span class="venue-price-amount">15,000 NTD / hr</span>
+                  </div>
+                </div>
+                <div class="events-card">
+                  <div class="events-card-label">{t.events_night} <span class="events-card-note">{t.events_night_note}</span></div>
+                  <div class="venue-price-row">
+                    <span class="venue-price-label">{t.events_weekday}</span>
+                    <span class="venue-price-amount">100,000 NTD</span>
+                  </div>
+                  <div class="venue-price-row">
+                    <span class="venue-price-label">{t.events_weekend}</span>
+                    <span class="venue-price-amount">200,000 NTD</span>
+                  </div>
+                </div>
+              </div>
+              <p class="events-note">{t.events_note}</p>
+            </div>
+
             <p class="quote-sec-intro">{t.step1_desc}</p>
 
             <div class="form-card">
@@ -322,11 +322,8 @@ const getQuoteLangLink = (targetLang: string) => {
                   <input type="text" id="inp-contact" name="contactInfo" placeholder={t.fld_contact_info_ph} />
                 </div>
 
-                <div class="form-group">
-                  <label for="inp-attending">
-                    {t.fld_attending}
-                    <span class="label-hint">({t.fld_attending_hint})</span>
-                  </label>
+                <div class="form-group form-group--full">
+                  <label for="inp-attending">{t.fld_attending}</label>
                   <div class="number-slider-wrap">
                     <input type="number" id="inp-attending" name="attending" min="1" max="350" value="60" />
                     <input type="range" id="rng-attending" min="10" max="300" step="5" value="60" />
@@ -334,26 +331,48 @@ const getQuoteLangLink = (targetLang: string) => {
                 </div>
 
                 <div class="form-group">
-                  <label for="inp-setup-time">{t.fld_setup_time}</label>
-                  <input type="text" id="inp-setup-time" name="setupTime" placeholder={t.fld_setup_ph} value="18:00 - 19:00" />
+                  <label>{t.fld_setup_time}</label>
+                  <p class="setup-free-note">{t.fld_setup_free_note}</p>
+                  <div class="early-setup-box">
+                    <div class="early-setup-row">
+                      <span class="early-setup-lbl">{t.fld_early_setup}</span>
+                      <div class="yn-switch" data-opt="early_setup">
+                        <button type="button" class="yn-btn" data-val="YES">{t.tbl_col_yes}</button>
+                        <button type="button" class="yn-btn active" data-val="NO">{t.tbl_col_no}</button>
+                      </div>
+                    </div>
+                    <div class="early-setup-time-wrap">
+                      <label for="inp-early-setup-time" class="sub-lbl">{t.fld_early_setup_time_lbl}</label>
+                      <select id="inp-early-setup-time" name="earlySetupTime" class="gold-select">
+                        {timeOptions.map(opt => (
+                          <option value={opt.val} selected={opt.val === '16:00'}>{opt.label}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
                 </div>
 
-                <div class="form-group form-group--full">
+                <div class="form-group">
                   <label>{t.fld_event_time}</label>
-                  <div class="time-range-grid">
+                  <div class="time-range-grid time-range-grid--two">
                     <div>
                       <span class="sub-lbl">{t.fld_event_start}</span>
-                      <input type="time" id="inp-start-time" name="startTime" value="19:00" />
+                      <select id="inp-start-time" name="startTime" class="gold-select">
+                        {timeOptions.map(opt => (
+                          <option value={opt.val} selected={opt.val === '19:00'}>{opt.label}</option>
+                        ))}
+                      </select>
                     </div>
                     <div>
                       <span class="sub-lbl">{t.fld_event_end}</span>
-                      <input type="time" id="inp-end-time" name="endTime" value="22:00" />
-                    </div>
-                    <div>
-                      <span class="sub-lbl">{t.fld_event_duration}</span>
-                      <input type="number" id="inp-duration" name="duration" min="1" max="12" step="0.5" value="3" />
+                      <select id="inp-end-time" name="endTime" class="gold-select">
+                        {timeOptions.map(opt => (
+                          <option value={opt.val} selected={opt.val === '22:00'}>{opt.label}</option>
+                        ))}
+                      </select>
                     </div>
                   </div>
+                  <input type="hidden" id="inp-duration" name="duration" value="3" />
                 </div>
               </div>
             </div>
@@ -644,7 +663,7 @@ const getQuoteLangLink = (targetLang: string) => {
             <div class="form-card addon-card" style="margin-top: 28px;">
               <h3 class="addon-heading">{t.addon_title}</h3>
               <div class="form-grid-2">
-                <!-- Finger food toggle -->
+                <!-- Finger food toggle & Outside catering switch -->
                 <div class="addon-box">
                   <label class="checkbox-lbl">
                     <input type="checkbox" id="chk-add-food" />
@@ -654,6 +673,14 @@ const getQuoteLangLink = (targetLang: string) => {
                   <div id="food-budget-wrap" class="food-budget-controls" style="display: none;">
                     <label for="inp-food-per-guest">{t.addon_food_per_guest}</label>
                     <input type="number" id="inp-food-per-guest" min="100" step="50" value="400" />
+                  </div>
+
+                  <div class="outside-catering-row">
+                    <span class="outside-catering-lbl">{t.addon_outside_catering}</span>
+                    <div class="yn-switch" data-opt="outside_catering">
+                      <button type="button" class="yn-btn" data-val="YES">{t.tbl_col_yes}</button>
+                      <button type="button" class="yn-btn active" data-val="NO">{t.tbl_col_no}</button>
+                    </div>
                   </div>
                 </div>
 
@@ -755,8 +782,8 @@ const getQuoteLangLink = (targetLang: string) => {
                 </div>
               </div>
 
-              <!-- Payment Terms & Company Legal Information (From PDF Page 2) -->
-              <div class="terms-and-legal-grid">
+              <!-- Payment Terms (From PDF Page 2) -->
+              <div class="terms-and-legal-grid terms-only">
                 <div class="terms-box">
                   <h4>{t.terms_title}</h4>
                   <ul>
@@ -764,23 +791,6 @@ const getQuoteLangLink = (targetLang: string) => {
                     <li>{t.term_2}</li>
                     <li>{t.term_3}</li>
                   </ul>
-                </div>
-
-                <div class="legal-box">
-                  <h4>{t.legal_title}</h4>
-                  <table class="legal-info-table">
-                    <tbody>
-                      <tr><th>{t.legal_company_name}</th><td>歐珀拉有限公司 (OPERA TAIPEI LIMITED)</td></tr>
-                      <tr><th>{t.legal_tax_id}</th><td>94271005</td></tr>
-                      <tr><th>{t.legal_reg_addr}</th><td>台北市松山區復興北路57號14樓之3</td></tr>
-                      <tr><th>{t.legal_loc_addr}</th><td>台北市松山區敦化北路100號15樓</td></tr>
-                      <tr><th>{t.legal_bank_name}</th><td>E. Sun Bank (玉山銀行)</td></tr>
-                      <tr><th>{t.legal_swift}</th><td>ESUNTWTP</td></tr>
-                      <tr><th>{t.legal_acc_name}</th><td>歐珀拉有限公司 OPERA TAIPEI LIMITED</td></tr>
-                      <tr><th>{t.legal_bank_num}</th><td>808</td></tr>
-                      <tr><th>{t.legal_acc_num}</th><td>0912940027234</td></tr>
-                    </tbody>
-                  </table>
                 </div>
               </div>
 
@@ -1046,7 +1056,7 @@ const getQuoteLangLink = (targetLang: string) => {
             <tr>
               <td class="pdf-legal-lbl">Company name</td>
               <td class="pdf-legal-val">歐珀拉有限公司</td>
-              <td rowspan="9" class="pdf-stamp-cell">
+              <td rowspan="10" class="pdf-stamp-cell">
                 <!-- Crisp SVG Company Stamp matching Page 2 of attached PDF -->
                 <svg viewBox="0 0 220 145" width="165" height="110" class="pdf-company-stamp">
                   <ellipse cx="110" cy="72" rx="102" ry="64" fill="none" stroke="#1e3a78" stroke-width="3.2" />
@@ -1089,8 +1099,12 @@ const getQuoteLangLink = (targetLang: string) => {
               <td class="pdf-legal-val">808</td>
             </tr>
             <tr>
-              <td class="pdf-legal-lbl">Account number</td>
+              <td class="pdf-legal-lbl">Account number NTD$</td>
               <td class="pdf-legal-val">0912940027234</td>
+            </tr>
+            <tr>
+              <td class="pdf-legal-lbl">Account number foreign currencies</td>
+              <td class="pdf-legal-val">0912879096466</td>
             </tr>
           </tbody>
         </table>
@@ -1469,7 +1483,7 @@ const getQuoteLangLink = (targetLang: string) => {
 
   .time-range-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 16px;
   }
 
@@ -1478,6 +1492,52 @@ const getQuoteLangLink = (targetLang: string) => {
     font-size: 0.7rem;
     color: var(--color-text-muted);
     margin-bottom: 6px;
+  }
+
+  .setup-free-note {
+    font-size: 0.78rem;
+    color: var(--color-gold-light);
+    margin: 2px 0 8px;
+    line-height: 1.45;
+  }
+
+  .early-setup-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(201, 168, 76, 0.22);
+    border-radius: 6px;
+    padding: 12px 14px;
+  }
+
+  .early-setup-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .early-setup-lbl {
+    font-size: 0.82rem;
+    color: var(--color-white);
+    font-weight: 500;
+  }
+
+  .early-setup-time-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .early-setup-time-wrap .sub-lbl {
+    margin-bottom: 0;
+    white-space: nowrap;
+  }
+
+  .early-setup-time-wrap select {
+    flex: 1;
   }
 
   /* Step 2: Visuals & Music Interactive Tables */
@@ -1802,6 +1862,23 @@ const getQuoteLangLink = (targetLang: string) => {
     border-radius: 4px;
   }
 
+  .outside-catering-row {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(201, 168, 76, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .outside-catering-lbl {
+    font-size: 0.82rem;
+    color: var(--color-white);
+    font-weight: 600;
+  }
+
   /* Step 4: Live Quote Summary Card */
   .quote-summary-card {
     background: var(--color-card);
@@ -1967,6 +2044,10 @@ const getQuoteLangLink = (targetLang: string) => {
     margin-top: 30px;
     padding-top: 28px;
     border-top: 1px solid var(--color-gold-border);
+  }
+
+  .terms-and-legal-grid.terms-only {
+    grid-template-columns: 1fr;
   }
 
   .terms-box h4,
@@ -2459,13 +2540,22 @@ const getQuoteLangLink = (targetLang: string) => {
   const inpContact = document.getElementById('inp-contact') as HTMLInputElement;
   const inpAttending = document.getElementById('inp-attending') as HTMLInputElement;
   const rngAttending = document.getElementById('rng-attending') as HTMLInputElement;
-  const inpStartTime = document.getElementById('inp-start-time') as HTMLInputElement;
-  const inpEndTime = document.getElementById('inp-end-time') as HTMLInputElement;
+  const inpStartTime = document.getElementById('inp-start-time') as HTMLSelectElement;
+  const inpEndTime = document.getElementById('inp-end-time') as HTMLSelectElement;
   const inpDuration = document.getElementById('inp-duration') as HTMLInputElement;
-  const inpSetupTime = document.getElementById('inp-setup-time') as HTMLInputElement;
+  const inpEarlySetupTime = document.getElementById('inp-early-setup-time') as HTMLSelectElement;
   const inpDjHours = document.getElementById('inp-dj-hours') as HTMLInputElement;
   const inpMusicStyle = document.getElementById('inp-music-style') as HTMLInputElement;
   const inpOtherRequests = document.getElementById('inp-other-requests') as HTMLTextAreaElement;
+
+  const formatAmPm = (time24: string) => {
+    if (!time24 || !time24.includes(':')) return time24;
+    const [hStr, mStr] = time24.split(':');
+    const h24 = Number(hStr);
+    const period = h24 >= 12 ? 'PM' : 'AM';
+    const h12 = h24 % 12 === 0 ? 12 : h24 % 12;
+    return `${String(h12).padStart(2, '0')}:${mStr} ${period}`;
+  };
 
   // Drink package inputs
   const inpTallyCap = document.getElementById('inp-tally-cap') as HTMLInputElement;
@@ -2490,6 +2580,8 @@ const getQuoteLangLink = (targetLang: string) => {
 
   // Track YES/NO options state
   const ynState: Record<string, 'YES' | 'NO'> = {
+    early_setup: 'NO',
+    outside_catering: 'NO',
     vis_tvs: 'YES',
     vis_led: 'YES',
     vis_projectors: 'YES',
@@ -2619,8 +2711,12 @@ const getQuoteLangLink = (targetLang: string) => {
     const startTime = inpStartTime?.value || '19:00';
     const endTime = inpEndTime?.value || '22:00';
     const duration = Number(inpDuration?.value || 3);
-    const eventTimeStr = `${startTime} – ${endTime} (${duration} hrs)`;
-    const setupTime = inpSetupTime?.value.trim() || '';
+    const eventTimeStr = `${formatAmPm(startTime)} – ${formatAmPm(endTime)}`;
+    const earlySetupTime = inpEarlySetupTime?.value || '16:00';
+    const setupTime =
+      ynState.early_setup === 'YES'
+        ? `Early setup at ${formatAmPm(earlySetupTime)} (Fee 5,000 NTD$)`
+        : '2h prior to event start (Free of charge)';
     const musicStyleText = inpMusicStyle?.value.trim() || '';
     const otherRequests = inpOtherRequests?.value.trim() || '';
 
@@ -2695,7 +2791,7 @@ const getQuoteLangLink = (targetLang: string) => {
       }
     }
 
-    // 2. Optional Finger Food & Catering
+    // 2. Optional Finger Food & Catering / Outside Catering
     if (chkAddFood?.checked) {
       const foodPerGuest = Math.max(0, Number(inpFoodPerGuest?.value || 400));
       const foodTotal = attending * foodPerGuest;
@@ -2704,6 +2800,14 @@ const getQuoteLangLink = (targetLang: string) => {
         qty: `${attending} guests`,
         priceNum: foodTotal,
         priceText: `${fmtNTD(foodTotal)} NTD$`
+      });
+    }
+    if (ynState.outside_catering === 'YES') {
+      lines.push({
+        item: 'Outside Catering (Corkage Fee 5,000 NTD$)',
+        qty: '1',
+        priceNum: 5000,
+        priceText: '5,000 NTD$'
       });
     }
 
@@ -2754,7 +2858,15 @@ const getQuoteLangLink = (targetLang: string) => {
       }
     }
 
-    // 4. Add selected services (DJ at 1,000 NTD/h, Backdrop & Photographer with detailed quote note)
+    // 4. Add selected services (Early Setup, DJ at 1,000 NTD/h, Backdrop & Photographer with detailed quote note)
+    if (ynState.early_setup === 'YES') {
+      lines.push({
+        item: `Early Setup (${formatAmPm(earlySetupTime)} — Fee 5,000 NTD$)`,
+        qty: '1',
+        priceNum: 5000,
+        priceText: '5,000 NTD$'
+      });
+    }
     const djHours = Math.max(0.5, Number(inpDjHours?.value || duration));
     if (ynState.mus_dj === 'YES') {
       const djCost = Math.round(djHours * 1000);
@@ -2801,6 +2913,7 @@ const getQuoteLangLink = (targetLang: string) => {
       duration,
       djHours,
       eventTimeStr,
+      earlySetupTime,
       setupTime,
       musicStyleText,
       otherRequests,
@@ -2811,6 +2924,18 @@ const getQuoteLangLink = (targetLang: string) => {
       grandTotal
     };
   };
+
+  // Auto-enable Early Setup toggle if user changes early setup time dropdown directly
+  inpEarlySetupTime?.addEventListener('change', () => {
+    ynState.early_setup = 'YES';
+    const sw = document.querySelector('.yn-switch[data-opt="early_setup"]');
+    if (sw) {
+      sw.querySelectorAll('.yn-btn').forEach(b => {
+        b.classList.toggle('active', b.getAttribute('data-val') === 'YES');
+      });
+    }
+    updateQuote();
+  });
 
   // Auto-enable DJ toggle if user edits DJ hours box directly
   inpDjHours?.addEventListener('input', () => {
@@ -2943,11 +3068,15 @@ const getQuoteLangLink = (targetLang: string) => {
     params.set('start', state.startTime);
     params.set('end', state.endTime);
     params.set('dur', String(state.duration));
-    if (state.setupTime) params.set('setup', state.setupTime);
+    if (ynState.early_setup === 'YES') {
+      params.set('es', '1');
+      params.set('est', state.earlySetupTime);
+    }
     params.set('pkg', selectedPkg);
     if (inpTallyCap?.value) params.set('cap', inpTallyCap.value);
     if (inpTicketQty?.value) params.set('tix', inpTicketQty.value);
     if (chkAddFood?.checked) params.set('food', inpFoodPerGuest?.value || '400');
+    if (ynState.outside_catering === 'YES') params.set('oc', '1');
     if (selVenueTier?.value && selVenueTier.value !== 'none') params.set('tier', selVenueTier.value);
     if (ynState.vis_backdrop === 'YES') params.set('backdrop', '1');
     if (ynState.mus_dj === 'YES') {
@@ -2976,7 +3105,8 @@ const getQuoteLangLink = (targetLang: string) => {
       inpDuration.value = params.get('dur')!;
       if (inpAycdHours) inpAycdHours.value = params.get('dur')!;
     }
-    if (params.has('setup') && inpSetupTime) inpSetupTime.value = params.get('setup')!;
+    if (params.get('es') === '1') ynState.early_setup = 'YES';
+    if (params.has('est') && inpEarlySetupTime) inpEarlySetupTime.value = params.get('est')!;
     if (params.has('cap') && inpTallyCap) inpTallyCap.value = params.get('cap')!;
     if (params.has('tix') && inpTicketQty) inpTicketQty.value = params.get('tix')!;
     if (params.has('food') && chkAddFood) {
@@ -2984,6 +3114,7 @@ const getQuoteLangLink = (targetLang: string) => {
       if (foodBudgetWrap) foodBudgetWrap.style.display = 'flex';
       if (inpFoodPerGuest) inpFoodPerGuest.value = params.get('food')!;
     }
+    if (params.get('oc') === '1') ynState.outside_catering = 'YES';
     if (params.has('tier') && selVenueTier) selVenueTier.value = params.get('tier')!;
     if (params.get('backdrop') === '1') ynState.vis_backdrop = 'YES';
     if (params.get('dj') === '1') ynState.mus_dj = 'YES';
