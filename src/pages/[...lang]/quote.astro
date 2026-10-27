@@ -367,12 +367,15 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
                       </div>
                     </div>
                     <div class="early-setup-time-wrap">
-                      <label for="inp-early-setup-time" class="sub-lbl">{t.fld_early_setup_time_lbl}</label>
-                      <select id="inp-early-setup-time" name="earlySetupTime" class="gold-select">
-                        {timeOptions.map(opt => (
-                          <option value={opt.val} selected={opt.val === '16:00'}>{opt.label}</option>
-                        ))}
-                      </select>
+                      <label for="inp-early-setup-text" class="sub-lbl">{t.fld_early_setup_time_lbl}</label>
+                      <div class="time-input-combo">
+                        <input type="text" id="inp-early-setup-text" value="04:00" placeholder="hh:mm" class="time-text-inp" />
+                        <select id="sel-early-setup-ampm" class="gold-select time-ampm-sel">
+                          <option value="AM">AM</option>
+                          <option value="PM" selected>PM</option>
+                        </select>
+                      </div>
+                      <input type="hidden" id="inp-early-setup-time" name="earlySetupTime" value="16:00" />
                     </div>
                   </div>
                 </div>
@@ -382,19 +385,25 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
                   <div class="time-range-grid time-range-grid--two">
                     <div>
                       <span class="sub-lbl">{t.fld_event_start}</span>
-                      <select id="inp-start-time" name="startTime" class="gold-select">
-                        {timeOptions.map(opt => (
-                          <option value={opt.val} selected={opt.val === '19:00'}>{opt.label}</option>
-                        ))}
-                      </select>
+                      <div class="time-input-combo">
+                        <input type="text" id="inp-start-text" value="07:00" placeholder="hh:mm" class="time-text-inp" />
+                        <select id="sel-start-ampm" class="gold-select time-ampm-sel">
+                          <option value="AM">AM</option>
+                          <option value="PM" selected>PM</option>
+                        </select>
+                      </div>
+                      <input type="hidden" id="inp-start-time" name="startTime" value="19:00" />
                     </div>
                     <div>
                       <span class="sub-lbl">{t.fld_event_end}</span>
-                      <select id="inp-end-time" name="endTime" class="gold-select">
-                        {timeOptions.map(opt => (
-                          <option value={opt.val} selected={opt.val === '22:00'}>{opt.label}</option>
-                        ))}
-                      </select>
+                      <div class="time-input-combo">
+                        <input type="text" id="inp-end-text" value="10:00" placeholder="hh:mm" class="time-text-inp" />
+                        <select id="sel-end-ampm" class="gold-select time-ampm-sel">
+                          <option value="AM">AM</option>
+                          <option value="PM" selected>PM</option>
+                        </select>
+                      </div>
+                      <input type="hidden" id="inp-end-time" name="endTime" value="22:00" />
                     </div>
                   </div>
                   <input type="hidden" id="inp-duration" name="duration" value="3" />
@@ -1517,6 +1526,29 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
 
   .early-setup-time-wrap select {
     flex: 1;
+  }
+
+  .time-input-combo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+  }
+
+  .time-text-inp {
+    flex: 1;
+    min-width: 78px;
+    text-align: center;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+
+  .time-ampm-sel {
+    width: 82px !important;
+    flex: 0 0 82px !important;
+    padding-left: 10px !important;
+    padding-right: 26px !important;
+    font-weight: 600;
   }
 
   /* Visual Calendar Widget */
@@ -2743,13 +2775,67 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
   const inpContact = document.getElementById('inp-contact') as HTMLInputElement;
   const inpAttending = document.getElementById('inp-attending') as HTMLInputElement;
   const rngAttending = document.getElementById('rng-attending') as HTMLInputElement;
-  const inpStartTime = document.getElementById('inp-start-time') as HTMLSelectElement;
-  const inpEndTime = document.getElementById('inp-end-time') as HTMLSelectElement;
+  const inpStartTime = document.getElementById('inp-start-time') as HTMLInputElement;
+  const inpEndTime = document.getElementById('inp-end-time') as HTMLInputElement;
   const inpDuration = document.getElementById('inp-duration') as HTMLInputElement;
-  const inpEarlySetupTime = document.getElementById('inp-early-setup-time') as HTMLSelectElement;
+  const inpEarlySetupTime = document.getElementById('inp-early-setup-time') as HTMLInputElement;
+
+  const inpEarlySetupText = document.getElementById('inp-early-setup-text') as HTMLInputElement;
+  const selEarlySetupAmPm = document.getElementById('sel-early-setup-ampm') as HTMLSelectElement;
+  const inpStartText = document.getElementById('inp-start-text') as HTMLInputElement;
+  const selStartAmPm = document.getElementById('sel-start-ampm') as HTMLSelectElement;
+  const inpEndText = document.getElementById('inp-end-text') as HTMLInputElement;
+  const selEndAmPm = document.getElementById('sel-end-ampm') as HTMLSelectElement;
+
   const inpDjHours = document.getElementById('inp-dj-hours') as HTMLInputElement;
   const inpMusicStyle = document.getElementById('inp-music-style') as HTMLInputElement;
   const inpOtherRequests = document.getElementById('inp-other-requests') as HTMLTextAreaElement;
+
+  const parse12hTo24h = (rawText: string, period: string, fallback24: string) => {
+    const clean = (rawText || '').trim().replace(/[^0-9:]/g, '');
+    if (!clean) return fallback24;
+    const parts = clean.split(':');
+    let h = parseInt(parts[0] || '0', 10);
+    let m = parseInt(parts[1] || '0', 10);
+    if (isNaN(h)) return fallback24;
+    if (isNaN(m) || m < 0) m = 0;
+    if (m > 59) m = 59;
+
+    const isPm = period === 'PM';
+    if (h >= 1 && h <= 12) {
+      if (isPm && h < 12) h += 12;
+      if (!isPm && h === 12) h = 0;
+    } else if (h > 23) {
+      h = h % 24;
+    }
+    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+  };
+
+  const set12hComboFrom24h = (
+    time24: string,
+    textEl: HTMLInputElement | null,
+    ampmEl: HTMLSelectElement | null
+  ) => {
+    if (!time24 || !time24.includes(':')) return;
+    const [hStr, mStr] = time24.split(':');
+    const h24 = Number(hStr);
+    const period = h24 >= 12 ? 'PM' : 'AM';
+    const h12 = h24 % 12 === 0 ? 12 : h24 % 12;
+    if (textEl) textEl.value = `${String(h12).padStart(2, '0')}:${mStr}`;
+    if (ampmEl) ampmEl.value = period;
+  };
+
+  const syncAllTimeCombos = () => {
+    if (inpEarlySetupTime && inpEarlySetupText && selEarlySetupAmPm) {
+      inpEarlySetupTime.value = parse12hTo24h(inpEarlySetupText.value, selEarlySetupAmPm.value, '16:00');
+    }
+    if (inpStartTime && inpStartText && selStartAmPm) {
+      inpStartTime.value = parse12hTo24h(inpStartText.value, selStartAmPm.value, '19:00');
+    }
+    if (inpEndTime && inpEndText && selEndAmPm) {
+      inpEndTime.value = parse12hTo24h(inpEndText.value, selEndAmPm.value, '22:00');
+    }
+  };
 
   const formatAmPm = (time24: string) => {
     if (!time24 || !time24.includes(':')) return time24;
@@ -2904,6 +2990,7 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
 
   // Auto-calculate duration when start/end time changes
   const calcDurationFromTimes = () => {
+    syncAllTimeCombos();
     if (!inpStartTime?.value || !inpEndTime?.value) return;
     const [sh, sm] = inpStartTime.value.split(':').map(Number);
     const [eh, em] = inpEndTime.value.split(':').map(Number);
@@ -2916,8 +3003,10 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     updateQuote();
   };
 
-  inpStartTime?.addEventListener('change', calcDurationFromTimes);
-  inpEndTime?.addEventListener('change', calcDurationFromTimes);
+  inpStartText?.addEventListener('input', calcDurationFromTimes);
+  selStartAmPm?.addEventListener('change', calcDurationFromTimes);
+  inpEndText?.addEventListener('input', calcDurationFromTimes);
+  selEndAmPm?.addEventListener('change', calcDurationFromTimes);
   inpDuration?.addEventListener('input', () => {
     if (inpAycdHours) inpAycdHours.value = inpDuration.value;
     updateQuote();
@@ -3002,6 +3091,7 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
   }
 
   const getQuoteState = () => {
+    syncAllTimeCombos();
     const title = inpTitle?.value.trim() || 'Private Event at Opéra';
     const rawDate = inpDate?.value || '';
     const formattedDate = rawDate ? rawDate.replace(/-/g, '/') : '';
@@ -3273,8 +3363,9 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     };
   };
 
-  // Auto-enable Early Setup toggle if user changes early setup time dropdown directly
-  inpEarlySetupTime?.addEventListener('change', () => {
+  // Auto-enable Early Setup toggle if user edits early setup time input or AM/PM directly
+  const onEarlySetupTimeInput = () => {
+    syncAllTimeCombos();
     ynState.early_setup = 'YES';
     const sw = document.querySelector('.yn-switch[data-opt="early_setup"]');
     if (sw) {
@@ -3283,7 +3374,9 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
       });
     }
     updateQuote();
-  });
+  };
+  inpEarlySetupText?.addEventListener('input', onEarlySetupTimeInput);
+  selEarlySetupAmPm?.addEventListener('change', onEarlySetupTimeInput);
 
   // Auto-enable DJ toggle if user edits DJ hours box directly
   inpDjHours?.addEventListener('input', () => {
@@ -3478,14 +3571,23 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     if (params.has('tax') && inpTaxId) inpTaxId.value = params.get('tax')!;
     if (params.has('contact') && inpContact) inpContact.value = params.get('contact')!;
     if (params.has('guests')) syncGuests(Number(params.get('guests')));
-    if (params.has('start') && inpStartTime) inpStartTime.value = params.get('start')!;
-    if (params.has('end') && inpEndTime) inpEndTime.value = params.get('end')!;
+    if (params.has('start') && inpStartTime) {
+      inpStartTime.value = params.get('start')!;
+      set12hComboFrom24h(inpStartTime.value, inpStartText, selStartAmPm);
+    }
+    if (params.has('end') && inpEndTime) {
+      inpEndTime.value = params.get('end')!;
+      set12hComboFrom24h(inpEndTime.value, inpEndText, selEndAmPm);
+    }
     if (params.has('dur') && inpDuration) {
       inpDuration.value = params.get('dur')!;
       if (inpAycdHours) inpAycdHours.value = params.get('dur')!;
     }
     if (params.get('es') === '1') ynState.early_setup = 'YES';
-    if (params.has('est') && inpEarlySetupTime) inpEarlySetupTime.value = params.get('est')!;
+    if (params.has('est') && inpEarlySetupTime) {
+      inpEarlySetupTime.value = params.get('est')!;
+      set12hComboFrom24h(inpEarlySetupTime.value, inpEarlySetupText, selEarlySetupAmPm);
+    }
     if (params.has('cap') && inpTallyCap) inpTallyCap.value = params.get('cap')!;
     if (params.has('tix') && inpTicketQty) inpTicketQty.value = params.get('tix')!;
     if (params.has('food') && chkAddFood) {
