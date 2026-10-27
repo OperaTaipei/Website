@@ -100,6 +100,8 @@ export const quoteTranslations: Record<string, any> = {
 
     pkg_select_badge: "Select Package",
     pkg_selected_badge: "✓ Selected",
+    pkg_none_name: "No Drink Package (Daytime Venue Only — 5,000 NTD$ / hr)",
+    pkg_none_desc: "Select this option for daytime events (before 20:00) with no beverage or food menu.",
 
     pkg_1_name: "1. Open Bar Tally Up (Master Tab)",
     pkg_1_tag: "Flexible Master Tab",
@@ -289,6 +291,8 @@ export const quoteTranslations: Record<string, any> = {
 
     pkg_select_badge: "選擇此方案",
     pkg_selected_badge: "✓ 已選擇",
+    pkg_none_name: "不選擇飲品方案（白天純場地租借 — 5,000 NTD$ / 小時）",
+    pkg_none_desc: "若為白天時段（20:00前）且不需餐飲方案，請選擇此項（可点击已選方案取消勾選）。",
 
     pkg_1_name: "1. Open Bar Tally Up (Master Tab 總帳實報實銷)",
     pkg_1_tag: "彈性總帳 / 可設上限",
@@ -474,6 +478,8 @@ export const quoteTranslations: Record<string, any> = {
 
     pkg_select_badge: "Choisir cette formule",
     pkg_selected_badge: "✓ Sélectionné",
+    pkg_none_name: "Sans Formule Boissons (Location Sèche Journée — 5 000 NTD$ / h)",
+    pkg_none_desc: "Sélectionnez cette option pour un événement en journée (avant 20h00) sans boissons ni restauration.",
 
     pkg_1_name: "1. Open Bar Tally Up (Ardoise / Master Tab)",
     pkg_1_tag: "Ardoise au réel / Plafond",
@@ -659,6 +665,8 @@ export const quoteTranslations: Record<string, any> = {
 
     pkg_select_badge: "このプランを選択",
     pkg_selected_badge: "✓ 選択中",
+    pkg_none_name: "ドリンクプランなし（日中会場レンタルのみ — 5,000 NTD$ / 1時間）",
+    pkg_none_desc: "日中（20:00まで）で飲食プランが不要な場合はこちらを選択してください。",
 
     pkg_1_name: "1. Open Bar Tally Up (マスタータブ / 実数精算)",
     pkg_1_tag: "実数精算・上限設定可",
