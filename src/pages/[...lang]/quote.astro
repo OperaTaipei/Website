@@ -413,172 +413,8 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
           </div>
         </section>
 
-        <!-- STEP 2: VISUALS & MUSIC OPTIONS (PDF PAGE 1) -->
-        <section id="step-options" class="quote-section quote-section--dark">
-          <div class="section-wrap">
-            <p class="section-label">{t.step2_label}</p>
-            <h2 class="section-title" set:html={t.step2_title} />
-            <div class="section-divider"></div>
-            <p class="quote-sec-intro">{t.step2_desc}</p>
-
-            <div class="options-two-col">
-              <!-- Visuals Table Card -->
-              <div class="option-table-card">
-                <div class="option-table-header">{t.tbl_visuals_hdr}</div>
-                <div class="option-row option-row--head">
-                  <div class="opt-name">{t.tbl_col_item}</div>
-                  <div class="opt-toggle">{t.tbl_col_yes} / {t.tbl_col_no}</div>
-                </div>
-
-                <!-- TVs -->
-                <div class="option-row">
-                  <div class="opt-name">{t.vis_tvs}</div>
-                  <div class="opt-toggle">
-                    <div class="yn-switch" data-opt="vis_tvs">
-                      <button type="button" class="yn-btn active" data-val="YES">{t.tbl_col_yes}</button>
-                      <button type="button" class="yn-btn" data-val="NO">{t.tbl_col_no}</button>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- LED walls -->
-                <div class="option-row">
-                  <div class="opt-name">{t.vis_led}</div>
-                  <div class="opt-toggle">
-                    <div class="yn-switch" data-opt="vis_led">
-                      <button type="button" class="yn-btn active" data-val="YES">{t.tbl_col_yes}</button>
-                      <button type="button" class="yn-btn" data-val="NO">{t.tbl_col_no}</button>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Window's projectors -->
-                <div class="option-row">
-                  <div class="opt-name">{t.vis_projectors}</div>
-                  <div class="opt-toggle">
-                    <div class="yn-switch" data-opt="vis_projectors">
-                      <button type="button" class="yn-btn active" data-val="YES">{t.tbl_col_yes}</button>
-                      <button type="button" class="yn-btn" data-val="NO">{t.tbl_col_no}</button>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- First floor TV -->
-                <div class="option-row">
-                  <div class="opt-name">{t.vis_1f_tv}</div>
-                  <div class="opt-toggle">
-                    <div class="yn-switch" data-opt="vis_1f_tv">
-                      <button type="button" class="yn-btn active" data-val="YES">{t.tbl_col_yes}</button>
-                      <button type="button" class="yn-btn" data-val="NO">{t.tbl_col_no}</button>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Backdrop print -->
-                <div class="option-row">
-                  <div class="opt-name">
-                    {t.vis_backdrop}
-                    <small class="opt-subnote opt-subnote--quote">{t.vis_backdrop_note}</small>
-                  </div>
-                  <div class="opt-toggle">
-                    <div class="yn-switch" data-opt="vis_backdrop">
-                      <button type="button" class="yn-btn" data-val="YES">{t.tbl_col_yes}</button>
-                      <button type="button" class="yn-btn active" data-val="NO">{t.tbl_col_no}</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Music Table Card -->
-              <div class="option-table-card">
-                <div class="option-table-header">{t.tbl_music_hdr}</div>
-                <div class="option-row option-row--head">
-                  <div class="opt-name">{t.tbl_col_item}</div>
-                  <div class="opt-toggle">{t.tbl_col_yes} / {t.tbl_col_no}</div>
-                </div>
-
-                <!-- DJ -->
-                <div class="option-row">
-                  <div class="opt-name">
-                    <span>{t.mus_dj}</span>
-                    <small class="opt-subnote opt-subnote--gold">{t.mus_dj_note}</small>
-                    <div class="dj-hours-entry">
-                      <label for="inp-dj-hours">{t.mus_dj_hours_lbl}</label>
-                      <input type="number" id="inp-dj-hours" min="1" max="12" step="0.5" value="3" class="inline-hours-input" />
-                    </div>
-                  </div>
-                  <div class="opt-toggle">
-                    <div class="yn-switch" data-opt="mus_dj">
-                      <button type="button" class="yn-btn" data-val="YES">{t.tbl_col_yes}</button>
-                      <button type="button" class="yn-btn active" data-val="NO">{t.tbl_col_no}</button>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Music style (placed directly under DJ) -->
-                <div class="option-row option-row--music-style">
-                  <div class="opt-name">
-                    {t.mus_style}
-                    <input type="text" id="inp-music-style" placeholder={t.mus_style_ph} class="inline-style-input" value="Lounge & Upbeat Cocktail" />
-                  </div>
-                  <div class="opt-toggle">
-                    <div class="yn-switch" data-opt="mus_style">
-                      <button type="button" class="yn-btn active" data-val="YES">{t.tbl_col_yes}</button>
-                      <button type="button" class="yn-btn" data-val="NO">{t.tbl_col_no}</button>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Playlist -->
-                <div class="option-row">
-                  <div class="opt-name">{t.mus_playlist}</div>
-                  <div class="opt-toggle">
-                    <div class="yn-switch" data-opt="mus_playlist">
-                      <button type="button" class="yn-btn active" data-val="YES">{t.tbl_col_yes}</button>
-                      <button type="button" class="yn-btn" data-val="NO">{t.tbl_col_no}</button>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Microphones -->
-                <div class="option-row">
-                  <div class="opt-name">{t.mus_mics}</div>
-                  <div class="opt-toggle">
-                    <div class="yn-switch" data-opt="mus_mics">
-                      <button type="button" class="yn-btn active" data-val="YES">{t.tbl_col_yes}</button>
-                      <button type="button" class="yn-btn" data-val="NO">{t.tbl_col_no}</button>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Photographer -->
-                <div class="option-row">
-                  <div class="opt-name">
-                    {t.mus_photographer}
-                    <small class="opt-subnote opt-subnote--quote">{t.mus_photographer_note}</small>
-                  </div>
-                  <div class="opt-toggle">
-                    <div class="yn-switch" data-opt="mus_photographer">
-                      <button type="button" class="yn-btn" data-val="YES">{t.tbl_col_yes}</button>
-                      <button type="button" class="yn-btn active" data-val="NO">{t.tbl_col_no}</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Other Requests Textarea -->
-            <div class="form-card" style="margin-top: 24px;">
-              <div class="form-group form-group--full">
-                <label for="inp-other-requests">{t.fld_other_requests}</label>
-                <textarea id="inp-other-requests" rows="3" placeholder={t.fld_other_requests_ph}></textarea>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- STEP 3: DRINK PACKAGES (4 OPTIONS) -->
-        <section id="step-packages" class="quote-section">
+        <!-- STEP 2: DRINK PACKAGES (4 OPTIONS) -->
+        <section id="step-packages" class="quote-section quote-section--dark">
           <div class="section-wrap">
             <p class="section-label">{t.step3_label}</p>
             <h2 class="section-title" set:html={t.step3_title} />
@@ -747,6 +583,170 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
           </div>
         </section>
 
+        <!-- STEP 3: VISUALS & MUSIC OPTIONS (PDF PAGE 1) -->
+        <section id="step-options" class="quote-section">
+          <div class="section-wrap">
+            <p class="section-label">{t.step2_label}</p>
+            <h2 class="section-title" set:html={t.step2_title} />
+            <div class="section-divider"></div>
+            <p class="quote-sec-intro">{t.step2_desc}</p>
+
+            <div class="options-two-col">
+              <!-- Visuals Table Card -->
+              <div class="option-table-card">
+                <div class="option-table-header">{t.tbl_visuals_hdr}</div>
+                <div class="option-row option-row--head">
+                  <div class="opt-name">{t.tbl_col_item}</div>
+                  <div class="opt-toggle">{t.tbl_col_yes} / {t.tbl_col_no}</div>
+                </div>
+
+                <!-- TVs -->
+                <div class="option-row">
+                  <div class="opt-name">{t.vis_tvs}</div>
+                  <div class="opt-toggle">
+                    <div class="yn-switch" data-opt="vis_tvs">
+                      <button type="button" class="yn-btn active" data-val="YES">{t.tbl_col_yes}</button>
+                      <button type="button" class="yn-btn" data-val="NO">{t.tbl_col_no}</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- LED walls -->
+                <div class="option-row">
+                  <div class="opt-name">{t.vis_led}</div>
+                  <div class="opt-toggle">
+                    <div class="yn-switch" data-opt="vis_led">
+                      <button type="button" class="yn-btn active" data-val="YES">{t.tbl_col_yes}</button>
+                      <button type="button" class="yn-btn" data-val="NO">{t.tbl_col_no}</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Window's projectors -->
+                <div class="option-row">
+                  <div class="opt-name">{t.vis_projectors}</div>
+                  <div class="opt-toggle">
+                    <div class="yn-switch" data-opt="vis_projectors">
+                      <button type="button" class="yn-btn active" data-val="YES">{t.tbl_col_yes}</button>
+                      <button type="button" class="yn-btn" data-val="NO">{t.tbl_col_no}</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- First floor TV -->
+                <div class="option-row">
+                  <div class="opt-name">{t.vis_1f_tv}</div>
+                  <div class="opt-toggle">
+                    <div class="yn-switch" data-opt="vis_1f_tv">
+                      <button type="button" class="yn-btn active" data-val="YES">{t.tbl_col_yes}</button>
+                      <button type="button" class="yn-btn" data-val="NO">{t.tbl_col_no}</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Backdrop print -->
+                <div class="option-row">
+                  <div class="opt-name">
+                    {t.vis_backdrop}
+                    <small class="opt-subnote opt-subnote--quote">{t.vis_backdrop_note}</small>
+                  </div>
+                  <div class="opt-toggle">
+                    <div class="yn-switch" data-opt="vis_backdrop">
+                      <button type="button" class="yn-btn" data-val="YES">{t.tbl_col_yes}</button>
+                      <button type="button" class="yn-btn active" data-val="NO">{t.tbl_col_no}</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Music Table Card -->
+              <div class="option-table-card">
+                <div class="option-table-header">{t.tbl_music_hdr}</div>
+                <div class="option-row option-row--head">
+                  <div class="opt-name">{t.tbl_col_item}</div>
+                  <div class="opt-toggle">{t.tbl_col_yes} / {t.tbl_col_no}</div>
+                </div>
+
+                <!-- DJ -->
+                <div class="option-row">
+                  <div class="opt-name">
+                    <span>{t.mus_dj}</span>
+                    <small class="opt-subnote opt-subnote--gold">{t.mus_dj_note}</small>
+                    <div class="dj-hours-entry">
+                      <label for="inp-dj-hours">{t.mus_dj_hours_lbl}</label>
+                      <input type="number" id="inp-dj-hours" min="1" max="12" step="0.5" value="3" class="inline-hours-input" />
+                    </div>
+                  </div>
+                  <div class="opt-toggle">
+                    <div class="yn-switch" data-opt="mus_dj">
+                      <button type="button" class="yn-btn" data-val="YES">{t.tbl_col_yes}</button>
+                      <button type="button" class="yn-btn active" data-val="NO">{t.tbl_col_no}</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Music style (placed directly under DJ) -->
+                <div class="option-row option-row--music-style">
+                  <div class="opt-name">
+                    {t.mus_style}
+                    <input type="text" id="inp-music-style" placeholder={t.mus_style_ph} class="inline-style-input" value="Lounge & Upbeat Cocktail" />
+                  </div>
+                  <div class="opt-toggle">
+                    <div class="yn-switch" data-opt="mus_style">
+                      <button type="button" class="yn-btn active" data-val="YES">{t.tbl_col_yes}</button>
+                      <button type="button" class="yn-btn" data-val="NO">{t.tbl_col_no}</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Playlist -->
+                <div class="option-row">
+                  <div class="opt-name">{t.mus_playlist}</div>
+                  <div class="opt-toggle">
+                    <div class="yn-switch" data-opt="mus_playlist">
+                      <button type="button" class="yn-btn active" data-val="YES">{t.tbl_col_yes}</button>
+                      <button type="button" class="yn-btn" data-val="NO">{t.tbl_col_no}</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Microphones -->
+                <div class="option-row">
+                  <div class="opt-name">{t.mus_mics}</div>
+                  <div class="opt-toggle">
+                    <div class="yn-switch" data-opt="mus_mics">
+                      <button type="button" class="yn-btn active" data-val="YES">{t.tbl_col_yes}</button>
+                      <button type="button" class="yn-btn" data-val="NO">{t.tbl_col_no}</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Photographer -->
+                <div class="option-row">
+                  <div class="opt-name">
+                    {t.mus_photographer}
+                    <small class="opt-subnote opt-subnote--quote">{t.mus_photographer_note}</small>
+                  </div>
+                  <div class="opt-toggle">
+                    <div class="yn-switch" data-opt="mus_photographer">
+                      <button type="button" class="yn-btn" data-val="YES">{t.tbl_col_yes}</button>
+                      <button type="button" class="yn-btn active" data-val="NO">{t.tbl_col_no}</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Other Requests Textarea -->
+            <div class="form-card" style="margin-top: 24px;">
+              <div class="form-group form-group--full">
+                <label for="inp-other-requests">{t.fld_other_requests}</label>
+                <textarea id="inp-other-requests" rows="3" placeholder={t.fld_other_requests_ph}></textarea>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <!-- STEP 4: LIVE QUOTE SUMMARY, TERMS & ACTIONS (PDF PAGE 2) -->
         <section id="step-summary" class="quote-section quote-section--dark">
           <div class="section-wrap">
@@ -779,9 +779,9 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
                 <table class="live-quote-table">
                   <thead>
                     <tr>
-                      <th>{t.quote_tbl_item}</th>
-                      <th style="width: 160px; text-align: center;">{t.quote_tbl_qty}</th>
-                      <th style="width: 200px; text-align: right;">{t.quote_tbl_price}</th>
+                      <th class="col-item">{t.quote_tbl_item}</th>
+                      <th class="col-qty">{t.quote_tbl_qty}</th>
+                      <th class="col-price">{t.quote_tbl_price}</th>
                     </tr>
                   </thead>
                   <tbody id="live-quote-tbody">
@@ -2156,6 +2156,16 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     text-align: left;
   }
 
+  .live-quote-table thead th.col-qty {
+    width: 160px;
+    text-align: center;
+  }
+
+  .live-quote-table thead th.col-price {
+    width: 200px;
+    text-align: right;
+  }
+
   .summary-black-row td {
     background: #050505;
     color: var(--color-white);
@@ -2735,6 +2745,91 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     }
     .quote-summary-card {
       padding: 22px 16px;
+    }
+    .quote-summary-header h3 {
+      font-size: 1.45rem;
+    }
+    /* Stacked Line-Item Cards on Mobile (< 640px) */
+    .live-quote-table,
+    .live-quote-table tbody,
+    .live-quote-table tfoot {
+      display: block;
+      width: 100%;
+    }
+    .live-quote-table thead {
+      display: none;
+    }
+    .live-quote-table tbody :global(tr) {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(201, 168, 76, 0.32);
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      gap: 8px;
+    }
+    .live-quote-table tbody :global(td.td-item) {
+      flex: 0 0 100%;
+      width: 100%;
+      border: none;
+      padding: 0 0 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.86rem;
+      font-weight: 500;
+      color: var(--color-white);
+      line-height: 1.45;
+      word-break: break-word;
+    }
+    .live-quote-table tbody :global(td.td-qty) {
+      border: none;
+      padding: 2px 0 0 0;
+      text-align: left !important;
+      font-size: 0.78rem;
+      color: var(--color-text-muted);
+    }
+    .live-quote-table tbody :global(td.td-price) {
+      border: none;
+      padding: 2px 0 0 0;
+      text-align: right !important;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--color-gold-light);
+    }
+    .live-quote-table tfoot tr.summary-black-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #050505;
+      border: 1px solid rgba(201, 168, 76, 0.3);
+      border-radius: 6px;
+      padding: 11px 14px;
+      margin-top: 6px;
+      gap: 10px;
+    }
+    .live-quote-table tfoot tr.grand-total-row {
+      border: 1.5px solid var(--color-gold);
+    }
+    .live-quote-table tfoot tr.summary-black-row td {
+      border: none;
+      padding: 0;
+      text-align: left !important;
+      font-size: 0.82rem;
+    }
+    .live-quote-table tfoot tr.summary-black-row td:last-child {
+      text-align: right !important;
+      font-size: 0.95rem;
+      white-space: nowrap;
+    }
+    .quote-actions-bar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .quote-actions-bar button {
+      width: 100%;
+      justify-content: center;
     }
   }
 </style>
@@ -3427,9 +3522,9 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
         .map(
           l => `
           <tr>
-            <td>${l.item}</td>
-            <td class="text-center">${l.qty}</td>
-            <td class="text-right">${l.priceText}</td>
+            <td class="td-item">${l.item}</td>
+            <td class="td-qty text-center">${l.qty}</td>
+            <td class="td-price text-right">${l.priceText}</td>
           </tr>
         `
         )

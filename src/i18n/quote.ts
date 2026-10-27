@@ -63,8 +63,8 @@ export const quoteTranslations: Record<string, any> = {
     fld_early_setup_time_lbl: "Time:",
     fld_setup_ph: "e.g., 17:00 – 18:30 (1.5 hours prior)",
 
-    // Step 2: Visuals & Music (PDF Page 1)
-    step2_label: "Step 02 · Technical & Entertainment Options",
+    // Step 3: Visuals & Music (PDF Page 1)
+    step2_label: "Step 03 · Technical & Entertainment Options",
     step2_title: "Visuals & <em>Music</em> Setup",
     step2_desc: "Select the equipment and services required for your event. In-house AV equipment is complimentary with venue rental.",
     tbl_visuals_hdr: "Visuals",
@@ -93,8 +93,8 @@ export const quoteTranslations: Record<string, any> = {
     fld_other_requests: "Other Requests / Special Notes",
     fld_other_requests_ph: "Tell us about any catering/finger food needs, stage layout, custom branding cocktails, dietary restrictions, or schedule details...",
 
-    // Step 3: Drink Packages
-    step3_label: "Step 03 · Beverage & Rental Format",
+    // Step 2: Drink Packages
+    step3_label: "Step 02 · Beverage & Rental Format",
     step3_title: "Drink <em>Packages</em>",
     step3_desc: "Choose the beverage format that best fits your event style. All packages feature our house-crafted cocktails, wines, beers, and non-alcoholic creations.",
 
@@ -256,7 +256,7 @@ export const quoteTranslations: Record<string, any> = {
     fld_early_setup_time_lbl: "進場時間：",
     fld_setup_ph: "例如：17:00 – 18:30（活動前 1.5 小時）",
 
-    step2_label: "步驟 02 · 視聽設備與娛樂選項",
+    step2_label: "步驟 03 · 視聽設備與娛樂選項",
     step2_title: "視覺與<em>音樂設備</em>",
     step2_desc: "請勾選活動所需的硬體設備與服務。場地內建視聽設備皆免費提供。",
     tbl_visuals_hdr: "視覺設備 (Visuals)",
@@ -285,7 +285,7 @@ export const quoteTranslations: Record<string, any> = {
     fld_other_requests: "其他需求與備註 (Other requests)",
     fld_other_requests_ph: "請告訴我們任何關於外燴輕食、舞台動線、品牌客製調酒、飲食禁忌或其他特別需求...",
 
-    step3_label: "步驟 03 · 飲品與包場方案選擇",
+    step3_label: "步驟 02 · 飲品與包場方案選擇",
     step3_title: "選擇<em>飲品方案</em>",
     step3_desc: "請選擇最適合您活動型態的飲品計費方式。所有方案皆可享用我們以新鮮台灣食材自製糖漿調配的精釀調酒、紅白酒、啤酒及無酒精特調。",
 
@@ -443,7 +443,7 @@ export const quoteTranslations: Record<string, any> = {
     fld_early_setup_time_lbl: "Heure :",
     fld_setup_ph: "ex. 17h00 – 18h30",
 
-    step2_label: "Étape 02 · Options Audiovisuelles & Animation",
+    step2_label: "Étape 03 · Options Audiovisuelles & Animation",
     step2_title: "Visuels & <em>Musique</em>",
     step2_desc: "Sélectionnez les équipements nécessaires. Notre matériel audiovisuel sur place est mis à disposition gratuitement.",
     tbl_visuals_hdr: "Visuels (Visuals)",
@@ -472,7 +472,7 @@ export const quoteTranslations: Record<string, any> = {
     fld_other_requests: "Autres demandes / Notes particulières",
     fld_other_requests_ph: "Précisez vos besoins en traiteur/finger food, scénographie, cocktails personnalisés aux couleurs de votre marque, allergies...",
 
-    step3_label: "Étape 03 · Formules Boissons & Privatisation",
+    step3_label: "Étape 02 · Formules Boissons & Privatisation",
     step3_title: "Formules <em>Boissons</em>",
     step3_desc: "Choisissez la formule adaptée à votre événement. Toutes nos options incluent notre carte d'événement (cocktails artisanaux, vins, bières pression et mocktails maison).",
 
@@ -630,7 +630,7 @@ export const quoteTranslations: Record<string, any> = {
     fld_early_setup_time_lbl: "時間：",
     fld_setup_ph: "例：17:00 – 18:30（開始1時間半前より）",
 
-    step2_label: "ステップ 02 · 映像・音響・エンターテインメント",
+    step2_label: "ステップ 03 · 映像・音響・エンターテインメント",
     step2_title: "映像 & <em>音楽オプション</em>",
     step2_desc: "ご希望の機材や手配内容を選択してください。常設AV機材は会場レンタルに含まれております。",
     tbl_visuals_hdr: "映像設備 (Visuals)",
@@ -659,7 +659,7 @@ export const quoteTranslations: Record<string, any> = {
     fld_other_requests: "その他のご要望・備考 (Other requests)",
     fld_other_requests_ph: "ケータリングやフィンガーフードのご希望、ステージ配置、オリジナルカクテル制作などお気軽にご記入ください...",
 
-    step3_label: "ステップ 03 · ドリンクプランの選択",
+    step3_label: "ステップ 02 · ドリンクプランの選択",
     step3_title: "ドリンク<em>パッケージ</em>",
     step3_desc: "イベントのスタイルに合わせて4つのプランからお選びいただけます。すべてのプランで自家製クラフトカクテル、ワイン、ビール、ノンアルコールカクテルをお楽しみいただけます。",
 
