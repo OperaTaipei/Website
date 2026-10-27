@@ -761,16 +761,7 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                   <span>{t.btn_send_email}</span>
                 </button>
-
-                <button type="button" id="btn-print-pdf" class="btn-ghost action-btn-secondary">
-                  <span>🖨️ {t.btn_Print_pdf}</span>
-                </button>
-
-                <button type="button" id="btn-share-link" class="btn-ghost action-btn-secondary">
-                  <span>🔗 {t.btn_copy_link}</span>
-                </button>
               </div>
-              <p id="share-link-feedback" class="copy-feedback" style="display: none;">{t.link_copied_msg}</p>
 
               <!-- Reassurance Banner Inside Quote Section -->
               <div class="reassurance-callout">
@@ -3144,23 +3135,6 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
   };
 
   document.getElementById('btn-download-pdf')?.addEventListener('click', generateAndDownloadPdf);
-  document.getElementById('btn-print-pdf')?.addEventListener('click', () => {
-    updateQuote();
-    window.print();
-  });
-
-  // 7. Shareable Link Copy Button
-  document.getElementById('btn-share-link')?.addEventListener('click', async () => {
-    const shareUrl = buildShareableUrl();
-    try {
-      await navigator.clipboard.writeText(shareUrl);
-      const fb = document.getElementById('share-link-feedback');
-      if (fb) {
-        fb.style.display = 'block';
-        setTimeout(() => (fb.style.display = 'none'), 4000);
-      }
-    } catch {}
-  });
 
   // 8. Build Plain-Text Summary & Send Email with Quote Request
   const buildEmailSummary = () => {
