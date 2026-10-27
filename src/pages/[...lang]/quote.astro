@@ -366,16 +366,33 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
                         <button type="button" class="yn-btn active" data-val="NO">{t.tbl_col_no}</button>
                       </div>
                     </div>
-                    <div class="early-setup-time-wrap">
-                      <label for="inp-early-setup-text" class="sub-lbl">{t.fld_early_setup_time_lbl}</label>
-                      <div class="time-input-combo">
-                        <input type="text" id="inp-early-setup-text" value="04:00" placeholder="hh:mm" class="time-text-inp" />
-                        <select id="sel-early-setup-ampm" class="gold-select time-ampm-sel">
-                          <option value="AM">AM</option>
-                          <option value="PM" selected>PM</option>
-                        </select>
+                    <div class="time-range-grid time-range-grid--two">
+                      <div>
+                        <label for="inp-early-start-text" class="sub-lbl">{t.fld_early_setup_time_lbl}</label>
+                        <div class="time-input-combo">
+                          <input type="text" id="inp-early-start-text" value="03:00" placeholder="hh:mm" class="time-text-inp" />
+                          <select id="sel-early-start-ampm" class="gold-select time-ampm-sel">
+                            <option value="AM">AM</option>
+                            <option value="PM" selected>PM</option>
+                          </select>
+                        </div>
+                        <input type="hidden" id="inp-early-setup-start" name="earlySetupStart" value="15:00" />
                       </div>
-                      <input type="hidden" id="inp-early-setup-time" name="earlySetupTime" value="16:00" />
+                      <div>
+                        <label for="inp-early-end-text" class="sub-lbl">{t.fld_early_setup_end_lbl}</label>
+                        <div class="time-input-combo">
+                          <input type="text" id="inp-early-end-text" value="05:00" placeholder="hh:mm" class="time-text-inp" />
+                          <select id="sel-early-end-ampm" class="gold-select time-ampm-sel">
+                            <option value="AM">AM</option>
+                            <option value="PM" selected>PM</option>
+                          </select>
+                        </div>
+                        <input type="hidden" id="inp-early-setup-end" name="earlySetupEnd" value="17:00" />
+                      </div>
+                    </div>
+                    <div class="early-setup-calc-row">
+                      <span class="sub-lbl">{t.fld_event_duration}: <strong id="early-setup-hours-val">2</strong> hrs</span>
+                      <span class="early-setup-fee-preview" id="early-setup-fee-val">= 10,000 NTD$</span>
                     </div>
                   </div>
                 </div>
@@ -1513,19 +1530,28 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     font-weight: 500;
   }
 
-  .early-setup-time-wrap {
+  .early-setup-calc-row {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 10px;
+    padding-top: 6px;
+    border-top: 1px dashed rgba(201, 168, 76, 0.2);
   }
 
-  .early-setup-time-wrap .sub-lbl {
+  .early-setup-calc-row .sub-lbl {
     margin-bottom: 0;
-    white-space: nowrap;
   }
 
-  .early-setup-time-wrap select {
-    flex: 1;
+  .early-setup-calc-row strong {
+    color: var(--color-white);
+    font-weight: 600;
+  }
+
+  .early-setup-fee-preview {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--color-gold-light);
   }
 
   .time-input-combo {
@@ -2873,10 +2899,15 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
   const inpStartTime = document.getElementById('inp-start-time') as HTMLInputElement;
   const inpEndTime = document.getElementById('inp-end-time') as HTMLInputElement;
   const inpDuration = document.getElementById('inp-duration') as HTMLInputElement;
-  const inpEarlySetupTime = document.getElementById('inp-early-setup-time') as HTMLInputElement;
+  const inpEarlySetupStart = document.getElementById('inp-early-setup-start') as HTMLInputElement;
+  const inpEarlySetupEnd = document.getElementById('inp-early-setup-end') as HTMLInputElement;
 
-  const inpEarlySetupText = document.getElementById('inp-early-setup-text') as HTMLInputElement;
-  const selEarlySetupAmPm = document.getElementById('sel-early-setup-ampm') as HTMLSelectElement;
+  const inpEarlyStartText = document.getElementById('inp-early-start-text') as HTMLInputElement;
+  const selEarlyStartAmPm = document.getElementById('sel-early-start-ampm') as HTMLSelectElement;
+  const inpEarlyEndText = document.getElementById('inp-early-end-text') as HTMLInputElement;
+  const selEarlyEndAmPm = document.getElementById('sel-early-end-ampm') as HTMLSelectElement;
+  const earlySetupHoursEl = document.getElementById('early-setup-hours-val');
+  const earlySetupFeeEl = document.getElementById('early-setup-fee-val');
   const inpStartText = document.getElementById('inp-start-text') as HTMLInputElement;
   const selStartAmPm = document.getElementById('sel-start-ampm') as HTMLSelectElement;
   const inpEndText = document.getElementById('inp-end-text') as HTMLInputElement;
@@ -2921,8 +2952,11 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
   };
 
   const syncAllTimeCombos = () => {
-    if (inpEarlySetupTime && inpEarlySetupText && selEarlySetupAmPm) {
-      inpEarlySetupTime.value = parse12hTo24h(inpEarlySetupText.value, selEarlySetupAmPm.value, '16:00');
+    if (inpEarlySetupStart && inpEarlyStartText && selEarlyStartAmPm) {
+      inpEarlySetupStart.value = parse12hTo24h(inpEarlyStartText.value, selEarlyStartAmPm.value, '15:00');
+    }
+    if (inpEarlySetupEnd && inpEarlyEndText && selEarlyEndAmPm) {
+      inpEarlySetupEnd.value = parse12hTo24h(inpEarlyEndText.value, selEarlyEndAmPm.value, '17:00');
     }
     if (inpStartTime && inpStartText && selStartAmPm) {
       inpStartTime.value = parse12hTo24h(inpStartText.value, selStartAmPm.value, '19:00');
@@ -3198,10 +3232,22 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     const endTime = inpEndTime?.value || '22:00';
     const duration = Number(inpDuration?.value || 3);
     const eventTimeStr = `${formatAmPm(startTime)} – ${formatAmPm(endTime)}`;
-    const earlySetupTime = inpEarlySetupTime?.value || '16:00';
+    const earlySetupStart = inpEarlySetupStart?.value || '15:00';
+    const earlySetupEnd = inpEarlySetupEnd?.value || '17:00';
+    const [esh, esm] = earlySetupStart.split(':').map(Number);
+    const [eeh, eem] = earlySetupEnd.split(':').map(Number);
+    const esStartMin = esh * 60 + esm;
+    let esEndMin = eeh * 60 + eem;
+    if (esEndMin <= esStartMin) esEndMin += 24 * 60; // Crosses midnight
+    const earlySetupHours = Math.max(0.5, Math.round(((esEndMin - esStartMin) / 60) * 2) / 2);
+    const earlySetupCost = Math.round(earlySetupHours * 5000);
+
+    if (earlySetupHoursEl) earlySetupHoursEl.textContent = String(earlySetupHours);
+    if (earlySetupFeeEl) earlySetupFeeEl.textContent = `= ${fmtNTD(earlySetupCost)} NTD$`;
+
     const setupTime =
       ynState.early_setup === 'YES'
-        ? `Early setup at ${formatAmPm(earlySetupTime)} (Fee 5,000 NTD$)`
+        ? `Early setup: ${formatAmPm(earlySetupStart)} – ${formatAmPm(earlySetupEnd)} (${earlySetupHours} hrs — 5,000 NTD$ / h)`
         : '2h prior to event start (Free of charge)';
     const musicStyleText = inpMusicStyle?.value.trim() || '';
     const otherRequests = inpOtherRequests?.value.trim() || '';
@@ -3411,13 +3457,13 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
       }
     }
 
-    // 5. Early Setup (5,000 NTD$) is always added on top of the minimum spend
+    // 5. Early Setup (5,000 NTD$ / h × hours) is always added on top of the minimum spend
     if (ynState.early_setup === 'YES') {
       lines.push({
-        item: `Early Setup (${formatAmPm(earlySetupTime)} — Fee 5,000 NTD$)`,
-        qty: '1',
-        priceNum: 5000,
-        priceText: '5,000 NTD$'
+        item: `Early Setup (${formatAmPm(earlySetupStart)} – ${formatAmPm(earlySetupEnd)} — 5,000 NTD$ / h)`,
+        qty: `${earlySetupHours} hrs`,
+        priceNum: earlySetupCost,
+        priceText: `${fmtNTD(earlySetupCost)} NTD$`
       });
     }
 
@@ -3441,7 +3487,9 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
       duration,
       djHours,
       eventTimeStr,
-      earlySetupTime,
+      earlySetupStart,
+      earlySetupEnd,
+      earlySetupHours,
       setupTime,
       musicStyleText,
       otherRequests,
@@ -3630,7 +3678,8 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     params.set('dur', String(state.duration));
     if (ynState.early_setup === 'YES') {
       params.set('es', '1');
-      params.set('est', state.earlySetupTime);
+      params.set('est', state.earlySetupStart);
+      params.set('eet', state.earlySetupEnd);
     }
     params.set('pkg', selectedPkg);
     if (inpTallyCap?.value) params.set('cap', inpTallyCap.value);
@@ -3679,9 +3728,13 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
       if (inpAycdHours) inpAycdHours.value = params.get('dur')!;
     }
     if (params.get('es') === '1') ynState.early_setup = 'YES';
-    if (params.has('est') && inpEarlySetupTime) {
-      inpEarlySetupTime.value = params.get('est')!;
-      set12hComboFrom24h(inpEarlySetupTime.value, inpEarlySetupText, selEarlySetupAmPm);
+    if (params.has('est') && inpEarlySetupStart) {
+      inpEarlySetupStart.value = params.get('est')!;
+      set12hComboFrom24h(inpEarlySetupStart.value, inpEarlyStartText, selEarlyStartAmPm);
+    }
+    if (params.has('eet') && inpEarlySetupEnd) {
+      inpEarlySetupEnd.value = params.get('eet')!;
+      set12hComboFrom24h(inpEarlySetupEnd.value, inpEarlyEndText, selEarlyEndAmPm);
     }
     if (params.has('cap') && inpTallyCap) inpTallyCap.value = params.get('cap')!;
     if (params.has('tix') && inpTicketQty) inpTicketQty.value = params.get('tix')!;

@@ -59,8 +59,9 @@ export const quoteTranslations: Record<string, any> = {
     fld_event_duration: "Duration (Hours)",
     fld_setup_time: "Setup Time",
     fld_setup_free_note: "Setup time is free of charge if happens 2h prior the event starts.",
-    fld_early_setup: "Early setup (fee 5,000 NTD$)",
-    fld_early_setup_time_lbl: "Time:",
+    fld_early_setup: "Early setup (fee 5,000 NTD$ / h)",
+    fld_early_setup_time_lbl: "Starting time:",
+    fld_early_setup_end_lbl: "Ending time:",
     fld_setup_ph: "e.g., 17:00 – 18:30 (1.5 hours prior)",
 
     // Step 3: Visuals & Music (PDF Page 1)
@@ -252,8 +253,9 @@ export const quoteTranslations: Record<string, any> = {
     fld_event_duration: "活動時數 (小時)",
     fld_setup_time: "場佈時間 (Setup time)",
     fld_setup_free_note: "活動開始前 2 小時內進場場佈免費 (Setup time is free of charge if happens 2h prior the event starts.)",
-    fld_early_setup: "提早場佈 Early setup (fee 5,000 NTD$)",
-    fld_early_setup_time_lbl: "進場時間：",
+    fld_early_setup: "提早場佈 Early setup (fee 5,000 NTD$ / h)",
+    fld_early_setup_time_lbl: "開始時間 (Starting time)",
+    fld_early_setup_end_lbl: "結束時間 (Ending time)",
     fld_setup_ph: "例如：17:00 – 18:30（活動前 1.5 小時）",
 
     step2_label: "步驟 03 · 視聽設備與娛樂選項",
@@ -439,8 +441,9 @@ export const quoteTranslations: Record<string, any> = {
     fld_event_duration: "Durée (Heures)",
     fld_setup_time: "Horaire d'installation (Setup time)",
     fld_setup_free_note: "L'installation est gratuite si elle a lieu 2h avant le début de l'événement (Setup time is free of charge if happens 2h prior the event starts.)",
-    fld_early_setup: "Installation anticipée Early setup (fee 5,000 NTD$)",
-    fld_early_setup_time_lbl: "Heure :",
+    fld_early_setup: "Installation anticipée Early setup (fee 5,000 NTD$ / h)",
+    fld_early_setup_time_lbl: "Heure de début (Starting time)",
+    fld_early_setup_end_lbl: "Heure de fin (Ending time)",
     fld_setup_ph: "ex. 17h00 – 18h30",
 
     step2_label: "Étape 03 · Options Audiovisuelles & Animation",
@@ -626,8 +629,9 @@ export const quoteTranslations: Record<string, any> = {
     fld_event_duration: "ご利用時間 (時間)",
     fld_setup_time: "設営・準備時間 (Setup time)",
     fld_setup_free_note: "イベント開始2時間前からの設営は無料です (Setup time is free of charge if happens 2h prior the event starts.)",
-    fld_early_setup: "早期設営 Early setup (fee 5,000 NTD$)",
-    fld_early_setup_time_lbl: "時間：",
+    fld_early_setup: "早期設営 Early setup (fee 5,000 NTD$ / h)",
+    fld_early_setup_time_lbl: "開始時間 (Starting time)",
+    fld_early_setup_end_lbl: "終了時間 (Ending time)",
     fld_setup_ph: "例：17:00 – 18:30（開始1時間半前より）",
 
     step2_label: "ステップ 03 · 映像・音響・エンターテインメント",
