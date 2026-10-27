@@ -395,33 +395,35 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
                         <button type="button" class="yn-btn active" data-val="NO">{t.tbl_col_no}</button>
                       </div>
                     </div>
-                    <div class="time-range-grid time-range-grid--two">
-                      <div>
-                        <label for="inp-early-start-text" class="sub-lbl">{t.fld_early_setup_time_lbl}</label>
-                        <div class="time-input-combo">
-                          <input type="text" id="inp-early-start-text" value="03:00" placeholder="hh:mm" class="time-text-inp" />
-                          <select id="sel-early-start-ampm" class="gold-select time-ampm-sel">
-                            <option value="AM">AM</option>
-                            <option value="PM" selected>PM</option>
-                          </select>
+                    <div class="early-setup-details" id="early-setup-details" style="display: none;">
+                      <div class="time-range-grid time-range-grid--two">
+                        <div>
+                          <label for="inp-early-start-text" class="sub-lbl">{t.fld_early_setup_time_lbl}</label>
+                          <div class="time-input-combo">
+                            <input type="text" id="inp-early-start-text" value="03:00" placeholder="hh:mm" class="time-text-inp" />
+                            <select id="sel-early-start-ampm" class="gold-select time-ampm-sel">
+                              <option value="AM">AM</option>
+                              <option value="PM" selected>PM</option>
+                            </select>
+                          </div>
+                          <input type="hidden" id="inp-early-setup-start" name="earlySetupStart" value="15:00" />
                         </div>
-                        <input type="hidden" id="inp-early-setup-start" name="earlySetupStart" value="15:00" />
-                      </div>
-                      <div>
-                        <label for="inp-early-end-text" class="sub-lbl">{t.fld_early_setup_end_lbl}</label>
-                        <div class="time-input-combo">
-                          <input type="text" id="inp-early-end-text" value="05:00" placeholder="hh:mm" class="time-text-inp" />
-                          <select id="sel-early-end-ampm" class="gold-select time-ampm-sel">
-                            <option value="AM">AM</option>
-                            <option value="PM" selected>PM</option>
-                          </select>
+                        <div>
+                          <label for="inp-early-end-text" class="sub-lbl">{t.fld_early_setup_end_lbl}</label>
+                          <div class="time-input-combo">
+                            <input type="text" id="inp-early-end-text" value="05:00" placeholder="hh:mm" class="time-text-inp" />
+                            <select id="sel-early-end-ampm" class="gold-select time-ampm-sel">
+                              <option value="AM">AM</option>
+                              <option value="PM" selected>PM</option>
+                            </select>
+                          </div>
+                          <input type="hidden" id="inp-early-setup-end" name="earlySetupEnd" value="17:00" />
                         </div>
-                        <input type="hidden" id="inp-early-setup-end" name="earlySetupEnd" value="17:00" />
                       </div>
-                    </div>
-                    <div class="early-setup-calc-row">
-                      <span class="sub-lbl">{t.fld_event_duration}: <strong id="early-setup-hours-val">2</strong> hrs</span>
-                      <span class="early-setup-fee-preview" id="early-setup-fee-val">= 10,000 NTD$</span>
+                      <div class="early-setup-calc-row">
+                        <span class="sub-lbl">{t.fld_event_duration}: <strong id="early-setup-hours-val">2</strong> hrs</span>
+                        <span class="early-setup-fee-preview" id="early-setup-fee-val">= 10,000 NTD$</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -439,13 +441,13 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
             <p class="quote-sec-intro">{t.step3_desc}</p>
 
             <!-- Option 0: No Drink Package (Daytime Venue Only) -->
-            <div class="drink-pkg-card drink-pkg-card--none" data-pkg-card="none" style="margin-bottom: 20px;">
+            <div class="drink-pkg-card drink-pkg-card--none active" data-pkg-card="none" style="margin-bottom: 20px;">
               <div class="pkg-none-row">
                 <div>
                   <h3 class="pkg-title" style="margin-bottom: 4px; font-size: 1.3rem;">{t.pkg_none_name}</h3>
                   <p class="pkg-desc" style="margin-bottom: 0;">{t.pkg_none_desc}</p>
                 </div>
-                <span class="pkg-status-indicator" data-select-lbl={t.pkg_select_badge} data-selected-lbl={t.pkg_selected_badge}>{t.pkg_select_badge}</span>
+                <span class="pkg-status-indicator" data-select-lbl={t.pkg_select_badge} data-selected-lbl={t.pkg_selected_badge}>{t.pkg_selected_badge}</span>
               </div>
             </div>
 
@@ -464,7 +466,7 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
                 <div class="pkg-config-box">
                   <div class="form-group">
                     <label for="inp-tally-cap">{t.pkg_1_cap_lbl}</label>
-                    <input type="number" id="inp-tally-cap" min="0" step="5000" value="100000" placeholder={t.pkg_1_cap_ph} />
+                    <input type="number" id="inp-tally-cap" min="0" step="5000" value="" placeholder="Must fill" />
                   </div>
                   <div class="form-group" style="margin-top: 12px;">
                     <label>{t.pkg_1_policy_lbl}</label>
@@ -496,23 +498,23 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
                 <div class="pkg-config-box">
                   <div class="form-group">
                     <label for="inp-ticket-qty">{t.pkg_2_qty_lbl}</label>
-                    <input type="number" id="inp-ticket-qty" min="1" step="10" value="120" />
+                    <input type="number" id="inp-ticket-qty" min="1" step="10" value="" placeholder="Must fill" />
                   </div>
                   <div class="quick-mult-pills">
                     <button type="button" class="mult-pill" data-ticket-mult="1">{t.pkg_2_quick_1}</button>
                     <button type="button" class="mult-pill" data-ticket-mult="2">{t.pkg_2_quick_2}</button>
                     <button type="button" class="mult-pill" data-ticket-mult="3">{t.pkg_2_quick_3}</button>
                   </div>
-                  <div class="pkg-live-calc" id="calc-tickets-preview">= 36,000 NTD$</div>
+                  <div class="pkg-live-calc" id="calc-tickets-preview">= 0 NTD$</div>
                 </div>
               </div>
 
               <!-- Package 3: All-You-Can-Drink (400 NTD per guest / hour) -->
-              <div class="drink-pkg-card active" data-pkg-card="aycd">
+              <div class="drink-pkg-card" data-pkg-card="aycd">
                 <div class="pkg-card-top">
                   <div class="pkg-header-row">
                     <span class="pkg-tag-pill">{t.pkg_3_tag}</span>
-                    <span class="pkg-status-indicator" data-select-lbl={t.pkg_select_badge} data-selected-lbl={t.pkg_selected_badge}>{t.pkg_selected_badge}</span>
+                    <span class="pkg-status-indicator" data-select-lbl={t.pkg_select_badge} data-selected-lbl={t.pkg_selected_badge}>{t.pkg_select_badge}</span>
                   </div>
                   <h3 class="pkg-title">{t.pkg_3_name}</h3>
                   <p class="pkg-desc">{t.pkg_3_desc}</p>
@@ -522,14 +524,14 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
                   <div class="form-grid-2" style="gap: 12px;">
                     <div class="form-group">
                       <label for="inp-aycd-guests">{t.pkg_3_guests_lbl}</label>
-                      <input type="number" id="inp-aycd-guests" min="1" max="350" value="60" />
+                      <input type="number" id="inp-aycd-guests" min="1" max="350" value="" placeholder="Must fill" />
                     </div>
                     <div class="form-group">
                       <label for="inp-aycd-hours">{t.pkg_3_hours_lbl}</label>
-                      <input type="number" id="inp-aycd-hours" min="1" max="12" step="0.5" value="3" />
+                      <input type="number" id="inp-aycd-hours" min="1" max="12" step="0.5" value="" placeholder="Must fill" />
                     </div>
                   </div>
-                  <div class="pkg-live-calc" id="calc-aycd-preview">= 72,000 NTD$</div>
+                  <div class="pkg-live-calc" id="calc-aycd-preview">= 0 NTD$</div>
                 </div>
               </div>
 
@@ -547,11 +549,11 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
                 <div class="pkg-config-box">
                   <div class="form-group">
                     <label for="inp-other-pkg-desc">{t.pkg_4_custom_lbl}</label>
-                    <textarea id="inp-other-pkg-desc" rows="2" placeholder={t.pkg_4_custom_ph}></textarea>
+                    <textarea id="inp-other-pkg-desc" rows="2" placeholder="Must fill"></textarea>
                   </div>
                   <div class="form-group" style="margin-top: 10px;">
                     <label for="inp-other-pkg-amount">{t.pkg_4_est_lbl}</label>
-                    <input type="number" id="inp-other-pkg-amount" min="0" step="5000" value="0" placeholder="0 = TBD" />
+                    <input type="number" id="inp-other-pkg-amount" min="0" step="5000" value="" placeholder="Must fill" />
                   </div>
                 </div>
               </div>
@@ -689,7 +691,7 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
                   <div class="opt-name">
                     <span>{t.mus_dj}</span>
                     <small class="opt-subnote opt-subnote--gold">{t.mus_dj_note}</small>
-                    <div class="dj-hours-entry">
+                    <div class="dj-hours-entry" id="dj-hours-entry" style="display: none;">
                       <label for="inp-dj-hours">{t.mus_dj_hours_lbl}</label>
                       <input type="number" id="inp-dj-hours" min="1" max="12" step="0.5" value="3" class="inline-hours-input" />
                     </div>
@@ -1469,6 +1471,12 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     box-shadow: 0 0 0 2px rgba(201, 168, 76, 0.15);
   }
 
+  .form-group input.input-must-fill-error,
+  .form-group textarea.input-must-fill-error {
+    border-color: #ff6b6b !important;
+    box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.25) !important;
+  }
+
   .number-slider-wrap {
     display: flex;
     align-items: center;
@@ -1528,6 +1536,14 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     font-size: 0.82rem;
     color: var(--color-white);
     font-weight: 500;
+  }
+
+  .early-setup-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(201, 168, 76, 0.15);
   }
 
   .early-setup-calc-row {
@@ -2906,6 +2922,7 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
   const selEarlyStartAmPm = document.getElementById('sel-early-start-ampm') as HTMLSelectElement;
   const inpEarlyEndText = document.getElementById('inp-early-end-text') as HTMLInputElement;
   const selEarlyEndAmPm = document.getElementById('sel-early-end-ampm') as HTMLSelectElement;
+  const earlySetupDetailsEl = document.getElementById('early-setup-details');
   const earlySetupHoursEl = document.getElementById('early-setup-hours-val');
   const earlySetupFeeEl = document.getElementById('early-setup-fee-val');
   const inpStartText = document.getElementById('inp-start-text') as HTMLInputElement;
@@ -2913,6 +2930,7 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
   const inpEndText = document.getElementById('inp-end-text') as HTMLInputElement;
   const selEndAmPm = document.getElementById('sel-end-ampm') as HTMLSelectElement;
 
+  const djHoursEntryEl = document.getElementById('dj-hours-entry');
   const inpDjHours = document.getElementById('inp-dj-hours') as HTMLInputElement;
   const inpMusicStyle = document.getElementById('inp-music-style') as HTMLInputElement;
   const inpOtherRequests = document.getElementById('inp-other-requests') as HTMLTextAreaElement;
@@ -3103,14 +3121,13 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
   };
 
   type PkgType = 'none' | 'tally' | 'tickets' | 'aycd' | 'other';
-  let selectedPkg: PkgType = 'aycd';
+  let selectedPkg: PkgType = 'none';
 
-  // Sync Attending Number & Slider & AYCD Guests
+  // Sync Attending Number & Slider
   const syncGuests = (val: number) => {
     const clean = Math.max(1, val || 1);
     if (inpAttending) inpAttending.value = String(clean);
     if (rngAttending) rngAttending.value = String(Math.min(300, clean));
-    if (inpAycdGuests) inpAycdGuests.value = String(clean);
     updateQuote();
   };
 
@@ -3128,7 +3145,6 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     if (endMin <= startMin) endMin += 24 * 60; // Crosses midnight
     const hrs = Math.max(1, Math.round(((endMin - startMin) / 60) * 2) / 2);
     if (inpDuration) inpDuration.value = String(hrs);
-    if (inpAycdHours) inpAycdHours.value = String(hrs);
     updateQuote();
   };
 
@@ -3137,7 +3153,6 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
   inpEndText?.addEventListener('input', calcDurationFromTimes);
   selEndAmPm?.addEventListener('change', calcDurationFromTimes);
   inpDuration?.addEventListener('input', () => {
-    if (inpAycdHours) inpAycdHours.value = inpDuration.value;
     updateQuote();
   });
 
@@ -3157,10 +3172,33 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     });
   });
 
-  // Drink Package Card Selection (Supports "none" + clicking active card to deselect)
+  // Drink Package Card Selection (Supports "none" + clicking active card to deselect + clearing deselected inputs)
+  const pkgInputsMap: Record<PkgType, (HTMLInputElement | HTMLTextAreaElement | null)[]> = {
+    none: [],
+    tally: [inpTallyCap],
+    tickets: [inpTicketQty],
+    aycd: [inpAycdGuests, inpAycdHours],
+    other: [inpOtherPkgDesc, inpOtherPkgAmount]
+  };
+
+  const clearDeselectedPkgInputs = (activeKey: PkgType) => {
+    (Object.keys(pkgInputsMap) as PkgType[]).forEach(k => {
+      if (k !== activeKey) {
+        pkgInputsMap[k].forEach(inp => {
+          if (inp) {
+            inp.value = '';
+            inp.classList.remove('input-must-fill-error');
+            inp.setCustomValidity('');
+          }
+        });
+      }
+    });
+  };
+
   const pkgCards = document.querySelectorAll('.drink-pkg-card');
   const setActivePkg = (pkgKey: PkgType) => {
     selectedPkg = pkgKey;
+    clearDeselectedPkgInputs(pkgKey);
     pkgCards.forEach(card => {
       const k = card.getAttribute('data-pkg-card');
       const isSelected = k === pkgKey;
@@ -3173,6 +3211,73 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
       }
     });
     updateQuote();
+  };
+
+  // Auto-select package card and clear error state when user focuses or types into a drink package input
+  (Object.keys(pkgInputsMap) as PkgType[]).forEach(k => {
+    pkgInputsMap[k].forEach(inp => {
+      if (!inp) return;
+      inp.addEventListener('focus', () => {
+        if (selectedPkg !== k) {
+          setActivePkg(k);
+        }
+      });
+      inp.addEventListener('input', () => {
+        if (selectedPkg !== k) {
+          selectedPkg = k;
+          clearDeselectedPkgInputs(k);
+          pkgCards.forEach(card => {
+            const cardKey = card.getAttribute('data-pkg-card');
+            const isSelected = cardKey === k;
+            card.classList.toggle('active', isSelected);
+            const badge = card.querySelector('.pkg-status-indicator');
+            if (badge) {
+              badge.textContent = isSelected
+                ? badge.getAttribute('data-selected-lbl')
+                : badge.getAttribute('data-select-lbl');
+            }
+          });
+        }
+        inp.classList.remove('input-must-fill-error');
+        inp.setCustomValidity('');
+        updateQuote();
+      });
+    });
+  });
+
+  // Also ensure changing the Open Bar Tally Up radio policy selects the 'tally' package
+  document.querySelectorAll('input[name="tallyPolicy"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      if (selectedPkg !== 'tally') {
+        setActivePkg('tally');
+      } else {
+        updateQuote();
+      }
+    });
+  });
+
+  const validateSelectedPkg = (): boolean => {
+    if (selectedPkg === 'none') return true;
+    const reqInputs = pkgInputsMap[selectedPkg] || [];
+    let firstInvalid: HTMLInputElement | HTMLTextAreaElement | null = null;
+    reqInputs.forEach(inp => {
+      if (!inp) return;
+      const val = inp.value.trim();
+      if (!val) {
+        inp.classList.add('input-must-fill-error');
+        inp.setCustomValidity('Must fill this field for the selected drink package.');
+        if (!firstInvalid) firstInvalid = inp;
+      } else {
+        inp.classList.remove('input-must-fill-error');
+        inp.setCustomValidity('');
+      }
+    });
+    if (firstInvalid) {
+      (firstInvalid as HTMLElement).scrollIntoView({ behavior: 'smooth', block: 'center' });
+      (firstInvalid as HTMLInputElement).reportValidity();
+      return false;
+    }
+    return true;
   };
 
   pkgCards.forEach(card => {
@@ -3242,8 +3347,15 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     const earlySetupHours = Math.max(0.5, Math.round(((esEndMin - esStartMin) / 60) * 2) / 2);
     const earlySetupCost = Math.round(earlySetupHours * 5000);
 
+    if (earlySetupDetailsEl) {
+      earlySetupDetailsEl.style.display = ynState.early_setup === 'YES' ? 'flex' : 'none';
+    }
     if (earlySetupHoursEl) earlySetupHoursEl.textContent = String(earlySetupHours);
     if (earlySetupFeeEl) earlySetupFeeEl.textContent = `= ${fmtNTD(earlySetupCost)} NTD$`;
+
+    if (djHoursEntryEl) {
+      djHoursEntryEl.style.display = ynState.mus_dj === 'YES' ? 'flex' : 'none';
+    }
 
     const setupTime =
       ynState.early_setup === 'YES'
@@ -3253,13 +3365,16 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     const otherRequests = inpOtherRequests?.value.trim() || '';
 
     // Update live package mini previews
-    const ticketQty = Math.max(1, Number(inpTicketQty?.value || 100));
+    const ticketQtyRaw = inpTicketQty?.value.trim() || '';
+    const ticketQty = ticketQtyRaw ? Math.max(0, Number(ticketQtyRaw)) : 0;
     const ticketsTotal = ticketQty * 300;
     const calcTicketsEl = document.getElementById('calc-tickets-preview');
     if (calcTicketsEl) calcTicketsEl.textContent = `= ${fmtNTD(ticketsTotal)} NTD$`;
 
-    const aycdGuests = Math.max(1, Number(inpAycdGuests?.value || attending));
-    const aycdHours = Math.max(0.5, Number(inpAycdHours?.value || duration));
+    const aycdGuestsRaw = inpAycdGuests?.value.trim() || '';
+    const aycdHoursRaw = inpAycdHours?.value.trim() || '';
+    const aycdGuests = aycdGuestsRaw ? Math.max(0, Number(aycdGuestsRaw)) : 0;
+    const aycdHours = aycdHoursRaw ? Math.max(0, Number(aycdHoursRaw)) : 0;
     const aycdTotal = Math.round(aycdGuests * aycdHours * 400);
     const calcAycdEl = document.getElementById('calc-aycd-preview');
     if (calcAycdEl) calcAycdEl.textContent = `= ${fmtNTD(aycdTotal)} NTD$`;
@@ -3282,60 +3397,58 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     const serviceLines: QuoteLine[] = [];
     let hasTbd = false;
 
-    // 1. Selected Drink Package Line
-    if (selectedPkg === 'tally') {
-      const cap = Number(inpTallyCap?.value || 0);
-      const policyRadio = document.querySelector('input[name="tallyPolicy"]:checked') as HTMLInputElement;
-      const policy = policyRadio?.value || 'Check with host to extend';
-      if (cap > 0) {
+    // 1. Selected Drink Package Line (Always present in quote summary with label and price)
+    const hasFoodOrDrink = selectedPkg !== 'none' || Boolean(chkAddFood?.checked);
+
+    if (selectedPkg === 'none') {
+      if (!isDaytime || hasFoodOrDrink) {
         serviceLines.push({
-          item: `Open Bar Tally Up (Master Tab — Cap: ${fmtNTD(cap)} NTD, ${policy})`,
-          qty: '1 Master Tab',
-          priceNum: cap,
-          priceText: `${fmtNTD(cap)} NTD$`
-        });
-      } else {
-        hasTbd = true;
-        serviceLines.push({
-          item: `Open Bar Tally Up (Master Tab — ${policy})`,
-          qty: '1 Master Tab',
-          priceNum: null,
-          priceText: 'TBD (On consumption)'
+          item: 'No Drink Package',
+          qty: '—',
+          priceNum: 0,
+          priceText: '0 NTD$'
         });
       }
+    } else if (selectedPkg === 'tally') {
+      const capRaw = inpTallyCap?.value.trim() || '';
+      const cap = capRaw ? Math.max(0, Number(capRaw)) : 0;
+      const policyRadio = document.querySelector('input[name="tallyPolicy"]:checked') as HTMLInputElement;
+      const policy = policyRadio?.value || 'Check with host to extend';
+      serviceLines.push({
+        item:
+          cap > 0
+            ? `1. Open Bar Tally Up (Master Tab — Cap: ${fmtNTD(cap)} NTD$, ${policy})`
+            : `1. Open Bar Tally Up (Master Tab — ${policy})`,
+        qty: '1 Master Tab',
+        priceNum: cap,
+        priceText: `${fmtNTD(cap)} NTD$`
+      });
     } else if (selectedPkg === 'tickets') {
       serviceLines.push({
-        item: 'Drink Tickets (300 NTD per ticket)',
+        item: '2. Drink Tickets (300 NTD per ticket)',
         qty: `${fmtNTD(ticketQty)} tickets`,
         priceNum: ticketsTotal,
         priceText: `${fmtNTD(ticketsTotal)} NTD$`
       });
     } else if (selectedPkg === 'aycd') {
       serviceLines.push({
-        item: `All-You-Can-Drink (400 NTD / guest / hr)`,
+        item: '3. All-You-Can-Drink (400 NTD per guest / hour)',
         qty: `${aycdGuests} guests × ${aycdHours} hrs`,
         priceNum: aycdTotal,
         priceText: `${fmtNTD(aycdTotal)} NTD$`
       });
     } else if (selectedPkg === 'other') {
-      const customDesc = inpOtherPkgDesc?.value.trim() || 'Custom Beverage / Rental Arrangement';
-      const customAmt = Number(inpOtherPkgAmount?.value || 0);
-      if (customAmt > 0) {
-        serviceLines.push({
-          item: `Custom Package: ${customDesc}`,
-          qty: '1',
-          priceNum: customAmt,
-          priceText: `${fmtNTD(customAmt)} NTD$`
-        });
-      } else {
-        hasTbd = true;
-        serviceLines.push({
-          item: `Custom Package: ${customDesc}`,
-          qty: '1',
-          priceNum: null,
-          priceText: 'TBD'
-        });
-      }
+      const customDesc = inpOtherPkgDesc?.value.trim() || '';
+      const customAmtRaw = inpOtherPkgAmount?.value.trim() || '';
+      const customAmt = customAmtRaw ? Math.max(0, Number(customAmtRaw)) : 0;
+      serviceLines.push({
+        item: customDesc
+          ? `4. Other / Custom Arrangement (${customDesc})`
+          : '4. Other / Custom Arrangement',
+        qty: '1',
+        priceNum: customAmt,
+        priceText: `${fmtNTD(customAmt)} NTD$`
+      });
     }
 
     // 2. Optional Finger Food & Catering / Outside Catering
@@ -3389,7 +3502,6 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     }
 
     // 4. Apply Booking & Minimum Spend Rules based on Date (Weekday/Weekend) & Time (Before/After 20:00)
-    const hasFoodOrDrink = selectedPkg !== 'none' || Boolean(chkAddFood?.checked);
     const servicesTotal = serviceLines.reduce((acc, l) => acc + (l.priceNum || 0), 0);
 
     const lines: QuoteLine[] = [];
@@ -3404,7 +3516,7 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
       ruleSlotBadge = `${dayName} · Daytime (Before 20:00) · Option 1`;
       ruleSlotTitle = `No Food or Drink Menu — Venue Rental 5,000 NTD$ / hr (${fmtNTD(venueCost)} NTD$) + Add-ons`;
       lines.push({
-        item: 'Daytime Venue Rental (No Food/Drink Menu — 5,000 NTD$ / hr)',
+        item: 'No Drink Package (Daytime Venue Only — 5,000 NTD$ / hr)',
         qty: `${duration} hrs`,
         priceNum: venueCost,
         priceText: `${fmtNTD(venueCost)} NTD$`
@@ -3725,7 +3837,6 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     }
     if (params.has('dur') && inpDuration) {
       inpDuration.value = params.get('dur')!;
-      if (inpAycdHours) inpAycdHours.value = params.get('dur')!;
     }
     if (params.get('es') === '1') ynState.early_setup = 'YES';
     if (params.has('est') && inpEarlySetupStart) {
@@ -3735,6 +3846,12 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     if (params.has('eet') && inpEarlySetupEnd) {
       inpEarlySetupEnd.value = params.get('eet')!;
       set12hComboFrom24h(inpEarlySetupEnd.value, inpEarlyEndText, selEarlyEndAmPm);
+    }
+    if (params.has('pkg')) {
+      const p = params.get('pkg') as PkgType;
+      if (['none', 'tally', 'tickets', 'aycd', 'other'].includes(p)) {
+        setActivePkg(p);
+      }
     }
     if (params.has('cap') && inpTallyCap) inpTallyCap.value = params.get('cap')!;
     if (params.has('tix') && inpTicketQty) inpTicketQty.value = params.get('tix')!;
@@ -3760,13 +3877,6 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
         });
       }
     });
-
-    if (params.has('pkg')) {
-      const p = params.get('pkg') as PkgType;
-      if (['none', 'tally', 'tickets', 'aycd', 'other'].includes(p)) {
-        setActivePkg(p);
-      }
-    }
   };
 
   // Preserve query parameters when switching language
@@ -3780,12 +3890,13 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
   });
 
   // 6. PDF Generation Function (Combined Solution: In-Viewport Origin Mount + Page-by-Page html2canvas & jsPDF)
-  const generateAndDownloadPdf = async () => {
+  const generateAndDownloadPdf = async (): Promise<boolean> => {
+    if (!validateSelectedPkg()) return false;
     updateQuote();
     const state = getQuoteState();
     const wrapper = document.getElementById('pdf-render-wrapper');
     const element = document.getElementById('pdf-document-template');
-    if (!wrapper || !element) return;
+    if (!wrapper || !element) return false;
 
     const btn = document.getElementById('btn-download-pdf');
     const origHtml = btn?.innerHTML || '';
@@ -3879,9 +3990,12 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
       backdrop.remove();
       if (btn) btn.innerHTML = origHtml;
     }
+    return true;
   };
 
-  document.getElementById('btn-download-pdf')?.addEventListener('click', generateAndDownloadPdf);
+  document.getElementById('btn-download-pdf')?.addEventListener('click', () => {
+    generateAndDownloadPdf();
+  });
 
   // 8. Build Plain-Text Summary & Send Email with Quote Request
   const buildEmailSummary = () => {
@@ -3941,8 +4055,10 @@ ${state.guestName || 'Event Host'}`;
   };
 
   document.getElementById('btn-send-email')?.addEventListener('click', async () => {
+    if (!validateSelectedPkg()) return;
     // 1. Trigger PDF download so the user has the PDF file ready to attach
-    await generateAndDownloadPdf();
+    const ok = await generateAndDownloadPdf();
+    if (!ok) return;
 
     // 2. Open email client with pre-filled quote request
     const { subject, body } = buildEmailSummary();
