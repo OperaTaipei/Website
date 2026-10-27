@@ -62,7 +62,9 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
   canonical={canonical}
   alternates={alternates}
 >
-  <!-- html2pdf.js for direct client-side formatted PDF generation -->
+  <!-- html2canvas & jsPDF for direct page-by-page formatted PDF generation -->
+  <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+  <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
   <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer></script>
 
   <div class="web-ui-container">
@@ -1855,7 +1857,8 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
   }
 
   .live-quote-table th,
-  .live-quote-table td {
+  .live-quote-table td,
+  .live-quote-table :global(td) {
     border: 1px solid rgba(201, 168, 76, 0.28);
     padding: 14px 18px;
     font-size: 0.88rem;
@@ -1883,11 +1886,13 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     border-top: 2px solid var(--color-gold);
   }
 
-  .text-right {
+  .text-right,
+  .live-quote-table :global(.text-right) {
     text-align: right !important;
   }
 
-  .text-center {
+  .text-center,
+  .live-quote-table :global(.text-center) {
     text-align: center !important;
   }
 
@@ -2099,11 +2104,18 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
      Faithfully matches the attached Opéra Taipei PDF Quote
   ================================================================ */
   #pdf-render-wrapper {
-    position: fixed;
-    left: -9999px;
-    top: 0;
-    z-index: -1;
-    overflow: hidden;
+    display: none;
+  }
+
+  #pdf-render-wrapper.pdf-capturing {
+    display: block !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 794px !important;
+    z-index: 99990 !important;
+    background: #ffffff !important;
+    pointer-events: none;
   }
 
   #pdf-document-template {
@@ -2270,7 +2282,8 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
   }
 
   .pdf-quote-table th,
-  .pdf-quote-table td {
+  .pdf-quote-table td,
+  .pdf-quote-table :global(td) {
     border: 1px solid #000000;
     padding: 7px 10px;
     height: 28px;
@@ -2392,6 +2405,7 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
       display: none !important;
     }
     #pdf-render-wrapper {
+      display: block !important;
       position: static !important;
       left: 0 !important;
       top: 0 !important;
@@ -3088,12 +3102,13 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     });
   });
 
-  // 6. PDF Generation Function
+  // 6. PDF Generation Function (Combined Solution: In-Viewport Origin Mount + Page-by-Page html2canvas & jsPDF)
   const generateAndDownloadPdf = async () => {
     updateQuote();
     const state = getQuoteState();
+    const wrapper = document.getElementById('pdf-render-wrapper');
     const element = document.getElementById('pdf-document-template');
-    if (!element) return;
+    if (!wrapper || !element) return;
 
     const btn = document.getElementById('btn-download-pdf');
     const origHtml = btn?.innerHTML || '';
@@ -3104,32 +3119,87 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
       .slice(0, 30);
     const fileName = `Opera_Taipei_Quote_${safeName}_${state.rawDate || 'Reference'}.pdf`;
 
+    const savedScrollX = window.scrollX;
+    const savedScrollY = window.scrollY;
+
+    // Cover viewport with a dark loading overlay while mounting PDF template at (0,0)
+    const backdrop = document.createElement('div');
+    backdrop.style.cssText =
+      'position:fixed;inset:0;background:rgba(8,8,8,0.92);z-index:99999;display:flex;align-items:center;justify-content:center;color:#e2c47a;font-family:Montserrat,sans-serif;font-size:0.95rem;letter-spacing:0.1em;';
+    backdrop.textContent = '⏳ Generating PDF Quotation...';
+    document.body.appendChild(backdrop);
+
     try {
-      const html2pdfLib = (window as any).html2pdf;
-      if (html2pdfLib) {
-        await html2pdfLib()
-          .set({
-            margin: 0,
-            filename: fileName,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: {
-              scale: 2,
-              useCORS: true,
-              letterRendering: true,
-              width: 794,
-              windowWidth: 794
-            },
-            jsPDF: { unit: 'px', format: [794, 1122], orientation: 'portrait', hotfixes: ['px_scaling'] }
-          })
-          .from(element)
-          .save();
+      wrapper.classList.add('pdf-capturing');
+      window.scrollTo(0, 0);
+
+      // Allow browser two animation frames to lay out and paint the visible template at (0,0)
+      await new Promise<void>(resolve =>
+        requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+      );
+
+      const html2canvasFn = (window as any).html2canvas;
+      const jsPDFClass = (window as any).jspdf?.jsPDF || (window as any).jsPDF;
+      const pages = element.querySelectorAll('.pdf-page');
+
+      if (html2canvasFn && jsPDFClass && pages.length > 0) {
+        const pdf = new jsPDFClass({
+          orientation: 'portrait',
+          unit: 'mm',
+          format: 'a4',
+          compress: true
+        });
+
+        for (let i = 0; i < pages.length; i++) {
+          const pageEl = pages[i] as HTMLElement;
+          const canvas = await html2canvasFn(pageEl, {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: '#ffffff',
+            width: 794,
+            height: 1120,
+            windowWidth: 794,
+            scrollX: 0,
+            scrollY: 0
+          });
+          const imgData = canvas.toDataURL('image/jpeg', 0.98);
+          if (i > 0) pdf.addPage();
+          pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297);
+        }
+
+        pdf.save(fileName);
       } else {
-        window.print();
+        const html2pdfLib = (window as any).html2pdf;
+        if (html2pdfLib) {
+          await html2pdfLib()
+            .set({
+              margin: 0,
+              filename: fileName,
+              image: { type: 'jpeg', quality: 0.98 },
+              html2canvas: {
+                scale: 2,
+                useCORS: true,
+                letterRendering: true,
+                width: 794,
+                windowWidth: 794,
+                scrollX: 0,
+                scrollY: 0
+              },
+              jsPDF: { unit: 'px', format: [794, 1122], orientation: 'portrait', hotfixes: ['px_scaling'] }
+            })
+            .from(element)
+            .save();
+        } else {
+          window.print();
+        }
       }
     } catch (err) {
       console.error('PDF generation error, falling back to native print:', err);
       window.print();
     } finally {
+      wrapper.classList.remove('pdf-capturing');
+      window.scrollTo(savedScrollX, savedScrollY);
+      backdrop.remove();
       if (btn) btn.innerHTML = origHtml;
     }
   };
