@@ -375,7 +375,6 @@ const getQuoteLangLink = (targetLang: string) => {
                 <div class="option-row option-row--head">
                   <div class="opt-name">{t.tbl_col_item}</div>
                   <div class="opt-toggle">{t.tbl_col_yes} / {t.tbl_col_no}</div>
-                  <div class="opt-cost">{t.tbl_col_cost}</div>
                 </div>
 
                 <!-- TVs -->
@@ -387,7 +386,6 @@ const getQuoteLangLink = (targetLang: string) => {
                       <button type="button" class="yn-btn" data-val="NO">{t.tbl_col_no}</button>
                     </div>
                   </div>
-                  <div class="opt-cost cost-free">0</div>
                 </div>
 
                 <!-- LED walls -->
@@ -399,7 +397,6 @@ const getQuoteLangLink = (targetLang: string) => {
                       <button type="button" class="yn-btn" data-val="NO">{t.tbl_col_no}</button>
                     </div>
                   </div>
-                  <div class="opt-cost cost-free">0</div>
                 </div>
 
                 <!-- Window's projectors -->
@@ -411,7 +408,6 @@ const getQuoteLangLink = (targetLang: string) => {
                       <button type="button" class="yn-btn" data-val="NO">{t.tbl_col_no}</button>
                     </div>
                   </div>
-                  <div class="opt-cost cost-free">0</div>
                 </div>
 
                 <!-- First floor TV -->
@@ -423,14 +419,13 @@ const getQuoteLangLink = (targetLang: string) => {
                       <button type="button" class="yn-btn" data-val="NO">{t.tbl_col_no}</button>
                     </div>
                   </div>
-                  <div class="opt-cost cost-free">0</div>
                 </div>
 
                 <!-- Backdrop print -->
                 <div class="option-row">
                   <div class="opt-name">
                     {t.vis_backdrop}
-                    <small class="opt-subnote">{t.vis_backdrop_note}</small>
+                    <small class="opt-subnote opt-subnote--quote">{t.vis_backdrop_note}</small>
                   </div>
                   <div class="opt-toggle">
                     <div class="yn-switch" data-opt="vis_backdrop">
@@ -438,7 +433,6 @@ const getQuoteLangLink = (targetLang: string) => {
                       <button type="button" class="yn-btn active" data-val="NO">{t.tbl_col_no}</button>
                     </div>
                   </div>
-                  <div class="opt-cost cost-tbd">TBD</div>
                 </div>
               </div>
 
@@ -448,46 +442,27 @@ const getQuoteLangLink = (targetLang: string) => {
                 <div class="option-row option-row--head">
                   <div class="opt-name">{t.tbl_col_item}</div>
                   <div class="opt-toggle">{t.tbl_col_yes} / {t.tbl_col_no}</div>
-                  <div class="opt-cost">{t.tbl_col_cost}</div>
                 </div>
 
                 <!-- DJ -->
                 <div class="option-row">
-                  <div class="opt-name">{t.mus_dj}</div>
+                  <div class="opt-name">
+                    <span>{t.mus_dj}</span>
+                    <small class="opt-subnote opt-subnote--gold">{t.mus_dj_note}</small>
+                    <div class="dj-hours-entry">
+                      <label for="inp-dj-hours">{t.mus_dj_hours_lbl}</label>
+                      <input type="number" id="inp-dj-hours" min="1" max="12" step="0.5" value="3" class="inline-hours-input" />
+                    </div>
+                  </div>
                   <div class="opt-toggle">
                     <div class="yn-switch" data-opt="mus_dj">
                       <button type="button" class="yn-btn" data-val="YES">{t.tbl_col_yes}</button>
                       <button type="button" class="yn-btn active" data-val="NO">{t.tbl_col_no}</button>
                     </div>
                   </div>
-                  <div class="opt-cost cost-tbd">TBD</div>
                 </div>
 
-                <!-- Playlist -->
-                <div class="option-row">
-                  <div class="opt-name">{t.mus_playlist}</div>
-                  <div class="opt-toggle">
-                    <div class="yn-switch" data-opt="mus_playlist">
-                      <button type="button" class="yn-btn active" data-val="YES">{t.tbl_col_yes}</button>
-                      <button type="button" class="yn-btn" data-val="NO">{t.tbl_col_no}</button>
-                    </div>
-                  </div>
-                  <div class="opt-cost cost-free">0</div>
-                </div>
-
-                <!-- Microphones -->
-                <div class="option-row">
-                  <div class="opt-name">{t.mus_mics}</div>
-                  <div class="opt-toggle">
-                    <div class="yn-switch" data-opt="mus_mics">
-                      <button type="button" class="yn-btn active" data-val="YES">{t.tbl_col_yes}</button>
-                      <button type="button" class="yn-btn" data-val="NO">{t.tbl_col_no}</button>
-                    </div>
-                  </div>
-                  <div class="opt-cost cost-free">0</div>
-                </div>
-
-                <!-- Music style -->
+                <!-- Music style (placed directly under DJ) -->
                 <div class="option-row option-row--music-style">
                   <div class="opt-name">
                     {t.mus_style}
@@ -499,19 +474,42 @@ const getQuoteLangLink = (targetLang: string) => {
                       <button type="button" class="yn-btn" data-val="NO">{t.tbl_col_no}</button>
                     </div>
                   </div>
-                  <div class="opt-cost cost-free">0</div>
+                </div>
+
+                <!-- Playlist -->
+                <div class="option-row">
+                  <div class="opt-name">{t.mus_playlist}</div>
+                  <div class="opt-toggle">
+                    <div class="yn-switch" data-opt="mus_playlist">
+                      <button type="button" class="yn-btn active" data-val="YES">{t.tbl_col_yes}</button>
+                      <button type="button" class="yn-btn" data-val="NO">{t.tbl_col_no}</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Microphones -->
+                <div class="option-row">
+                  <div class="opt-name">{t.mus_mics}</div>
+                  <div class="opt-toggle">
+                    <div class="yn-switch" data-opt="mus_mics">
+                      <button type="button" class="yn-btn active" data-val="YES">{t.tbl_col_yes}</button>
+                      <button type="button" class="yn-btn" data-val="NO">{t.tbl_col_no}</button>
+                    </div>
+                  </div>
                 </div>
 
                 <!-- Photographer -->
                 <div class="option-row">
-                  <div class="opt-name">{t.mus_photographer}</div>
+                  <div class="opt-name">
+                    {t.mus_photographer}
+                    <small class="opt-subnote opt-subnote--quote">{t.mus_photographer_note}</small>
+                  </div>
                   <div class="opt-toggle">
                     <div class="yn-switch" data-opt="mus_photographer">
                       <button type="button" class="yn-btn" data-val="YES">{t.tbl_col_yes}</button>
                       <button type="button" class="yn-btn active" data-val="NO">{t.tbl_col_no}</button>
                     </div>
                   </div>
-                  <div class="opt-cost cost-tbd">TBD</div>
                 </div>
               </div>
             </div>
@@ -881,109 +879,98 @@ const getQuoteLangLink = (targetLang: string) => {
         <table class="pdf-main-table">
           <thead>
             <tr class="pdf-blue-header">
-              <th colspan="4">Information</th>
+              <th colspan="3">Information</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td class="pdf-info-lbl">Guest name (company legal name) :</td>
-              <td colspan="3" class="pdf-info-val" id="pdf-guest-name"></td>
+              <td colspan="2" class="pdf-info-val" id="pdf-guest-name"></td>
             </tr>
             <tr>
               <td class="pdf-info-lbl">Guest company tax ID :</td>
-              <td colspan="3" class="pdf-info-val" id="pdf-tax-id"></td>
+              <td colspan="2" class="pdf-info-val" id="pdf-tax-id"></td>
             </tr>
             <tr>
               <td class="pdf-info-lbl">Guest contact information :</td>
-              <td colspan="3" class="pdf-info-val" id="pdf-contact"></td>
+              <td colspan="2" class="pdf-info-val" id="pdf-contact"></td>
             </tr>
             <tr>
               <td class="pdf-info-lbl">Attending number :</td>
-              <td colspan="3" class="pdf-info-val" id="pdf-attending"></td>
+              <td colspan="2" class="pdf-info-val" id="pdf-attending"></td>
             </tr>
             <tr>
               <td class="pdf-info-lbl">Event time :</td>
-              <td colspan="3" class="pdf-info-val" id="pdf-event-time"></td>
+              <td colspan="2" class="pdf-info-val" id="pdf-event-time"></td>
             </tr>
             <tr>
               <td class="pdf-info-lbl">Setup time :</td>
-              <td colspan="3" class="pdf-info-val" id="pdf-setup-time"></td>
+              <td colspan="2" class="pdf-info-val" id="pdf-setup-time"></td>
             </tr>
 
             <!-- Visuals Section -->
             <tr class="pdf-blue-header">
-              <th colspan="4">Visuals</th>
+              <th colspan="3">Visuals</th>
             </tr>
             <tr class="pdf-sub-header">
-              <td style="width: 42%;"></td>
-              <td style="width: 18%; text-align: center;">YES</td>
-              <td style="width: 18%; text-align: center;">NO</td>
-              <td style="width: 22%; text-align: center;">Cost NTD$</td>
+              <td style="width: 60%;"></td>
+              <td style="width: 20%; text-align: center;">YES</td>
+              <td style="width: 20%; text-align: center;">NO</td>
             </tr>
             <tr>
               <td>TVs</td>
               <td class="pdf-yn-cell" id="pdf-vis_tvs-yes">✓</td>
               <td class="pdf-yn-cell" id="pdf-vis_tvs-no"></td>
-              <td class="pdf-cost-cell">0</td>
             </tr>
             <tr>
               <td>LED walls</td>
               <td class="pdf-yn-cell" id="pdf-vis_led-yes">✓</td>
               <td class="pdf-yn-cell" id="pdf-vis_led-no"></td>
-              <td class="pdf-cost-cell">0</td>
             </tr>
             <tr>
               <td>Window's projectors</td>
               <td class="pdf-yn-cell" id="pdf-vis_projectors-yes">✓</td>
               <td class="pdf-yn-cell" id="pdf-vis_projectors-no"></td>
-              <td class="pdf-cost-cell">0</td>
             </tr>
             <tr>
               <td>First floor TV</td>
               <td class="pdf-yn-cell" id="pdf-vis_1f_tv-yes">✓</td>
               <td class="pdf-yn-cell" id="pdf-vis_1f_tv-no"></td>
-              <td class="pdf-cost-cell">0</td>
             </tr>
             <tr>
-              <td>Backdrop print</td>
+              <td>Backdrop print <em>(A detailed quotation will be provided)</em></td>
               <td class="pdf-yn-cell" id="pdf-vis_backdrop-yes"></td>
               <td class="pdf-yn-cell" id="pdf-vis_backdrop-no">✓</td>
-              <td class="pdf-cost-cell">TBD</td>
             </tr>
 
             <!-- Music Section -->
             <tr class="pdf-blue-header">
-              <th colspan="4">Music</th>
+              <th colspan="3">Music</th>
             </tr>
             <tr>
-              <td>DJ</td>
+              <td id="pdf-dj-label-cell">DJ (Cost is 1,000 NTD$ / h)</td>
               <td class="pdf-yn-cell" id="pdf-mus_dj-yes"></td>
               <td class="pdf-yn-cell" id="pdf-mus_dj-no">✓</td>
-              <td class="pdf-cost-cell">TBD</td>
+            </tr>
+            <tr>
+              <td id="pdf-music-style-cell">Music style</td>
+              <td class="pdf-yn-cell" id="pdf-mus_style-yes">✓</td>
+              <td class="pdf-yn-cell" id="pdf-mus_style-no"></td>
             </tr>
             <tr>
               <td>Playlist</td>
               <td class="pdf-yn-cell" id="pdf-mus_playlist-yes">✓</td>
               <td class="pdf-yn-cell" id="pdf-mus_playlist-no"></td>
-              <td class="pdf-cost-cell">0</td>
             </tr>
             <tr>
               <td>Microphones</td>
               <td class="pdf-yn-cell" id="pdf-mus_mics-yes">✓</td>
               <td class="pdf-yn-cell" id="pdf-mus_mics-no"></td>
-              <td class="pdf-cost-cell">0</td>
             </tr>
             <tr>
-              <td>Music style</td>
-              <td class="pdf-yn-cell" id="pdf-mus_style-yes">✓</td>
-              <td class="pdf-yn-cell" id="pdf-mus_style-no"></td>
-              <td class="pdf-cost-cell">0</td>
-            </tr>
-            <tr>
-              <td>Photographer</td>
+              <td>Photographer <em>(A detailed quotation will be provided)</em></td>
               <td class="pdf-yn-cell" id="pdf-mus_photographer-yes"></td>
               <td class="pdf-yn-cell" id="pdf-mus_photographer-no">✓</td>
-              <td class="pdf-cost-cell">TBD</td>
             </tr>
           </tbody>
         </table>
@@ -1519,11 +1506,11 @@ const getQuoteLangLink = (targetLang: string) => {
 
   .option-row {
     display: grid;
-    grid-template-columns: 1fr 150px 95px;
+    grid-template-columns: 1fr auto;
     align-items: center;
     padding: 14px 20px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    gap: 10px;
+    gap: 16px;
   }
 
   .option-row:last-child {
@@ -1544,12 +1531,53 @@ const getQuoteLangLink = (targetLang: string) => {
     color: var(--color-white);
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 5px;
+  }
+
+  .opt-toggle {
+    justify-self: end;
   }
 
   .opt-subnote {
-    font-size: 0.7rem;
+    font-size: 0.72rem;
     color: var(--color-text-muted);
+  }
+
+  .opt-subnote--gold {
+    color: var(--color-gold-light);
+    font-weight: 500;
+  }
+
+  .opt-subnote--quote {
+    color: rgba(226, 196, 122, 0.85);
+    font-style: italic;
+  }
+
+  .dj-hours-entry {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+  }
+
+  .dj-hours-entry label {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    text-transform: none;
+    letter-spacing: 0.02em;
+    font-weight: 400;
+  }
+
+  .inline-hours-input {
+    width: 85px;
+    background: rgba(8, 8, 8, 0.85);
+    border: 1px solid rgba(201, 168, 76, 0.4);
+    border-radius: 4px;
+    padding: 5px 8px;
+    color: var(--color-white);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.8rem;
   }
 
   .inline-style-input {
@@ -1589,20 +1617,6 @@ const getQuoteLangLink = (targetLang: string) => {
   .yn-btn.active[data-val="NO"] {
     background: rgba(255, 255, 255, 0.16);
     color: var(--color-white);
-  }
-
-  .opt-cost {
-    text-align: right;
-    font-size: 0.84rem;
-    font-weight: 500;
-  }
-
-  .cost-free {
-    color: #8fd19e;
-  }
-
-  .cost-tbd {
-    color: var(--color-gold-light);
   }
 
   /* Step 3: Drink Package Cards */
@@ -2375,7 +2389,7 @@ const getQuoteLangLink = (targetLang: string) => {
       grid-template-columns: 1fr;
     }
     .option-row {
-      grid-template-columns: 1fr auto 65px;
+      grid-template-columns: 1fr auto;
       padding: 12px 14px;
     }
     .back-main-link {
@@ -2449,6 +2463,7 @@ const getQuoteLangLink = (targetLang: string) => {
   const inpEndTime = document.getElementById('inp-end-time') as HTMLInputElement;
   const inpDuration = document.getElementById('inp-duration') as HTMLInputElement;
   const inpSetupTime = document.getElementById('inp-setup-time') as HTMLInputElement;
+  const inpDjHours = document.getElementById('inp-dj-hours') as HTMLInputElement;
   const inpMusicStyle = document.getElementById('inp-music-style') as HTMLInputElement;
   const inpOtherRequests = document.getElementById('inp-other-requests') as HTMLTextAreaElement;
 
@@ -2739,32 +2754,33 @@ const getQuoteLangLink = (targetLang: string) => {
       }
     }
 
-    // 4. Add selected TBD services so they appear clearly on the Quote table
+    // 4. Add selected services (DJ at 1,000 NTD/h, Backdrop & Photographer with detailed quote note)
+    const djHours = Math.max(0.5, Number(inpDjHours?.value || duration));
+    if (ynState.mus_dj === 'YES') {
+      const djCost = Math.round(djHours * 1000);
+      lines.push({
+        item: 'DJ (1,000 NTD$ / h)',
+        qty: `${djHours} hrs`,
+        priceNum: djCost,
+        priceText: `${fmtNTD(djCost)} NTD$`
+      });
+    }
     if (ynState.vis_backdrop === 'YES') {
       hasTbd = true;
       lines.push({
-        item: 'Custom Backdrop Print (Visuals)',
+        item: 'Backdrop Print (Detailed quotation will be provided)',
         qty: '1',
         priceNum: null,
-        priceText: 'TBD'
-      });
-    }
-    if (ynState.mus_dj === 'YES') {
-      hasTbd = true;
-      lines.push({
-        item: 'Live Event DJ Performance',
-        qty: `${duration} hrs`,
-        priceNum: null,
-        priceText: 'TBD'
+        priceText: 'Detailed quote'
       });
     }
     if (ynState.mus_photographer === 'YES') {
       hasTbd = true;
       lines.push({
-        item: 'Event Photographer Service',
+        item: 'Photographer (Detailed quotation will be provided)',
         qty: `${duration} hrs`,
         priceNum: null,
-        priceText: 'TBD'
+        priceText: 'Detailed quote'
       });
     }
 
@@ -2783,6 +2799,7 @@ const getQuoteLangLink = (targetLang: string) => {
       startTime,
       endTime,
       duration,
+      djHours,
       eventTimeStr,
       setupTime,
       musicStyleText,
@@ -2794,6 +2811,18 @@ const getQuoteLangLink = (targetLang: string) => {
       grandTotal
     };
   };
+
+  // Auto-enable DJ toggle if user edits DJ hours box directly
+  inpDjHours?.addEventListener('input', () => {
+    ynState.mus_dj = 'YES';
+    const sw = document.querySelector('.yn-switch[data-opt="mus_dj"]');
+    if (sw) {
+      sw.querySelectorAll('.yn-btn').forEach(b => {
+        b.classList.toggle('active', b.getAttribute('data-val') === 'YES');
+      });
+    }
+    updateQuote();
+  });
 
   const updateQuote = () => {
     const state = getQuoteState();
@@ -2842,6 +2871,18 @@ const getQuoteLangLink = (targetLang: string) => {
     setTxt('pdf-attending', `${state.attending} guests`);
     setTxt('pdf-event-time', state.eventTimeStr);
     setTxt('pdf-setup-time', state.setupTime);
+    setTxt(
+      'pdf-dj-label-cell',
+      ynState.mus_dj === 'YES'
+        ? `DJ (Cost is 1,000 NTD$ / h — ${state.djHours} hrs required)`
+        : 'DJ (Cost is 1,000 NTD$ / h)'
+    );
+    setTxt(
+      'pdf-music-style-cell',
+      ynState.mus_style === 'YES' && state.musicStyleText
+        ? `Music style (${state.musicStyleText})`
+        : 'Music style'
+    );
 
     // Sync YES/NO checkmarks in PDF Page 1
     Object.keys(ynState).forEach(k => {
@@ -2909,7 +2950,10 @@ const getQuoteLangLink = (targetLang: string) => {
     if (chkAddFood?.checked) params.set('food', inpFoodPerGuest?.value || '400');
     if (selVenueTier?.value && selVenueTier.value !== 'none') params.set('tier', selVenueTier.value);
     if (ynState.vis_backdrop === 'YES') params.set('backdrop', '1');
-    if (ynState.mus_dj === 'YES') params.set('dj', '1');
+    if (ynState.mus_dj === 'YES') {
+      params.set('dj', '1');
+      params.set('djh', String(state.djHours));
+    }
     if (ynState.mus_photographer === 'YES') params.set('photo', '1');
     if (state.otherRequests) params.set('notes', state.otherRequests);
 
@@ -2943,6 +2987,7 @@ const getQuoteLangLink = (targetLang: string) => {
     if (params.has('tier') && selVenueTier) selVenueTier.value = params.get('tier')!;
     if (params.get('backdrop') === '1') ynState.vis_backdrop = 'YES';
     if (params.get('dj') === '1') ynState.mus_dj = 'YES';
+    if (params.has('djh') && inpDjHours) inpDjHours.value = params.get('djh')!;
     if (params.get('photo') === '1') ynState.mus_photographer = 'YES';
     if (params.has('notes') && inpOtherRequests) inpOtherRequests.value = params.get('notes')!;
 
