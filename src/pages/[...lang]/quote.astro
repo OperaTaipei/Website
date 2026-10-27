@@ -194,7 +194,6 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
           <div class="venue-sub-section" id="section-visuals">
             <div class="venue-sub-header-row">
               <div class="events-block-title" style="margin-bottom: 0;">{t.venue_tab_visuals}</div>
-              <button type="button" id="open-vibe-btn" class="btn-gold"><span>▶ {t.gallery_experience_vibe}</span></button>
             </div>
             <div class="quote-gallery-grid">
               <div class="quote-gallery-item">
@@ -799,67 +798,10 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
         </section>
       </form>
 
-      <!-- ====================================================
-           BOTTOM CONTACT & BOOKING CHANNELS REMINDER
-      ==================================================== -->
-      <section class="quote-section" style="padding-bottom: 20px;">
-        <div class="section-wrap">
-          <div class="booking-channels-card" style="margin-top: 0;">
-            <span class="ref-badge-pill" style="margin-bottom: 12px; display: inline-block;">{t.ref_badge}</span>
-            <h4 class="booking-card-title">{t.reassurance_title}</h4>
-            <p class="booking-card-subtitle">{t.reassurance_text}</p>
-
-            <div class="booking-action-channels">
-              <a href="https://www.instagram.com/operataipei/" target="_blank" rel="noopener noreferrer" class="channel-btn ig-btn">
-                <span class="btn-text-wrap">
-                  <strong>{t.booking_ig} (@operataipei)</strong>
-                  <small>{t.booking_ig_sub}</small>
-                </span>
-              </a>
-
-              <a href="mailto:contact@opera-taipei.com" id="direct-mailto-bottom" class="channel-btn mail-btn">
-                <span class="btn-text-wrap">
-                  <strong>contact@opera-taipei.com</strong>
-                  <small>{t.booking_email_sub}</small>
-                </span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <Contact t={t} />
     </main>
 
     <Footer t={t} />
-
-    <!-- Vibe Video Modal -->
-    <div id="vibe-modal" class="vibe-modal-overlay">
-      <div class="vibe-modal-content">
-        <button type="button" id="close-vibe-btn" class="vibe-modal-close" aria-label="Close modal">&times;</button>
-        <div class="video-container">
-          <video id="vibe-video" controls loop playsinline>
-            <source src="/images/opera_vibe.mp4" type="video/mp4" />
-          </video>
-        </div>
-      </div>
-    </div>
-
-    <!-- Email Confirmation Modal -->
-    <div id="email-modal" class="vibe-modal-overlay">
-      <div class="email-modal-card">
-        <button type="button" id="close-email-modal" class="vibe-modal-close">&times;</button>
-        <div class="ref-badge-pill" style="margin-bottom: 12px;">Opéra Taipei Events</div>
-        <h3 class="email-modal-heading">{t.email_modal_title}</h3>
-        <p class="email-modal-steps">{t.email_modal_body}</p>
-        <p class="email-modal-sub">{t.email_modal_fallback}</p>
-        <div class="email-modal-actions">
-          <a id="modal-mailto-link" href="mailto:contact@opera-taipei.com" class="btn-gold"><span>{t.email_modal_open_btn}</span></a>
-          <button type="button" id="modal-copy-text-btn" class="btn-ghost">{t.email_modal_copy_btn}</button>
-          <button type="button" id="modal-done-btn" class="btn-ghost">{t.email_modal_close}</button>
-        </div>
-      </div>
-    </div>
   </div>
 
   <!-- =========================================================================
@@ -2092,6 +2034,33 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
   }
 
   /* Email Modal */
+  .vibe-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .vibe-modal-overlay.active {
+    display: flex;
+  }
+
+  .vibe-modal-close {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    background: transparent;
+    border: none;
+    color: var(--color-gold-light);
+    font-size: 1.8rem;
+    cursor: pointer;
+    line-height: 1;
+  }
+
   .email-modal-card {
     position: relative;
     background: var(--color-card);
@@ -2507,28 +2476,6 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
         hamburgerButton.classList.remove('open');
         mobileMenu.classList.remove('open');
       });
-    });
-  }
-
-  // 2. Vibe Video Modal
-  const openVibeBtn = document.getElementById('open-vibe-btn');
-  const closeVibeBtn = document.getElementById('close-vibe-btn');
-  const vibeModal = document.getElementById('vibe-modal');
-  const vibeVideo = document.getElementById('vibe-video') as HTMLVideoElement | null;
-
-  if (openVibeBtn && vibeModal) {
-    openVibeBtn.addEventListener('click', () => {
-      vibeModal.classList.add('active');
-      if (vibeVideo) vibeVideo.play().catch(() => {});
-    });
-  }
-  if (closeVibeBtn && vibeModal) {
-    closeVibeBtn.addEventListener('click', () => {
-      vibeModal.classList.remove('active');
-      if (vibeVideo) {
-        vibeVideo.pause();
-        vibeVideo.currentTime = 0;
-      }
     });
   }
 
@@ -3272,36 +3219,14 @@ ${state.guestName || 'Event Host'}`;
     return { subject, body };
   };
 
-  const emailModal = document.getElementById('email-modal');
-  const closeEmailModal = () => emailModal?.classList.remove('active');
-  document.getElementById('close-email-modal')?.addEventListener('click', closeEmailModal);
-  document.getElementById('modal-done-btn')?.addEventListener('click', closeEmailModal);
-
   document.getElementById('btn-send-email')?.addEventListener('click', async () => {
     // 1. Trigger PDF download so the user has the PDF file ready to attach
     await generateAndDownloadPdf();
 
-    // 2. Prepare mailto link
+    // 2. Open email client with pre-filled quote request
     const { subject, body } = buildEmailSummary();
     const mailtoHref = `mailto:contact@opera-taipei.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-
-    const modalLink = document.getElementById('modal-mailto-link') as HTMLAnchorElement | null;
-    if (modalLink) modalLink.href = mailtoHref;
-
-    // 3. Show helpful modal & open email client
-    emailModal?.classList.add('active');
     window.location.href = mailtoHref;
-  });
-
-  document.getElementById('modal-copy-text-btn')?.addEventListener('click', async (e) => {
-    const { body } = buildEmailSummary();
-    try {
-      await navigator.clipboard.writeText(body);
-      const btn = e.currentTarget as HTMLButtonElement;
-      const orig = btn.textContent;
-      btn.textContent = '✓ Copied!';
-      setTimeout(() => (btn.textContent = orig), 2500);
-    } catch {}
   });
 
   // Initialize on page load
