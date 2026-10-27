@@ -809,15 +809,15 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
                   <tfoot>
                     <tr class="summary-black-row">
                       <td colspan="2" class="text-right">{t.quote_subtotal}</td>
-                      <td id="live-subtotal" class="text-right">72,000</td>
+                      <td id="live-subtotal" class="text-right">15,000</td>
                     </tr>
                     <tr class="summary-black-row">
                       <td colspan="2" class="text-right">{t.quote_vat}</td>
-                      <td id="live-vat" class="text-right">3,600</td>
+                      <td id="live-vat" class="text-right">750</td>
                     </tr>
                     <tr class="summary-black-row grand-total-row">
                       <td colspan="2" class="text-right">{t.quote_grand_total}</td>
-                      <td id="live-grand-total" class="text-right">75,600</td>
+                      <td id="live-grand-total" class="text-right">15,750</td>
                     </tr>
                   </tfoot>
                 </table>
@@ -3167,6 +3167,12 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
         ynState[optKey] = val;
         btns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
+        if (optKey === 'early_setup' && earlySetupDetailsEl) {
+          earlySetupDetailsEl.style.display = val === 'YES' ? 'flex' : 'none';
+        }
+        if (optKey === 'mus_dj' && djHoursEntryEl) {
+          djHoursEntryEl.style.display = val === 'YES' ? 'flex' : 'none';
+        }
         updateQuote();
       });
     });
@@ -3379,13 +3385,13 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     const calcAycdEl = document.getElementById('calc-aycd-preview');
     if (calcAycdEl) calcAycdEl.textContent = `= ${fmtNTD(aycdTotal)} NTD$`;
 
-    // Determine Daytime (ends at or before 20:00) vs. Nighttime (ends after 20:00)
+    // Determine Daytime (starts before 20:00) vs. Nighttime (starts at or after 20:00)
     const [sh, sm] = startTime.split(':').map(Number);
     const [eh, em] = endTime.split(':').map(Number);
     const startMin = sh * 60 + sm;
     let endMin = eh * 60 + em;
     if (endMin <= startMin) endMin += 24 * 60; // Crosses midnight
-    const isDaytime = startMin >= 6 * 60 && endMin <= 20 * 60;
+    const isDaytime = startMin >= 6 * 60 && startMin < 20 * 60;
 
     // Determine Weekday (Sun-Thu) vs. Weekend (Fri-Sat) from selected date
     const [yy, mm, dd] = (rawDate || '').split('-').map(Number);
@@ -3630,8 +3636,10 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     }
     updateQuote();
   };
-  inpEarlySetupText?.addEventListener('input', onEarlySetupTimeInput);
-  selEarlySetupAmPm?.addEventListener('change', onEarlySetupTimeInput);
+  inpEarlyStartText?.addEventListener('input', onEarlySetupTimeInput);
+  selEarlyStartAmPm?.addEventListener('change', onEarlySetupTimeInput);
+  inpEarlyEndText?.addEventListener('input', onEarlySetupTimeInput);
+  selEarlyEndAmPm?.addEventListener('change', onEarlySetupTimeInput);
 
   // Auto-enable DJ toggle if user edits DJ hours box directly
   inpDjHours?.addEventListener('input', () => {
