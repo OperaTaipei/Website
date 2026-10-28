@@ -839,6 +839,7 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
                   <span>{t.btn_send_email}</span>
                 </button>
               </div>
+              <div id="email-send-feedback" class="email-send-feedback" style="display: none;" role="status" aria-live="polite"></div>
 
               <!-- Reassurance Banner Inside Quote Section -->
               <div class="reassurance-callout">
@@ -2282,6 +2283,26 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     color: #8fd19e;
     font-size: 0.82rem;
     margin-bottom: 16px;
+  }
+
+  .email-send-feedback {
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-size: 0.86rem;
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+
+  .email-send-feedback--success {
+    background: rgba(143, 209, 158, 0.12);
+    border: 1px solid rgba(143, 209, 158, 0.45);
+    color: #8fd19e;
+  }
+
+  .email-send-feedback--error {
+    background: rgba(255, 107, 107, 0.12);
+    border: 1px solid rgba(255, 107, 107, 0.45);
+    color: #ff8787;
   }
 
   .reassurance-callout {
@@ -3938,17 +3959,28 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
   });
 
   // 6. PDF Generation Function (Combined Solution: In-Viewport Origin Mount + Page-by-Page html2canvas & jsPDF)
-  const generateAndDownloadPdf = async (): Promise<boolean> => {
-    if (!validateQuoteSubmission()) return false;
+  const GOOGLE_APPS_SCRIPT_URL =
+    'https://script.google.com/macros/s/AKfycbyOzlD3CMl3VCJpXFdtJPziIH_MugUTyppFvGeFDZrMlvbPOnErnYMdGpKRX_1ubj5_/exec';
+
+  interface GeneratedPdfResult {
+    fileName: string;
+    pdfBase64: string;
+  }
+
+  const generatePdfDocument = async (
+    options: { download?: boolean; overlayText?: string } = {}
+  ): Promise<GeneratedPdfResult | null> => {
+    const { download = true, overlayText = '⏳ Generating PDF Quotation...' } = options;
+    if (!validateQuoteSubmission()) return null;
     updateQuote();
     const state = getQuoteState();
     const wrapper = document.getElementById('pdf-render-wrapper');
     const element = document.getElementById('pdf-document-template');
-    if (!wrapper || !element) return false;
+    if (!wrapper || !element) return null;
 
     const btn = document.getElementById('btn-download-pdf');
     const origHtml = btn?.innerHTML || '';
-    if (btn) btn.innerHTML = '<span>⏳ Generating PDF...</span>';
+    if (download && btn) btn.innerHTML = '<span>⏳ Generating PDF...</span>';
 
     const safeName = (state.guestName || state.title || 'Event')
       .replace(/[^a-zA-Z0-9\u4e00-\u9fa5_-]/g, '_')
@@ -3962,8 +3994,10 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     const backdrop = document.createElement('div');
     backdrop.style.cssText =
       'position:fixed;inset:0;background:rgba(8,8,8,0.92);z-index:99999;display:flex;align-items:center;justify-content:center;color:#e2c47a;font-family:Montserrat,sans-serif;font-size:0.95rem;letter-spacing:0.1em;';
-    backdrop.textContent = '⏳ Generating PDF Quotation...';
+    backdrop.textContent = overlayText;
     document.body.appendChild(backdrop);
+
+    let pdfBase64 = '';
 
     try {
       wrapper.classList.add('pdf-capturing');
@@ -4003,11 +4037,16 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
           pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297);
         }
 
-        pdf.save(fileName);
+        const dataUri: string = pdf.output('datauristring');
+        pdfBase64 = dataUri.includes(',') ? dataUri.split(',')[1] : dataUri;
+
+        if (download) {
+          pdf.save(fileName);
+        }
       } else {
         const html2pdfLib = (window as any).html2pdf;
         if (html2pdfLib) {
-          await html2pdfLib()
+          const worker = html2pdfLib()
             .set({
               margin: 0,
               filename: fileName,
@@ -4023,29 +4062,37 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
               },
               jsPDF: { unit: 'px', format: [794, 1122], orientation: 'portrait', hotfixes: ['px_scaling'] }
             })
-            .from(element)
-            .save();
-        } else {
+            .from(element);
+
+          const dataUri: string = await worker.outputPdf('datauristring');
+          pdfBase64 = dataUri.includes(',') ? dataUri.split(',')[1] : dataUri;
+
+          if (download) {
+            await worker.save();
+          }
+        } else if (download) {
           window.print();
         }
       }
     } catch (err) {
-      console.error('PDF generation error, falling back to native print:', err);
-      window.print();
+      console.error('PDF generation error:', err);
+      if (download) window.print();
+      return null;
     } finally {
       wrapper.classList.remove('pdf-capturing');
       window.scrollTo(savedScrollX, savedScrollY);
       backdrop.remove();
-      if (btn) btn.innerHTML = origHtml;
+      if (download && btn) btn.innerHTML = origHtml;
     }
-    return true;
+
+    return { fileName, pdfBase64 };
   };
 
   document.getElementById('btn-download-pdf')?.addEventListener('click', () => {
-    generateAndDownloadPdf();
+    generatePdfDocument({ download: true });
   });
 
-  // 8. Build Plain-Text Summary & Send Email with Quote Request
+  // 8. Build Plain-Text Summary & Automatically Send Email with PDF via Google Apps Script
   const buildEmailSummary = () => {
     const state = getQuoteState();
     const shareUrl = buildShareableUrl();
@@ -4105,14 +4152,79 @@ ${state.guestName || 'Event Host'}`;
 
   document.getElementById('btn-send-email')?.addEventListener('click', async () => {
     if (!validateQuoteSubmission()) return;
-    // 1. Trigger PDF download so the user has the PDF file ready to attach
-    const ok = await generateAndDownloadPdf();
-    if (!ok) return;
 
-    // 2. Open email client with pre-filled quote request
-    const { subject, body } = buildEmailSummary();
-    const mailtoHref = `mailto:contact@opera-taipei.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.location.href = mailtoHref;
+    const btnSend = document.getElementById('btn-send-email') as HTMLButtonElement | null;
+    const feedbackEl = document.getElementById('email-send-feedback');
+    const origBtnHtml = btnSend?.innerHTML || '';
+
+    if (feedbackEl) {
+      feedbackEl.style.display = 'none';
+      feedbackEl.className = 'email-send-feedback';
+    }
+
+    if (btnSend) {
+      btnSend.disabled = true;
+      btnSend.innerHTML = '<span>⏳ Generating & Sending Quote...</span>';
+    }
+
+    try {
+      // 1. Generate the 2-page PDF in memory (without triggering a local file download)
+      const pdfResult = await generatePdfDocument({
+        download: false,
+        overlayText: '⏳ Generating & Sending PDF Quote to Opéra...'
+      });
+
+      if (!pdfResult || !pdfResult.pdfBase64) {
+        throw new Error('Failed to generate PDF document.');
+      }
+
+      const state = getQuoteState();
+      const { subject, body } = buildEmailSummary();
+
+      // 2. Send Base64 PDF + Quote Summary to Google Apps Script Web App
+      // Using text/plain avoids CORS preflight rejection on Google Apps Script while still passing JSON in e.postData.contents
+      const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8'
+        },
+        body: JSON.stringify({
+          to: 'contact@opera-taipei.com',
+          replyTo: state.contactEmail || 'contact@opera-taipei.com',
+          contactEmail: state.contactEmail,
+          guestName: state.guestName,
+          subject,
+          body,
+          fileName: pdfResult.fileName,
+          pdfBase64: pdfResult.pdfBase64
+        })
+      });
+
+      const result = await response.json().catch(() => ({ ok: response.ok }));
+      if (!response.ok || result.ok === false) {
+        throw new Error(result.error || `Server responded with status ${response.status}`);
+      }
+
+      if (feedbackEl) {
+        feedbackEl.className = 'email-send-feedback email-send-feedback--success';
+        feedbackEl.textContent =
+          '✓ Your PDF quotation has been automatically sent to contact@opera-taipei.com! Our events team will get in touch with you shortly.';
+        feedbackEl.style.display = 'block';
+      }
+    } catch (err) {
+      console.error('Error sending quote via Google Apps Script:', err);
+      if (feedbackEl) {
+        feedbackEl.className = 'email-send-feedback email-send-feedback--error';
+        feedbackEl.textContent =
+          '⚠ Could not send automatically right now. Please try again or download the PDF and email it to contact@opera-taipei.com.';
+        feedbackEl.style.display = 'block';
+      }
+    } finally {
+      if (btnSend) {
+        btnSend.disabled = false;
+        btnSend.innerHTML = origBtnHtml;
+      }
+    }
   });
 
   // Initialize on page load
