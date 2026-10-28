@@ -370,9 +370,13 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
                   <input type="text" id="inp-tax-id" name="taxId" placeholder={t.fld_tax_id_ph} maxlength="12" />
                 </div>
 
-                <div class="form-group form-group--full">
-                  <label for="inp-contact">{t.fld_contact_info}</label>
-                  <input type="text" id="inp-contact" name="contactInfo" placeholder={t.fld_contact_info_ph} />
+                <div class="form-group">
+                  <label for="inp-contact-email">{t.fld_contact_email}</label>
+                  <input type="email" id="inp-contact-email" name="contactEmail" placeholder={t.fld_contact_email_ph} required />
+                </div>
+                <div class="form-group">
+                  <label for="inp-contact-phone">{t.fld_contact_phone}</label>
+                  <input type="tel" id="inp-contact-phone" name="contactPhone" placeholder={t.fld_contact_phone_ph} />
                 </div>
 
                 <div class="form-group form-group--full">
@@ -1446,6 +1450,8 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
   }
 
   .form-group input[type="text"],
+  .form-group input[type="email"],
+  .form-group input[type="tel"],
   .form-group input[type="number"],
   .form-group input[type="date"],
   .form-group input[type="time"],
@@ -2908,7 +2914,8 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
   const inpDate = document.getElementById('inp-date') as HTMLInputElement;
   const inpGuestName = document.getElementById('inp-guest-name') as HTMLInputElement;
   const inpTaxId = document.getElementById('inp-tax-id') as HTMLInputElement;
-  const inpContact = document.getElementById('inp-contact') as HTMLInputElement;
+  const inpContactEmail = document.getElementById('inp-contact-email') as HTMLInputElement;
+  const inpContactPhone = document.getElementById('inp-contact-phone') as HTMLInputElement;
   const inpAttending = document.getElementById('inp-attending') as HTMLInputElement;
   const rngAttending = document.getElementById('rng-attending') as HTMLInputElement;
   const inpStartTime = document.getElementById('inp-start-time') as HTMLInputElement;
@@ -3261,7 +3268,35 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     });
   });
 
-  const validateSelectedPkg = (): boolean => {
+  inpContactEmail?.addEventListener('input', () => {
+    inpContactEmail.classList.remove('input-must-fill-error');
+    inpContactEmail.setCustomValidity('');
+  });
+
+  const validateQuoteSubmission = (): boolean => {
+    // 1. Validate required Contact Email & valid email format
+    if (inpContactEmail) {
+      const emailVal = inpContactEmail.value.trim();
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailVal) {
+        inpContactEmail.classList.add('input-must-fill-error');
+        inpContactEmail.setCustomValidity('Must fill contact email.');
+        inpContactEmail.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        inpContactEmail.reportValidity();
+        return false;
+      } else if (!emailRegex.test(emailVal)) {
+        inpContactEmail.classList.add('input-must-fill-error');
+        inpContactEmail.setCustomValidity('Please enter a valid email address (e.g., name@domain.com).');
+        inpContactEmail.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        inpContactEmail.reportValidity();
+        return false;
+      } else {
+        inpContactEmail.classList.remove('input-must-fill-error');
+        inpContactEmail.setCustomValidity('');
+      }
+    }
+
+    // 2. Validate selected drink package fields
     if (selectedPkg === 'none') return true;
     const reqInputs = pkgInputsMap[selectedPkg] || [];
     let firstInvalid: HTMLInputElement | HTMLTextAreaElement | null = null;
@@ -3336,7 +3371,9 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     const formattedDate = rawDate ? rawDate.replace(/-/g, '/') : '';
     const guestName = inpGuestName?.value.trim() || '';
     const taxId = inpTaxId?.value.trim() || '';
-    const contact = inpContact?.value.trim() || '';
+    const contactEmail = inpContactEmail?.value.trim() || '';
+    const contactPhone = inpContactPhone?.value.trim() || '';
+    const contact = [contactEmail, contactPhone].filter(Boolean).join(' · ');
     const attending = Number(inpAttending?.value || 60);
     const startTime = inpStartTime?.value || '19:00';
     const endTime = inpEndTime?.value || '22:00';
@@ -3597,6 +3634,8 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
       isDaytime,
       guestName,
       taxId,
+      contactEmail,
+      contactPhone,
       contact,
       attending,
       startTime,
@@ -3790,7 +3829,8 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     if (state.rawDate) params.set('date', state.rawDate);
     if (state.guestName) params.set('name', state.guestName);
     if (state.taxId) params.set('tax', state.taxId);
-    if (state.contact) params.set('contact', state.contact);
+    if (state.contactEmail) params.set('email', state.contactEmail);
+    if (state.contactPhone) params.set('phone', state.contactPhone);
     params.set('guests', String(state.attending));
     params.set('start', state.startTime);
     params.set('end', state.endTime);
@@ -3832,7 +3872,8 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     }
     if (params.has('name') && inpGuestName) inpGuestName.value = params.get('name')!;
     if (params.has('tax') && inpTaxId) inpTaxId.value = params.get('tax')!;
-    if (params.has('contact') && inpContact) inpContact.value = params.get('contact')!;
+    if (params.has('email') && inpContactEmail) inpContactEmail.value = params.get('email')!;
+    if (params.has('phone') && inpContactPhone) inpContactPhone.value = params.get('phone')!;
     if (params.has('guests')) syncGuests(Number(params.get('guests')));
     if (params.has('start') && inpStartTime) {
       inpStartTime.value = params.get('start')!;
@@ -3898,7 +3939,7 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
 
   // 6. PDF Generation Function (Combined Solution: In-Viewport Origin Mount + Page-by-Page html2canvas & jsPDF)
   const generateAndDownloadPdf = async (): Promise<boolean> => {
-    if (!validateSelectedPkg()) return false;
+    if (!validateQuoteSubmission()) return false;
     updateQuote();
     const state = getQuoteState();
     const wrapper = document.getElementById('pdf-render-wrapper');
@@ -4027,7 +4068,8 @@ I have generated a preliminary reference quote on your website and would love to
 - Event Date: ${state.formattedDate}
 - Guest / Company Name: ${state.guestName || 'N/A'}
 - Company Tax ID: ${state.taxId || 'N/A'}
-- Contact Info: ${state.contact || 'N/A'}
+- Contact Email: ${state.contactEmail || 'N/A'}
+- Contact Phone: ${state.contactPhone || 'N/A'}
 - Attending Number: ${state.attending} guests
 - Event Time: ${state.eventTimeStr}
 - Setup Time: ${state.setupTime || 'N/A'}
@@ -4062,7 +4104,7 @@ ${state.guestName || 'Event Host'}`;
   };
 
   document.getElementById('btn-send-email')?.addEventListener('click', async () => {
-    if (!validateSelectedPkg()) return;
+    if (!validateQuoteSubmission()) return;
     // 1. Trigger PDF download so the user has the PDF file ready to attach
     const ok = await generateAndDownloadPdf();
     if (!ok) return;
