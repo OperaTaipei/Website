@@ -562,6 +562,12 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
               </div>
             </div>
 
+            <div class="popular-drinks-btn-wrap">
+              <button type="button" id="btn-popular-drinks-menu" class="btn-gold popular-drinks-trigger-btn">
+                <span>{t.btn_popular_drinks_menu}</span>
+              </button>
+            </div>
+
             <!-- Optional Catering & Venue Minimum Spend Selector -->
             <div class="form-card addon-card" style="margin-top: 28px;">
               <h3 class="addon-heading">{t.addon_title}</h3>
@@ -599,12 +605,6 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
                   </select>
                   <p class="addon-sub" style="margin-top: 8px; color: var(--color-gold-light);">{t.min_spend_Match_note}</p>
                 </div>
-              </div>
-
-              <div class="popular-drinks-btn-wrap">
-                <button type="button" id="btn-popular-drinks-menu" class="btn-gold popular-drinks-trigger-btn">
-                  <span>{t.btn_popular_drinks_menu}</span>
-                </button>
               </div>
             </div>
 
@@ -2181,9 +2181,9 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
   }
 
   .popular-drinks-btn-wrap {
-    margin-top: 20px;
+    margin-top: 28px;
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
   }
 
   .popular-drinks-trigger-btn {
