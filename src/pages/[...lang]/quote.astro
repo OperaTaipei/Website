@@ -600,6 +600,12 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
                   <p class="addon-sub" style="margin-top: 8px; color: var(--color-gold-light);">{t.min_spend_Match_note}</p>
                 </div>
               </div>
+
+              <div class="popular-drinks-btn-wrap">
+                <button type="button" id="btn-popular-drinks-menu" class="btn-gold popular-drinks-trigger-btn">
+                  <span>{t.btn_popular_drinks_menu}</span>
+                </button>
+              </div>
             </div>
 
           </div>
@@ -871,6 +877,94 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     </main>
 
     <Footer t={t} />
+
+    <!-- Popular Event Drinks Menu Modal -->
+    <div id="popular-drinks-modal" class="drinks-modal-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="popular-drinks-modal-title">
+      <div class="drinks-modal-dialog">
+        <div class="drinks-modal-header">
+          <h3 id="popular-drinks-modal-title" class="drinks-modal-title">{t.popular_drinks_modal_title}</h3>
+          <button type="button" id="btn-close-drinks-modal" class="drinks-modal-close" aria-label="Close">×</button>
+        </div>
+
+        <div class="drinks-modal-ref-banner">
+          <span class="drinks-ref-icon">✦</span>
+          <p>{t.popular_drinks_ref_note}</p>
+        </div>
+
+        <div class="drinks-modal-body">
+          <div class="drinks-menu-grid">
+            <!-- COCKTAILS -->
+            <div class="drinks-category-block">
+              <h4 class="drinks-cat-heading">COCKTAILS | 雞尾酒</h4>
+              <ul class="drinks-item-list">
+                <li>OOLONG OLD FASHIONED | 烏龍古典雞尾酒</li>
+                <li>WATERMELON GIN &amp; TONIC | 西瓜琴湯尼</li>
+                <li>PASSION FRUIT DAIQUIRI | 百香果黛綺麗</li>
+                <li>GUAVA COOLER | 芭樂冷飲</li>
+                <li>EARL GREY SOUR | 伯爵蘋果酸酒</li>
+              </ul>
+            </div>
+
+            <!-- ON TAP -->
+            <div class="drinks-category-block">
+              <h4 class="drinks-cat-heading">ON TAP | 汲飲</h4>
+              <ul class="drinks-item-list">
+                <li>APPLE OSMANTHUS | 蘋果桂花</li>
+                <li>RASPBERRY ROOIBOS | 覆盆莓國寶茶</li>
+                <li>PASSION FRUIT OOLONG | 百香果烏龍</li>
+              </ul>
+            </div>
+
+            <!-- 1+1 (Spirit + Soda Mixer) -->
+            <div class="drinks-category-block drinks-category-block--full">
+              <h4 class="drinks-cat-heading">1+1 (Spirit + Soda Mixer) | 1+1 (基酒 + 氣泡飲)</h4>
+              <p class="drinks-single-line">Gin &amp; Tonic / Whiskey Coke / Soda / Vodka Lime / Soda / Rum &amp; Coke</p>
+            </div>
+
+            <!-- HOMEMADE SODAS (no alcohol) -->
+            <div class="drinks-category-block drinks-category-block--full">
+              <h4 class="drinks-cat-heading">HOMEMADE SODAS (no alcohol) | 自製氣泡飲 (無酒精)</h4>
+              <ul class="drinks-item-list">
+                <li>
+                  <strong>TEPACHE | 特帕切</strong>
+                  <span class="drinks-item-desc">Pineapple, Ginger, Jalapeno | 鳳梨、老薑、墨西哥辣椒</span>
+                </li>
+                <li>
+                  <strong>BISSAP | 洛神花薄荷</strong>
+                  <span class="drinks-item-desc">Hibiscus &amp; Mint | 洛神花、薄荷</span>
+                </li>
+                <li>
+                  <strong>CITRUS JADE | 葡萄柚綠茶</strong>
+                  <span class="drinks-item-desc">Grapefruit, Green tea | 葡萄柚、綠茶</span>
+                </li>
+                <li>
+                  <strong>OOLONG SPARKLING | 烏龍氣泡飲</strong>
+                  <span class="drinks-item-desc">Blend of five Oolong teas | 綜合烏龍</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- WINE -->
+            <div class="drinks-category-block">
+              <h4 class="drinks-cat-heading">WINE | 紅白酒</h4>
+              <ul class="drinks-item-list">
+                <li>House White</li>
+                <li>House Red</li>
+              </ul>
+            </div>
+
+            <!-- BEERS -->
+            <div class="drinks-category-block">
+              <h4 class="drinks-cat-heading">BEERS | 啤酒</h4>
+              <ul class="drinks-item-list">
+                <li>RED POINT LAGER | 紅點鮮釀拉格 4.8%</li>
+                <li>RED POINT TaiPA | 紅點台PA</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- =========================================================================
@@ -2084,6 +2178,188 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     font-size: 0.82rem;
     color: var(--color-white);
     font-weight: 600;
+  }
+
+  .popular-drinks-btn-wrap {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .popular-drinks-trigger-btn {
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    padding: 12px 24px;
+  }
+
+  /* Popular Event Drinks Menu Modal */
+  .drinks-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 5, 5, 0.85);
+    backdrop-filter: blur(6px);
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .drinks-modal-overlay.open {
+    display: flex;
+  }
+
+  .drinks-modal-dialog {
+    background: #11100f;
+    border: 1px solid var(--color-gold);
+    border-radius: 12px;
+    width: 100%;
+    max-width: 780px;
+    max-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85), 0 0 30px rgba(201, 168, 76, 0.15);
+    overflow: hidden;
+  }
+
+  .drinks-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 26px;
+    border-bottom: 1px solid rgba(201, 168, 76, 0.25);
+    background: rgba(201, 168, 76, 0.06);
+  }
+
+  .drinks-modal-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.75rem;
+    color: var(--color-gold-light);
+    margin: 0;
+    font-weight: 500;
+  }
+
+  .drinks-modal-close {
+    background: transparent;
+    border: 1px solid rgba(201, 168, 76, 0.35);
+    color: var(--color-gold-light);
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    font-size: 1.35rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+
+  .drinks-modal-close:hover {
+    background: var(--color-gold);
+    color: #080808;
+  }
+
+  .drinks-modal-ref-banner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 18px 26px 4px;
+    padding: 12px 16px;
+    background: rgba(201, 168, 76, 0.12);
+    border: 1px solid rgba(201, 168, 76, 0.45);
+    border-radius: 8px;
+    color: var(--color-gold-light);
+    font-size: 0.84rem;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  .drinks-ref-icon {
+    color: var(--color-gold);
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  .drinks-modal-body {
+    padding: 18px 26px 26px;
+    overflow-y: auto;
+  }
+
+  .drinks-menu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+
+  .drinks-category-block {
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(201, 168, 76, 0.2);
+    border-radius: 8px;
+    padding: 16px 18px;
+  }
+
+  .drinks-category-block--full {
+    grid-column: 1 / -1;
+  }
+
+  .drinks-cat-heading {
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+    margin: 0 0 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(201, 168, 76, 0.2);
+    font-weight: 600;
+  }
+
+  .drinks-item-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    font-size: 0.83rem;
+    color: var(--color-white);
+    line-height: 1.5;
+  }
+
+  .drinks-item-list li strong {
+    color: var(--color-gold-light);
+    font-weight: 600;
+    margin-right: 6px;
+  }
+
+  .drinks-item-desc {
+    color: rgba(245, 240, 232, 0.78);
+    font-size: 0.8rem;
+  }
+
+  .drinks-single-line {
+    font-size: 0.84rem;
+    color: var(--color-white);
+    margin: 0;
+    line-height: 1.55;
+  }
+
+  @media (max-width: 680px) {
+    .drinks-menu-grid {
+      grid-template-columns: 1fr;
+    }
+    .drinks-modal-header,
+    .drinks-modal-body {
+      padding-left: 18px;
+      padding-right: 18px;
+    }
+    .drinks-modal-ref-banner {
+      margin-left: 18px;
+      margin-right: 18px;
+    }
   }
 
   /* Step 4: Live Quote Summary Card */
@@ -4095,7 +4371,6 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
   // 8. Build Plain-Text Summary & Automatically Send Email with PDF via Google Apps Script
   const buildEmailSummary = () => {
     const state = getQuoteState();
-    const shareUrl = buildShareableUrl();
     const tbdSuffix = state.hasTbd ? ' + TBD' : '';
 
     const itemsList = state.lines
@@ -4103,12 +4378,7 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
       .join('\n');
 
     const subject = `[Private Event Quote Request] ${state.title} - ${state.rawDate} (${state.attending} Guests)`;
-    const body = `Hello Opéra Taipei Events Team,
-
-I have generated a preliminary reference quote on your website and would love to get in touch to discuss and finalize our event details!
-(Please also find the formatted PDF quotation attached to this email.)
-
-=========================================
+    const body = `=========================================
 1. EVENT & HOST INFORMATION
 =========================================
 - Event Title: ${state.title}
@@ -4137,15 +4407,7 @@ ${itemsList}
 
 - TOTAL ($NT): ${fmtNTD(state.subtotal)}${tbdSuffix}
 - 5% VAT ($NT): ${fmtNTD(state.vat)}
-- AMOUNT TO BE PAID ($NT): ${fmtNTD(state.grandTotal)}${tbdSuffix}
-
-=========================================
-4. INTERACTIVE QUOTE LINK
-=========================================
-${shareUrl}
-
-Best regards,
-${state.guestName || 'Event Host'}`;
+- AMOUNT TO BE PAID ($NT): ${fmtNTD(state.grandTotal)}${tbdSuffix}`;
 
     return { subject, body };
   };
@@ -4224,6 +4486,37 @@ ${state.guestName || 'Event Host'}`;
         btnSend.disabled = false;
         btnSend.innerHTML = origBtnHtml;
       }
+    }
+  });
+
+  // Popular Event Drinks Menu Modal toggle
+  const btnPopularDrinksMenu = document.getElementById('btn-popular-drinks-menu');
+  const popularDrinksModal = document.getElementById('popular-drinks-modal');
+  const btnCloseDrinksModal = document.getElementById('btn-close-drinks-modal');
+
+  const closeDrinksModal = () => {
+    if (!popularDrinksModal) return;
+    popularDrinksModal.classList.remove('open');
+    popularDrinksModal.setAttribute('aria-hidden', 'true');
+  };
+
+  btnPopularDrinksMenu?.addEventListener('click', () => {
+    if (!popularDrinksModal) return;
+    popularDrinksModal.classList.add('open');
+    popularDrinksModal.setAttribute('aria-hidden', 'false');
+  });
+
+  btnCloseDrinksModal?.addEventListener('click', closeDrinksModal);
+
+  popularDrinksModal?.addEventListener('click', (e) => {
+    if (e.target === popularDrinksModal) {
+      closeDrinksModal();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && popularDrinksModal?.classList.contains('open')) {
+      closeDrinksModal();
     }
   });
 
