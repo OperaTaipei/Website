@@ -595,7 +595,7 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
                   <div class="form-grid-2" style="gap: 12px;">
                     <div class="form-group">
                       <label for="inp-aycd-guests">{t.pkg_3_guests_lbl}</label>
-                      <input type="number" id="inp-aycd-guests" min="1" max="350" value="" placeholder="Must fill" />
+                      <input type="number" id="inp-aycd-guests" class="input-readonly-greyed" min="1" max="350" value="" placeholder="—" readonly tabindex="-1" />
                     </div>
                     <div class="form-group">
                       <label for="inp-aycd-hours">{t.pkg_3_hours_lbl}</label>
@@ -2017,6 +2017,16 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     box-shadow: 0 0 0 2px rgba(201, 168, 76, 0.15);
   }
 
+  .form-group input.input-readonly-greyed,
+  .form-group input[readonly] {
+    background: rgba(255, 255, 255, 0.06) !important;
+    border-color: rgba(255, 255, 255, 0.14) !important;
+    color: rgba(245, 240, 232, 0.45) !important;
+    cursor: not-allowed;
+    user-select: none;
+    box-shadow: none !important;
+  }
+
   .form-group input.input-must-fill-error,
   .form-group textarea.input-must-fill-error {
     border-color: #ff6b6b !important;
@@ -2553,9 +2563,12 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     transition: all 0.2s;
   }
 
-  .mult-pill:hover {
+  .mult-pill:hover,
+  .mult-pill.active {
     background: var(--color-gold);
+    border-color: var(--color-gold);
     color: #080808;
+    font-weight: 600;
   }
 
   .pkg-live-calc {
@@ -3963,12 +3976,31 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
 
   type PkgType = 'none' | 'tally' | 'tickets' | 'aycd' | 'other';
   let selectedPkg: PkgType = 'none';
+  let activeTicketMult: number | null = null;
+  let aycdHoursManuallyModified = false;
+
+  const multPills = document.querySelectorAll('.mult-pill');
+  const syncTicketMultPills = (mult: number | null) => {
+    activeTicketMult = mult;
+    multPills.forEach(pill => {
+      const m = Number(pill.getAttribute('data-ticket-mult') || 0);
+      const isMatch = mult !== null && m === mult;
+      pill.classList.toggle('active', isMatch);
+      pill.setAttribute('aria-pressed', isMatch ? 'true' : 'false');
+    });
+  };
 
   // Sync Attending Number & Slider
   const syncGuests = (val: number) => {
     const clean = Math.max(1, val || 1);
     if (inpAttending) inpAttending.value = String(clean);
     if (rngAttending) rngAttending.value = String(Math.min(300, clean));
+    if (selectedPkg === 'aycd' && inpAycdGuests) {
+      inpAycdGuests.value = String(clean);
+    }
+    if (selectedPkg === 'tickets' && activeTicketMult !== null && inpTicketQty) {
+      inpTicketQty.value = String(clean * activeTicketMult);
+    }
     updateQuote();
   };
 
@@ -3986,6 +4018,9 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     if (endMin <= startMin) endMin += 24 * 60; // Crosses midnight
     const hrs = Math.max(1, Math.round(((endMin - startMin) / 60) * 2) / 2);
     if (inpDuration) inpDuration.value = String(hrs);
+    if (selectedPkg === 'aycd' && !aycdHoursManuallyModified && inpAycdHours) {
+      inpAycdHours.value = String(hrs);
+    }
     updateQuote();
   };
 
@@ -4038,14 +4073,55 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
             inp.setCustomValidity('');
           }
         });
+        if (k === 'tally') {
+          const defaultRadio = document.querySelector(
+            'input[name="tallyPolicy"][value="Check with host to extend"]'
+          ) as HTMLInputElement | null;
+          if (defaultRadio) defaultRadio.checked = true;
+        }
+        if (k === 'tickets') {
+          syncTicketMultPills(null);
+        }
+        if (k === 'aycd') {
+          aycdHoursManuallyModified = false;
+        }
       }
     });
   };
 
   const pkgCards = document.querySelectorAll('.drink-pkg-card');
-  const setActivePkg = (pkgKey: PkgType) => {
+  const setActivePkg = (pkgKey: PkgType, opts?: { skipDefaultPrefill?: boolean }) => {
+    const wasAlreadyActive = selectedPkg === pkgKey;
     selectedPkg = pkgKey;
     clearDeselectedPkgInputs(pkgKey);
+
+    if (!wasAlreadyActive && !opts?.skipDefaultPrefill) {
+      const guests = Math.max(1, Number(inpAttending?.value || 60));
+      const duration = Math.max(1, Number(inpDuration?.value || 3));
+      if (pkgKey === 'aycd') {
+        aycdHoursManuallyModified = false;
+        if (inpAycdGuests) {
+          inpAycdGuests.value = String(guests);
+          inpAycdGuests.classList.remove('input-must-fill-error');
+          inpAycdGuests.setCustomValidity('');
+        }
+        if (inpAycdHours) {
+          inpAycdHours.value = String(duration);
+          inpAycdHours.classList.remove('input-must-fill-error');
+          inpAycdHours.setCustomValidity('');
+        }
+      } else if (pkgKey === 'tickets') {
+        syncTicketMultPills(1);
+        if (inpTicketQty) {
+          inpTicketQty.value = String(guests);
+          inpTicketQty.classList.remove('input-must-fill-error');
+          inpTicketQty.setCustomValidity('');
+        }
+      }
+    } else if (pkgKey === 'aycd' && inpAycdGuests) {
+      inpAycdGuests.value = String(Math.max(1, Number(inpAttending?.value || 60)));
+    }
+
     pkgCards.forEach(card => {
       const k = card.getAttribute('data-pkg-card');
       const isSelected = k === pkgKey;
@@ -4065,25 +4141,32 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     pkgInputsMap[k].forEach(inp => {
       if (!inp) return;
       inp.addEventListener('focus', () => {
+        if (inp.hasAttribute('readonly')) return;
         if (selectedPkg !== k) {
           setActivePkg(k);
         }
       });
       inp.addEventListener('input', () => {
+        if (inp.hasAttribute('readonly')) return;
         if (selectedPkg !== k) {
-          selectedPkg = k;
-          clearDeselectedPkgInputs(k);
-          pkgCards.forEach(card => {
-            const cardKey = card.getAttribute('data-pkg-card');
-            const isSelected = cardKey === k;
-            card.classList.toggle('active', isSelected);
-            const badge = card.querySelector('.pkg-status-indicator');
-            if (badge) {
-              badge.textContent = isSelected
-                ? badge.getAttribute('data-selected-lbl')
-                : badge.getAttribute('data-select-lbl');
-            }
-          });
+          setActivePkg(k, { skipDefaultPrefill: true });
+        }
+        if (inp === inpAycdHours) {
+          aycdHoursManuallyModified = true;
+        }
+        if (inp === inpTicketQty) {
+          const guests = Math.max(1, Number(inpAttending?.value || 60));
+          const rawVal = inpTicketQty.value.trim();
+          const numVal = Number(rawVal);
+          if (rawVal !== '' && numVal === guests * 1) {
+            syncTicketMultPills(1);
+          } else if (rawVal !== '' && numVal === guests * 2) {
+            syncTicketMultPills(2);
+          } else if (rawVal !== '' && numVal === guests * 3) {
+            syncTicketMultPills(3);
+          } else {
+            syncTicketMultPills(null);
+          }
         }
         inp.classList.remove('input-must-fill-error');
         inp.setCustomValidity('');
@@ -4163,20 +4246,26 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
       if (!k) return;
       if (k !== 'none' && selectedPkg === k && !clickedInteractiveChild) {
         setActivePkg('none');
-      } else {
+      } else if (selectedPkg !== k) {
         setActivePkg(k);
       }
     });
   });
 
   // Quick ticket multiplier pills
-  document.querySelectorAll('.mult-pill').forEach(pill => {
+  multPills.forEach(pill => {
     pill.addEventListener('click', (e) => {
       e.stopPropagation();
       const mult = Number(pill.getAttribute('data-ticket-mult') || 1);
-      const guests = Number(inpAttending?.value || 60);
-      if (inpTicketQty) inpTicketQty.value = String(guests * mult);
-      setActivePkg('tickets');
+      const guests = Math.max(1, Number(inpAttending?.value || 60));
+      setActivePkg('tickets', { skipDefaultPrefill: true });
+      syncTicketMultPills(mult);
+      if (inpTicketQty) {
+        inpTicketQty.value = String(guests * mult);
+        inpTicketQty.classList.remove('input-must-fill-error');
+        inpTicketQty.setCustomValidity('');
+      }
+      updateQuote();
     });
   });
 
@@ -4680,6 +4769,7 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     params.set('pkg', selectedPkg);
     if (inpTallyCap?.value) params.set('cap', inpTallyCap.value);
     if (inpTicketQty?.value) params.set('tix', inpTicketQty.value);
+    if (inpAycdHours?.value) params.set('aycdh', inpAycdHours.value);
     if (chkAddFood?.checked) params.set('food', inpFoodPerGuest?.value || '400');
     if (ynState.outside_catering === 'YES') params.set('oc', '1');
     if (selVenueTier?.value && selVenueTier.value !== 'none') params.set('tier', selVenueTier.value);
@@ -4739,7 +4829,22 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
       }
     }
     if (params.has('cap') && inpTallyCap) inpTallyCap.value = params.get('cap')!;
-    if (params.has('tix') && inpTicketQty) inpTicketQty.value = params.get('tix')!;
+    if (params.has('tix') && inpTicketQty) {
+      inpTicketQty.value = params.get('tix')!;
+      if (selectedPkg === 'tickets') {
+        const guests = Math.max(1, Number(inpAttending?.value || 60));
+        const numVal = Number(inpTicketQty.value.trim());
+        if (numVal === guests * 1) syncTicketMultPills(1);
+        else if (numVal === guests * 2) syncTicketMultPills(2);
+        else if (numVal === guests * 3) syncTicketMultPills(3);
+        else syncTicketMultPills(null);
+      }
+    }
+    if (params.has('aycdh') && inpAycdHours && selectedPkg === 'aycd') {
+      inpAycdHours.value = params.get('aycdh')!;
+      const dur = Math.max(1, Number(inpDuration?.value || 3));
+      aycdHoursManuallyModified = Number(inpAycdHours.value) !== dur;
+    }
     if (params.has('food') && chkAddFood) {
       chkAddFood.checked = true;
       if (foodBudgetWrap) foodBudgetWrap.style.display = 'flex';
