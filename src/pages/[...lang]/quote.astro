@@ -3682,6 +3682,7 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
 
   // 1. Mobile Hamburger Menu, Scroll Navbar & Sticky Stepper Scroll-Spy
   const navbar = document.getElementById('navbar');
+  const studioStepperBar = document.getElementById('studio-stepper-bar');
   const webUiContainer = document.querySelector('.web-ui-container') as HTMLElement | null;
   const stepperItems = Array.from(document.querySelectorAll('.stepper-step-item')) as HTMLElement[];
   const stepperProgressFill = document.getElementById('stepper-progress-fill');
@@ -3696,13 +3697,20 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
       webUiContainer.style.setProperty('--active-nav-h', isScrolled ? '60px' : '72px');
     }
 
-    // Determine which studio step is currently in view
-    const triggerY = window.scrollY + 190;
+    // Use viewport-relative getBoundingClientRect().top instead of offsetTop
+    // (because .studio-form-shell has position: relative, making it the offsetParent).
+    const navH = navbar?.offsetHeight || (isScrolled ? 60 : 72);
+    const stepperH = studioStepperBar?.offsetHeight || 56;
+    const triggerLine = navH + stepperH + 36;
+
     let activeIdx = 0;
     stepSectionIds.forEach((id, idx) => {
       const sec = document.getElementById(id);
-      if (sec && sec.offsetTop <= triggerY) {
-        activeIdx = idx;
+      if (sec) {
+        const rect = sec.getBoundingClientRect();
+        if (rect.top <= triggerLine) {
+          activeIdx = idx;
+        }
       }
     });
 
@@ -3718,6 +3726,7 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
   };
 
   window.addEventListener('scroll', syncScrollAndStepper, { passive: true });
+  window.addEventListener('resize', syncScrollAndStepper, { passive: true });
   syncScrollAndStepper();
 
   const hamburgerButton = document.getElementById('hamburger');
