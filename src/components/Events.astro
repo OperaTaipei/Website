@@ -1,9 +1,11 @@
 ---
 interface Props {
   t: any;
+  lang?: string;
 }
 
-const { t } = Astro.props;
+const { t, lang = 'en' } = Astro.props;
+const quoteUrl = !lang || lang === 'en' ? '/quote' : `/${lang}/quote`;
 ---
 
 <!-- Gallery Section first (matching design flow) -->
@@ -96,95 +98,95 @@ const { t } = Astro.props;
   </div>
 </section>
 
-<!-- Corporate Events Hiring Details -->
-<section id="events" style="padding: 100px 40px;">
-  <div class="section-wrap fade-in">
-    <p class="section-label">{t.events_label}</p>
-    <h2 class="section-title" set:html={t.events_title} />
-    <div class="section-divider"></div>
+<!-- Corporate Events Hiring Details (Studio Showcase Design) -->
+<section id="events" class="events-studio-shell">
+  <!-- Architectural Threshold / Studio Entry Header -->
+  <div class="events-studio-banner fade-in">
+    <div class="studio-ornament-line">
+      <span class="studio-ornament-line-wing"></span>
+      <span class="studio-ornament-diamond">✦</span>
+      <span class="studio-ornament-line-wing"></span>
+    </div>
+    <div class="studio-entry-inner">
+      <div class="part-mode-pill part-mode-pill--studio">{t.events_label}</div>
+      <h2 class="studio-entry-title" set:html={t.events_title} />
+      <p class="studio-entry-sub">{t.events_intro}</p>
+    </div>
+  </div>
 
-    <p class="events-intro">
-      {t.events_intro}
-    </p>
+  <!-- Studio Content Body: 4 Offer Pillars + Interactive Quote CTA -->
+  <div class="events-studio-body">
+    <div class="section-wrap fade-in">
+      <div class="events-pillars-grid">
+        <!-- Pillar 01: Capacity & Scale -->
+        <article class="studio-pillar-card">
+          <div class="studio-pillar-top">
+            <div class="studio-step-num-badge" aria-hidden="true">01</div>
+            <div class="studio-pillar-headings">
+              <span class="studio-pillar-tag">{t.events_pillar1_tag}</span>
+              <h3 class="studio-pillar-title" set:html={t.events_pillar1_title} />
+            </div>
+          </div>
+          <p class="studio-pillar-desc">{t.events_pillar1_desc}</p>
+        </article>
 
-    <div class="events-block-title">{t.events_full_priv}</div>
-    <div class="events-two-columns">
-      <div class="events-card">
-        <div class="events-card-label">{t.events_day} <span class="events-card-note">{t.events_day_note}</span></div>
-        <div class="venue-price-row">
-          <span class="venue-price-label">{t.events_hr_venue}</span>
-          <span class="venue-price-amount">5,000 NTD / hr</span>
-        </div>
-        <div class="venue-price-row">
-          <span class="venue-price-label">{t.events_hr_drinks}</span>
-          <span class="venue-price-amount">15,000 NTD / hr</span>
-        </div>
+        <!-- Pillar 02: Branding & Equipment -->
+        <article class="studio-pillar-card">
+          <div class="studio-pillar-top">
+            <div class="studio-step-num-badge" aria-hidden="true">02</div>
+            <div class="studio-pillar-headings">
+              <span class="studio-pillar-tag">{t.events_pillar2_tag}</span>
+              <h3 class="studio-pillar-title" set:html={t.events_pillar2_title} />
+            </div>
+          </div>
+          <p class="studio-pillar-desc">{t.events_pillar2_desc}</p>
+        </article>
+
+        <!-- Pillar 03: Custom Drink Menu & Catering -->
+        <article class="studio-pillar-card">
+          <div class="studio-pillar-top">
+            <div class="studio-step-num-badge" aria-hidden="true">03</div>
+            <div class="studio-pillar-headings">
+              <span class="studio-pillar-tag">{t.events_pillar3_tag}</span>
+              <h3 class="studio-pillar-title" set:html={t.events_pillar3_title} />
+            </div>
+          </div>
+          <p class="studio-pillar-desc">{t.events_pillar3_desc}</p>
+        </article>
+
+        <!-- Pillar 04: Vibe & Flexibility -->
+        <article class="studio-pillar-card">
+          <div class="studio-pillar-top">
+            <div class="studio-step-num-badge" aria-hidden="true">04</div>
+            <div class="studio-pillar-headings">
+              <span class="studio-pillar-tag">{t.events_pillar4_tag}</span>
+              <h3 class="studio-pillar-title" set:html={t.events_pillar4_title} />
+            </div>
+          </div>
+          <p class="studio-pillar-desc">{t.events_pillar4_desc}</p>
+        </article>
       </div>
-      <div class="events-card">
-        <div class="events-card-label">{t.events_night} <span class="events-card-note">{t.events_night_note}</span></div>
-        <div class="venue-price-row">
-          <span class="venue-price-label">{t.events_weekday}</span>
-          <span class="venue-price-amount">100,000 NTD</span>
+
+      <!-- Callout Ledger Encouraging User to Click "Simulate a Quote" -->
+      <div class="studio-cta-ledger">
+        <div class="studio-ledger-header">
+          <span class="studio-ledger-icon" aria-hidden="true">◈</span>
+          <span class="studio-ledger-title">{t.events_cta_badge}</span>
         </div>
-        <div class="venue-price-row">
-          <span class="venue-price-label">{t.events_weekend}</span>
-          <span class="venue-price-amount">200,000 NTD</span>
+        <div class="studio-cta-ledger-content">
+          <div class="studio-cta-text-col">
+            <h3 class="studio-cta-heading">{t.events_cta_heading}</h3>
+            <p class="studio-cta-copy">{t.events_cta_copy}</p>
+          </div>
+          <div class="studio-cta-action-col">
+            <a href={quoteUrl} class="btn-simulate-quote">
+              <span>{t.events_simulate_btn}</span>
+              <span class="btn-simulate-arrow" aria-hidden="true">→</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
-    <p class="events-note">{t.events_note}</p>
-
-    <div class="events-block-title">{t.events_packages}</div>
-    <div class="events-three-columns">
-      <div class="package-card">
-        <div class="package-card-title">{t.pkg1_title}</div>
-        <div class="package-card-desc">{t.pkg1_desc}</div>
-      </div>
-      <div class="package-card">
-        <div class="package-card-title">{t.pkg2_title}</div>
-        <div class="package-card-desc">{t.pkg2_desc}</div>
-      </div>
-      <div class="package-card">
-        <div class="package-card-title">{t.pkg3_title}</div>
-        <div class="package-card-desc">{t.pkg3_desc}</div>
-      </div>
-    </div>
-
-    <div class="events-block-title">{t.events_services}</div>
-    <div class="events-two-columns">
-      <div class="events-card">
-        <div class="events-card-label">{t.services_label} <span class="events-card-note">{t.services_note}</span></div>
-        <ul class="events-feature-list">
-          <li>{t.svc1}</li>
-          <li>{t.svc2}</li>
-          <li>{t.svc3}</li>
-          <li>{t.svc4}</li>
-          <li>{t.svc5}</li>
-          <li>{t.svc6}</li>
-          <li>{t.svc7}</li>
-          <li>{t.svc8}</li>
-        </ul>
-      </div>
-      <div class="events-card">
-        <div class="events-card-label">{t.facilities_label}</div>
-        <ul class="events-feature-list">
-          <li>{t.fac1}</li>
-          <li>{t.fac2}</li>
-          <li>{t.fac3}</li>
-          <li>{t.fac4}</li>
-          <li>{t.fac5}</li>
-          <li>{t.fac6}</li>
-          <li>{t.fac7}</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="events-cta">
-      <a href="mailto:contact@opera-taipei.com" class="btn-gold btn-gold--large">
-        <span>{t.events_cta_btn}</span>
-      </a>
-    </div>
-
   </div>
 </section>
 
@@ -283,6 +285,330 @@ const { t } = Astro.props;
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
     object-fit: cover;
+  }
+
+  /* ================================================================
+     PRIVATE EVENT & CORPORATE VENUE — WARM BRONZE STUDIO SHOWCASE
+     (Inspired by Part II · Interactive Quotation Studio)
+  ================================================================ */
+  .events-studio-shell {
+    position: relative;
+    padding: 0;
+    background: #16120d;
+    border-top: 2px solid var(--color-gold);
+    border-bottom: 2px solid var(--color-gold);
+    box-shadow: 0 -24px 60px rgba(0, 0, 0, 0.85), 0 24px 60px rgba(0, 0, 0, 0.75);
+  }
+
+  .events-studio-banner {
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(201, 168, 76, 0.24) 0%, transparent 70%),
+      linear-gradient(180deg, #211a12 0%, #16120d 100%);
+    padding: 72px 40px 52px;
+    text-align: center;
+    border-bottom: 1px solid rgba(201, 168, 76, 0.24);
+  }
+
+  .studio-ornament-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    max-width: 460px;
+    margin: 0 auto 22px;
+  }
+
+  .studio-ornament-line-wing {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+  }
+
+  .studio-ornament-diamond {
+    color: var(--color-gold-light);
+    font-size: 0.95rem;
+    line-height: 1;
+  }
+
+  .studio-entry-inner {
+    max-width: 820px;
+    margin: 0 auto;
+  }
+
+  .part-mode-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 30px;
+    margin-bottom: 18px;
+  }
+
+  .part-mode-pill--studio {
+    color: #080808;
+    background: linear-gradient(135deg, var(--color-gold-light), var(--color-gold));
+    border: 1px solid var(--color-gold-light);
+    box-shadow: 0 4px 18px rgba(201, 168, 76, 0.32);
+  }
+
+  .studio-entry-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.3rem, 5vw, 3.8rem);
+    font-weight: 300;
+    color: var(--color-white);
+    line-height: 1.12;
+    margin-bottom: 16px;
+  }
+
+  .studio-entry-title :global(em) {
+    font-style: italic;
+    color: var(--color-gold-light);
+  }
+
+  .studio-entry-sub {
+    font-size: 0.94rem;
+    color: rgba(245, 240, 232, 0.82);
+    line-height: 1.85;
+    font-weight: 300;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .events-studio-body {
+    background:
+      radial-gradient(ellipse at 85% 20%, rgba(201, 168, 76, 0.08) 0%, transparent 55%),
+      radial-gradient(ellipse at 15% 80%, rgba(201, 168, 76, 0.07) 0%, transparent 55%),
+      #16120d;
+    padding: 64px 40px 84px;
+  }
+
+  .events-pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-bottom: 44px;
+  }
+
+  .studio-pillar-card {
+    background: #221b14;
+    border: 1px solid rgba(201, 168, 76, 0.3);
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.38);
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .studio-pillar-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(201, 168, 76, 0.65);
+    box-shadow: 0 16px 38px rgba(0, 0, 0, 0.5), 0 0 24px rgba(201, 168, 76, 0.12);
+  }
+
+  .studio-pillar-top {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .studio-step-num-badge {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--color-gold-light);
+    background: rgba(201, 168, 76, 0.1);
+    border: 1px solid rgba(201, 168, 76, 0.45);
+    border-radius: 12px;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: inset 0 0 18px rgba(201, 168, 76, 0.14);
+  }
+
+  .studio-pillar-headings {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .studio-pillar-tag {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+  }
+
+  .studio-pillar-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.65rem;
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--color-white);
+    margin: 0;
+  }
+
+  .studio-pillar-title :global(em) {
+    font-style: italic;
+    color: var(--color-gold-light);
+  }
+
+  .studio-pillar-desc {
+    font-size: 0.86rem;
+    color: rgba(245, 240, 232, 0.78);
+    line-height: 1.8;
+    font-weight: 300;
+    margin: 0;
+  }
+
+  /* Studio CTA Ledger encouraging user to click "Simulate a Quote" */
+  .studio-cta-ledger {
+    background:
+      radial-gradient(ellipse at 90% 50%, rgba(201, 168, 76, 0.16) 0%, transparent 65%),
+      linear-gradient(145deg, rgba(38, 30, 21, 0.96), rgba(24, 19, 13, 0.98));
+    border: 1px solid rgba(201, 168, 76, 0.45);
+    border-left: 4px solid var(--color-gold);
+    border-radius: 12px;
+    padding: 28px 34px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+  }
+
+  .studio-ledger-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(201, 168, 76, 0.22);
+  }
+
+  .studio-ledger-icon {
+    color: var(--color-gold);
+    font-size: 1rem;
+  }
+
+  .studio-ledger-title {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-gold-light);
+  }
+
+  .studio-cta-ledger-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+  }
+
+  .studio-cta-text-col {
+    max-width: 720px;
+  }
+
+  .studio-cta-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.55rem, 3vw, 2.1rem);
+    font-weight: 400;
+    color: var(--color-white);
+    margin: 0 0 8px;
+    line-height: 1.2;
+  }
+
+  .studio-cta-copy {
+    font-size: 0.88rem;
+    color: rgba(245, 240, 232, 0.8);
+    line-height: 1.75;
+    font-weight: 300;
+    margin: 0;
+  }
+
+  .studio-cta-action-col {
+    flex-shrink: 0;
+  }
+
+  .btn-simulate-quote {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 18px 36px;
+    border-radius: 40px;
+    background: linear-gradient(135deg, var(--color-gold-light), var(--color-gold));
+    color: #080808;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid var(--color-gold-light);
+    box-shadow: 0 6px 24px rgba(201, 168, 76, 0.38);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+    white-space: nowrap;
+  }
+
+  .btn-simulate-quote:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 32px rgba(201, 168, 76, 0.55);
+    filter: brightness(1.06);
+  }
+
+  .btn-simulate-arrow {
+    font-size: 1.05rem;
+    line-height: 1;
+    transition: transform 0.25s ease;
+  }
+
+  .btn-simulate-quote:hover .btn-simulate-arrow {
+    transform: translateX(4px);
+  }
+
+  @media (max-width: 1024px) {
+    .events-pillars-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .studio-cta-ledger-content {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .studio-cta-action-col {
+      width: 100%;
+    }
+
+    .btn-simulate-quote {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .events-studio-banner {
+      padding: 56px 24px 40px;
+    }
+
+    .events-studio-body {
+      padding: 44px 24px 64px;
+    }
+
+    .studio-pillar-card {
+      padding: 24px 20px;
+    }
+
+    .studio-cta-ledger {
+      padding: 24px 20px;
+    }
   }
 </style>
 
