@@ -15,7 +15,7 @@ export const quoteTranslations: Record<string, any> = {
     hero_subtitle: "Tailor your private event above the Taipei skyline",
     ref_badge: "Reference Estimate Only",
     ref_banner_title: "Preliminary Quotation for Your Reference",
-    ref_banner_text: "This interactive page helps you explore our options and generate a preliminary reference quote. Every event at Opéra is uniquely crafted—our team will be delighted to get in touch with you to discuss your vision and finalize the official proposal.",
+    ref_banner_text: "This interactive page helps you explore our options and generate a preliminary reference quote. Every event at Opéra is uniquely crafted, our team will be delighted to get in touch with you to discuss your vision and finalize the official proposal.",
     ref_cta_talk: "Talk to Our Events Team",
     ref_cta_start: "Build Your Quote ↓",
 
@@ -30,7 +30,7 @@ export const quoteTranslations: Record<string, any> = {
     pricing_rules_title: "Pricing Rules & Minimum Spend Reference",
     part2_badge: "Part II · Interactive Quotation Studio",
     part2_title: "Configure Your <em>Private Event</em>",
-    part2_subtitle: "Complete the 4 steps below — your reference estimate updates in real time.",
+    part2_subtitle: "Complete the 4 steps below, your reference estimate updates in real time.",
     stepper_step1: "Event Info",
     stepper_step2: "Drinks",
     stepper_step3: "A/V & Music",
@@ -112,12 +112,12 @@ export const quoteTranslations: Record<string, any> = {
 
     pkg_select_badge: "Select Package",
     pkg_selected_badge: "✓ Selected",
-    pkg_none_name: "No Drink Package (Daytime Venue Only — 5,000 NTD$ / hr)",
+    pkg_none_name: "No Drink Package (Daytime Venue Only, 5,000 NTD$ / hr)",
     pkg_none_desc: "Select this option for daytime events (before 20:00) with no beverage or food menu.",
 
     pkg_1_name: "1. Open Bar Tally Up (Master Tab)",
     pkg_1_tag: "Flexible Master Tab",
-    pkg_1_desc: "Your guests order freely from our event menu at the bar, with all drinks billed to a single tab settled by the host at the end of the night. You can set a budget cap in advance—once reached, we can close the bar or check with you to extend it.",
+    pkg_1_desc: "Your guests order freely from our event menu at the bar, with all drinks billed to a single tab settled by the host at the end of the night. You can set a budget cap in advance, once reached, we can close the bar or check with you to extend it.",
     pkg_1_cap_lbl: "Advance Budget Cap (NTD$)",
     pkg_1_cap_ph: "e.g., 100000 (Leave 0 or blank if TBD)",
     pkg_1_policy_lbl: "Once Budget Cap is Reached:",
@@ -153,13 +153,13 @@ export const quoteTranslations: Record<string, any> = {
     addon_outside_catering: "Outside catering (corkage fee 5,000 NTD$)",
     btn_popular_drinks_menu: "Popular event drinks menu",
     popular_drinks_modal_title: "Popular Event Drinks Menu",
-    popular_drinks_ref_note: "This drink selection is for reference only — we are happy to discuss and customize the menu to fit your event.",
+    popular_drinks_ref_note: "This drink selection is for reference only, we are happy to discuss and customize the menu to fit your event.",
     addon_venue_tier_label: "Venue Privatization Time Slot Reference",
     tier_none: "No minimum-spend adjustment (Calculate package only)",
-    tier_day_venue: "Daytime Venue Only (until 20:00) — 5,000 NTD / hr",
-    tier_day_fb: "Daytime with Drinks & Food (until 20:00) — 15,000 NTD / hr min. spend",
-    tier_night_weekday: "Nighttime Weekday Privatization (from 21:00) — 100,000 NTD min. spend",
-    tier_night_weekend: "Nighttime Weekend Privatization (from 21:00) — 200,000 NTD min. spend",
+    tier_day_venue: "Daytime Venue Only (until 20:00), 5,000 NTD / hr",
+    tier_day_fb: "Daytime with Drinks & Food (until 20:00), 15,000 NTD / hr min. spend",
+    tier_night_weekday: "Nighttime Weekday Privatization (from 21:00), 100,000 NTD min. spend",
+    tier_night_weekend: "Nighttime Weekend Privatization (from 21:00), 200,000 NTD min. spend",
     min_spend_Match_note: "Note: For full venue privatization, your drink & food package goes directly toward the minimum spend!",
 
     // Step 4: Live Quote Summary & PDF Preview (PDF Page 2)
@@ -206,7 +206,7 @@ export const quoteTranslations: Record<string, any> = {
     email_modal_close: "Got It",
 
     // Final Reassurance Callout
-    reassurance_title: "This Quote is a Starting Point — Let's Talk!",
+    reassurance_title: "This Quote is a Starting Point, Let's Talk!",
     reassurance_text: "Every company event and private celebration is unique. Whether you need custom cocktail creations matching your brand colors, flexible billing, or AV staging advice, our events team will be happy to get in touch and finalize a tailored quote with you."
   },
 
@@ -225,7 +225,7 @@ export const quoteTranslations: Record<string, any> = {
     hero_subtitle: "在台北101與城市天際線下，量身打造您的專屬活動",
     ref_badge: "初步參考報價",
     ref_banner_title: "本報價單僅供初步參考，歡迎與我們聯繫討論！",
-    ref_banner_text: "此互動頁面能協助您快速了解場地設備、選擇飲品方案並產生初步參考報價單（PDF）。每場活動皆可依需求彈性客製——我們的活動團隊非常樂意與您進一步聯繫討論，為您確認最終正式報價。",
+    ref_banner_text: "此互動頁面能協助您快速了解場地設備、選擇飲品方案並產生初步參考報價單（PDF）。每場活動皆可依需求彈性客製，我們的活動團隊非常樂意與您進一步聯繫討論，為您確認最終正式報價。",
     ref_cta_talk: "直接聯繫活動團隊",
     ref_cta_start: "開始填寫報價單 ↓",
 
@@ -318,12 +318,12 @@ export const quoteTranslations: Record<string, any> = {
 
     pkg_select_badge: "選擇此方案",
     pkg_selected_badge: "✓ 已選擇",
-    pkg_none_name: "不選擇飲品方案（白天純場地租借 — 5,000 NTD$ / 小時）",
+    pkg_none_name: "不選擇飲品方案（白天純場地租借，5,000 NTD$ / 小時）",
     pkg_none_desc: "若為白天時段（20:00前）且不需餐飲方案，請選擇此項（可点击已選方案取消勾選）。",
 
     pkg_1_name: "1. Open Bar Tally Up (Master Tab 總帳實報實銷)",
     pkg_1_tag: "彈性總帳 / 可設上限",
-    pkg_1_desc: "賓客可於吧台自由點選活動酒單上的飲品，所有消費統一計入主辦方總帳（Master Tab）並於活動結束時結算。您可事先設定預算上限——達到上限時，我們可依指示關閉吧台或向您確認是否加開額度。",
+    pkg_1_desc: "賓客可於吧台自由點選活動酒單上的飲品，所有消費統一計入主辦方總帳（Master Tab）並於活動結束時結算。您可事先設定預算上限，達到上限時，我們可依指示關閉吧台或向您確認是否加開額度。",
     pkg_1_cap_lbl: "預設預算上限 (NTD$)",
     pkg_1_cap_ph: "例如：100000（若不設限或待議請填 0）",
     pkg_1_policy_lbl: "達到預算上限時的處理方式：",
@@ -361,10 +361,10 @@ export const quoteTranslations: Record<string, any> = {
     popular_drinks_ref_note: "此酒單品項僅供參考，我們非常樂意與您討論並依活動需求客製調整。(This selection is for reference and we can talk for adjustments.)",
     addon_venue_tier_label: "全場包場時段 / 最低消費基準",
     tier_none: "僅試算飲品與餐點方案（不套用全場包場低消差額）",
-    tier_day_venue: "白天純場地租借 (20:00前) — 5,000 NTD / 小時",
-    tier_day_fb: "白天含餐飲包場 (20:00前) — 15,000 NTD / 小時 低消",
-    tier_night_weekday: "平日夜間全場包場 (21:00後) — 100,000 NTD 最低消費",
-    tier_night_weekend: "假日夜間全場包場 (21:00後) — 200,000 NTD 最低消費",
+    tier_day_venue: "白天純場地租借 (20:00前)，5,000 NTD / 小時",
+    tier_day_fb: "白天含餐飲包場 (20:00前)，15,000 NTD / 小時 低消",
+    tier_night_weekday: "平日夜間全場包場 (21:00後)，100,000 NTD 最低消費",
+    tier_night_weekend: "假日夜間全場包場 (21:00後)，200,000 NTD 最低消費",
     min_spend_Match_note: "提示：全場包場之「最低消費」可全額折抵您的飲品方案與餐點費用！",
 
     step4_label: "步驟 04 · 初步參考報價單預覽",
@@ -408,7 +408,7 @@ export const quoteTranslations: Record<string, any> = {
     email_modal_copy_btn: "複製報價單完整文字",
     email_modal_close: "了解，關閉視窗",
 
-    reassurance_title: "本報價單僅供初步參考——歡迎隨時與我們聊聊！",
+    reassurance_title: "本報價單僅供初步參考，歡迎隨時與我們聊聊！",
     reassurance_text: "每一場企業活動與私人派對都是獨一無二的。無論您希望微調預算、設計專屬品牌調酒、安排外燴餐點或討論舞台設備，我們的團隊都非常樂意與您直接溝通，為您完成最終的正式報價單。"
   },
 
@@ -441,7 +441,7 @@ export const quoteTranslations: Record<string, any> = {
     pricing_rules_title: "Règles Tarifaires & Minimum Spend",
     part2_badge: "Partie II · Studio de Devis Interactif",
     part2_title: "Configurez Votre <em>Événement Privé</em>",
-    part2_subtitle: "Complétez les 4 étapes ci-dessous — votre estimation se met à jour en temps réel.",
+    part2_subtitle: "Complétez les 4 étapes ci-dessous, votre estimation se met à jour en temps réel.",
     stepper_step1: "Infos",
     stepper_step2: "Boissons",
     stepper_step3: "Visuels & Son",
@@ -520,7 +520,7 @@ export const quoteTranslations: Record<string, any> = {
 
     pkg_select_badge: "Choisir cette formule",
     pkg_selected_badge: "✓ Sélectionné",
-    pkg_none_name: "Sans Formule Boissons (Location Sèche Journée — 5 000 NTD$ / h)",
+    pkg_none_name: "Sans Formule Boissons (Location Sèche Journée, 5 000 NTD$ / h)",
     pkg_none_desc: "Sélectionnez cette option pour un événement en journée (avant 20h00) sans boissons ni restauration.",
 
     pkg_1_name: "1. Open Bar Tally Up (Ardoise / Master Tab)",
@@ -560,13 +560,13 @@ export const quoteTranslations: Record<string, any> = {
     addon_outside_catering: "Traiteur extérieur Outside catering (corkage fee 5,000 NTD$)",
     btn_popular_drinks_menu: "Popular event drinks menu",
     popular_drinks_modal_title: "Popular Event Drinks Menu",
-    popular_drinks_ref_note: "Cette sélection de boissons est présentée à titre indicatif — nous pouvons bien sûr en discuter pour l'adapter à votre événement.",
+    popular_drinks_ref_note: "Cette sélection de boissons est présentée à titre indicatif, nous pouvons bien sûr en discuter pour l'adapter à votre événement.",
     addon_venue_tier_label: "Référence de Privatisation / Minimum Spend",
     tier_none: "Calculer uniquement les forfaits sélectionnés",
-    tier_day_venue: "Journée — Espace uniquement (jusqu'à 20h00) — 5 000 NTD / h",
-    tier_day_fb: "Journée — Avec boissons & buffet (jusqu'à 20h00) — 15 000 NTD / h min.",
-    tier_night_weekday: "Soirée en Semaine (dès 21h00) — 100 000 NTD minimum spend",
-    tier_night_weekend: "Soirée le Week-end (dès 21h00) — 200 000 NTD minimum spend",
+    tier_day_venue: "Journée, Espace uniquement (jusqu'à 20h00), 5 000 NTD / h",
+    tier_day_fb: "Journée, Avec boissons & buffet (jusqu'à 20h00), 15 000 NTD / h min.",
+    tier_night_weekday: "Soirée en Semaine (dès 21h00), 100 000 NTD minimum spend",
+    tier_night_weekend: "Soirée le Week-end (dès 21h00), 200 000 NTD minimum spend",
     min_spend_Match_note: "Note : En privatisation complète, vos forfaits boissons et nourriture sont intégralement déduits du minimum de commande !",
 
     step4_label: "Étape 04 · Devis Préliminaire",
@@ -610,7 +610,7 @@ export const quoteTranslations: Record<string, any> = {
     email_modal_copy_btn: "Copier le texte du devis",
     email_modal_close: "Fermer",
 
-    reassurance_title: "Ce devis est une base de discussion — Parlons-en !",
+    reassurance_title: "Ce devis est une base de discussion, Parlons-en !",
     reassurance_text: "Chaque événement est unique. Que vous souhaitiez créer un cocktail sur mesure, ajuster votre formule ou organiser une visite du lieu, notre équipe est à votre entière disposition pour finaliser ce devis avec vous."
   },
 
@@ -722,7 +722,7 @@ export const quoteTranslations: Record<string, any> = {
 
     pkg_select_badge: "このプランを選択",
     pkg_selected_badge: "✓ 選択中",
-    pkg_none_name: "ドリンクプランなし（日中会場レンタルのみ — 5,000 NTD$ / 1時間）",
+    pkg_none_name: "ドリンクプランなし（日中会場レンタルのみ、5,000 NTD$ / 1時間）",
     pkg_none_desc: "日中（20:00まで）で飲食プランが不要な場合はこちらを選択してください。",
 
     pkg_1_name: "1. Open Bar Tally Up (マスタータブ / 実数精算)",
@@ -765,10 +765,10 @@ export const quoteTranslations: Record<string, any> = {
     popular_drinks_ref_note: "こちらのドリンクセレクションは参考メニューです。ご希望に合わせて内容の調整が可能ですので、お気軽にご相談ください。",
     addon_venue_tier_label: "全館貸切時間帯 / 最低消費額の目安",
     tier_none: "選択したパッケージのみ計算（最低消費額の差額調整なし）",
-    tier_day_venue: "デイタイム 会場のみ (20:00まで) — 5,000 NTD / 1時間",
-    tier_day_fb: "デイタイム 飲食付き (20:00まで) — 15,000 NTD / 1時間 最低消費",
-    tier_night_weekday: "ナイトタイム 平日全館貸切 (21:00以降) — 100,000 NTD 最低消費",
-    tier_night_weekend: "ナイトタイム 週末全館貸切 (21:00以降) — 200,000 NTD 最低消費",
+    tier_day_venue: "デイタイム 会場のみ (20:00まで)、5,000 NTD / 1時間",
+    tier_day_fb: "デイタイム 飲食付き (20:00まで)、15,000 NTD / 1時間 最低消費",
+    tier_night_weekday: "ナイトタイム 平日全館貸切 (21:00以降)、100,000 NTD 最低消費",
+    tier_night_weekend: "ナイトタイム 週末全館貸切 (21:00以降)、200,000 NTD 最低消費",
     min_spend_Match_note: "※全館貸切の最低消費額（ミニマムチャージ）には、ドリンクプランやお食事代がすべて含まれます！",
 
     step4_label: "ステップ 04 · 概算お見積りプレビュー",
@@ -812,7 +812,7 @@ export const quoteTranslations: Record<string, any> = {
     email_modal_copy_btn: "見積り内容をテキストコピー",
     email_modal_close: "閉じる",
 
-    reassurance_title: "こちらは参考見積りです — お気軽にご相談ください！",
+    reassurance_title: "こちらは参考見積りです、お気軽にご相談ください！",
     reassurance_text: "イベントのご要望やご予算に合わせて柔軟にプランを調整いたします。下見のご予約や詳細のお打ち合わせなど、Opéraイベントチームより丁寧にご案内いたします。"
   }
 };

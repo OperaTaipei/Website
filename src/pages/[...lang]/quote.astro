@@ -866,7 +866,7 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
               <div class="quote-summary-header">
                 <div>
                   <span class="company-tiny">歐珀拉有限公司 OPERA TAIPEI LIMITED - 94271005</span>
-                  <h3 id="live-summary-title">Quote — Private Event at Opéra</h3>
+                  <h3 id="live-summary-title">Quote, Private Event at Opéra</h3>
                 </div>
                 <div class="ref-badge-pill">{t.ref_badge}</div>
               </div>
@@ -4325,7 +4325,7 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
 
     const setupTime =
       ynState.early_setup === 'YES'
-        ? `Early setup: ${formatAmPm(earlySetupStart)} – ${formatAmPm(earlySetupEnd)} (${earlySetupHours} hrs — 5,000 NTD$ / h)`
+        ? `Early setup: ${formatAmPm(earlySetupStart)} – ${formatAmPm(earlySetupEnd)} (${earlySetupHours} hrs, 5,000 NTD$ / h)`
         : '2h prior to event start (Free of charge)';
     const musicStyleText = inpMusicStyle?.value.trim() || '';
     const otherRequests = inpOtherRequests?.value.trim() || '';
@@ -4383,8 +4383,8 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
       serviceLines.push({
         item:
           cap > 0
-            ? `1. Open Bar Tally Up (Master Tab — Cap: ${fmtNTD(cap)} NTD$, ${policy})`
-            : `1. Open Bar Tally Up (Master Tab — ${policy})`,
+            ? `1. Open Bar Tally Up (Master Tab, Cap: ${fmtNTD(cap)} NTD$, ${policy})`
+            : `1. Open Bar Tally Up (Master Tab, ${policy})`,
         qty: '1 Master Tab',
         priceNum: cap,
         priceText: `${fmtNTD(cap)} NTD$`
@@ -4480,9 +4480,9 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
       // Daytime Option 1: No food or drink menu selected -> 5,000 NTD$ / hr + requested add-ons
       const venueCost = Math.round(duration * 5000);
       ruleSlotBadge = `${dayName} · Daytime (Before 20:00) · Option 1`;
-      ruleSlotTitle = `No Food or Drink Menu — Venue Rental 5,000 NTD$ / hr (${fmtNTD(venueCost)} NTD$) + Add-ons`;
+      ruleSlotTitle = `No Food or Drink Menu, Venue Rental 5,000 NTD$ / hr (${fmtNTD(venueCost)} NTD$) + Add-ons`;
       lines.push({
-        item: 'No Drink Package (Daytime Venue Only — 5,000 NTD$ / hr)',
+        item: 'No Drink Package (Daytime Venue Only, 5,000 NTD$ / hr)',
         qty: `${duration} hrs`,
         priceNum: venueCost,
         priceText: `${fmtNTD(venueCost)} NTD$`
@@ -4492,7 +4492,7 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
       // Daytime Option 2: Food and/or drinks selected -> 15,000 NTD$ / hr minimum spend
       minSpendRequired = Math.round(duration * 15000);
       ruleSlotBadge = `${dayName} · Daytime (Before 20:00) · Option 2`;
-      ruleSlotTitle = `Daytime with Food/Drinks — Minimum Spend 15,000 NTD$ / hr (${fmtNTD(minSpendRequired)} NTD$)`;
+      ruleSlotTitle = `Daytime with Food/Drinks, Minimum Spend 15,000 NTD$ / hr (${fmtNTD(minSpendRequired)} NTD$)`;
       lines.push(...serviceLines);
       if (servicesTotal < minSpendRequired) {
         remainingToSpend = minSpendRequired - servicesTotal;
@@ -4507,7 +4507,7 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
       // Nighttime Weekday (Sun–Thu, after 20:00 / 21:00) -> 100,000 NTD$ minimum spend (follows Option 2)
       minSpendRequired = 100000;
       ruleSlotBadge = `${dayName} · Weekday Nighttime`;
-      ruleSlotTitle = `Weekday Nighttime Privatization — Minimum Spend 100,000 NTD$`;
+      ruleSlotTitle = `Weekday Nighttime Privatization, Minimum Spend 100,000 NTD$`;
       lines.push(...serviceLines);
       if (servicesTotal < minSpendRequired) {
         remainingToSpend = minSpendRequired - servicesTotal;
@@ -4522,7 +4522,7 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
       // Nighttime Weekend (Fri & Sat, after 20:00 / 21:00) -> 200,000 NTD$ minimum spend (follows Option 2)
       minSpendRequired = 200000;
       ruleSlotBadge = `${dayName} · Weekend Nighttime`;
-      ruleSlotTitle = `Weekend Nighttime Privatization — Minimum Spend 200,000 NTD$`;
+      ruleSlotTitle = `Weekend Nighttime Privatization, Minimum Spend 200,000 NTD$`;
       lines.push(...serviceLines);
       if (servicesTotal < minSpendRequired) {
         remainingToSpend = minSpendRequired - servicesTotal;
@@ -4538,7 +4538,7 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     // 5. Early Setup (5,000 NTD$ / h × hours) is always added on top of the minimum spend
     if (ynState.early_setup === 'YES') {
       lines.push({
-        item: `Early Setup (${formatAmPm(earlySetupStart)} – ${formatAmPm(earlySetupEnd)} — 5,000 NTD$ / h)`,
+        item: `Early Setup (${formatAmPm(earlySetupStart)} – ${formatAmPm(earlySetupEnd)}, 5,000 NTD$ / h)`,
         qty: `${earlySetupHours} hrs`,
         priceNum: earlySetupCost,
         priceText: `${fmtNTD(earlySetupCost)} NTD$`
@@ -4620,7 +4620,7 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
 
     // Update Live Web Summary
     const liveTitle = document.getElementById('live-summary-title');
-    if (liveTitle) liveTitle.textContent = `Quote — ${state.title}`;
+    if (liveTitle) liveTitle.textContent = `Quote, ${state.title}`;
 
     const liveRuleBadge = document.getElementById('live-rule-badge');
     const liveRuleTitle = document.getElementById('live-rule-title');
@@ -4691,7 +4691,7 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     setTxt(
       'pdf-dj-label-cell',
       ynState.mus_dj === 'YES'
-        ? `DJ (Cost is 1,000 NTD$ / h — ${state.djHours} hrs required)`
+        ? `DJ (Cost is 1,000 NTD$ / h, ${state.djHours} hrs required)`
         : 'DJ (Cost is 1,000 NTD$ / h)'
     );
     setTxt(
